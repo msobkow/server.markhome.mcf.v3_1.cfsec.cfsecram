@@ -69,12 +69,6 @@ public class CFSecRamSecUserTable
 		= new HashMap< CFSecBuffSecUserByPwdResetIdxKey,
 				Map< CFLibDbKeyHash256,
 					CFSecBuffSecUser >>();
-	private Map< CFSecBuffSecUserByDefDevIdxKey,
-				Map< CFLibDbKeyHash256,
-					CFSecBuffSecUser >> dictByDefDevIdx
-		= new HashMap< CFSecBuffSecUserByDefDevIdxKey,
-				Map< CFLibDbKeyHash256,
-					CFSecBuffSecUser >>();
 
 	public CFSecRamSecUserTable( ICFSecSchema argSchema ) {
 		schema = argSchema;
@@ -113,10 +107,6 @@ public class CFSecRamSecUserTable
 
 		CFSecBuffSecUserByPwdResetIdxKey keyPwdResetIdx = (CFSecBuffSecUserByPwdResetIdxKey)schema.getFactorySecUser().newByPwdResetIdxKey();
 		keyPwdResetIdx.setOptionalPasswordResetUuid6( Buff.getOptionalPasswordResetUuid6() );
-
-		CFSecBuffSecUserByDefDevIdxKey keyDefDevIdx = (CFSecBuffSecUserByDefDevIdxKey)schema.getFactorySecUser().newByDefDevIdxKey();
-		keyDefDevIdx.setOptionalDfltDevUserId( Buff.getOptionalDfltDevUserId() );
-		keyDefDevIdx.setOptionalDfltDevName( Buff.getOptionalDfltDevName() );
 
 		// Validate unique indexes
 
@@ -159,16 +149,6 @@ public class CFSecRamSecUserTable
 			dictByPwdResetIdx.put( keyPwdResetIdx, subdictPwdResetIdx );
 		}
 		subdictPwdResetIdx.put( pkey, Buff );
-
-		Map< CFLibDbKeyHash256, CFSecBuffSecUser > subdictDefDevIdx;
-		if( dictByDefDevIdx.containsKey( keyDefDevIdx ) ) {
-			subdictDefDevIdx = dictByDefDevIdx.get( keyDefDevIdx );
-		}
-		else {
-			subdictDefDevIdx = new HashMap< CFLibDbKeyHash256, CFSecBuffSecUser >();
-			dictByDefDevIdx.put( keyDefDevIdx, subdictDefDevIdx );
-		}
-		subdictDefDevIdx.put( pkey, Buff );
 
 		if (Buff == null) {
 			return( null );
@@ -300,36 +280,6 @@ public class CFSecRamSecUserTable
 			Map< CFLibDbKeyHash256, CFSecBuffSecUser > subdictPwdResetIdx
 				= new HashMap< CFLibDbKeyHash256, CFSecBuffSecUser >();
 			dictByPwdResetIdx.put( key, subdictPwdResetIdx );
-			recArray = new ICFSecSecUser[0];
-		}
-		return( recArray );
-	}
-
-	@Override
-	public ICFSecSecUser[] readDerivedByDefDevIdx( ICFSecAuthorization Authorization,
-		CFLibDbKeyHash256 DfltDevUserId,
-		String DfltDevName )
-	{
-		final String S_ProcName = "CFSecRamSecUser.readDerivedByDefDevIdx";
-		CFSecBuffSecUserByDefDevIdxKey key = (CFSecBuffSecUserByDefDevIdxKey)schema.getFactorySecUser().newByDefDevIdxKey();
-
-		key.setOptionalDfltDevUserId( DfltDevUserId );
-		key.setOptionalDfltDevName( DfltDevName );
-		ICFSecSecUser[] recArray;
-		if( dictByDefDevIdx.containsKey( key ) ) {
-			Map< CFLibDbKeyHash256, CFSecBuffSecUser > subdictDefDevIdx
-				= dictByDefDevIdx.get( key );
-			recArray = new ICFSecSecUser[ subdictDefDevIdx.size() ];
-			Iterator< CFSecBuffSecUser > iter = subdictDefDevIdx.values().iterator();
-			int idx = 0;
-			while( iter.hasNext() ) {
-				recArray[ idx++ ] = iter.next();
-			}
-		}
-		else {
-			Map< CFLibDbKeyHash256, CFSecBuffSecUser > subdictDefDevIdx
-				= new HashMap< CFLibDbKeyHash256, CFSecBuffSecUser >();
-			dictByDefDevIdx.put( key, subdictDefDevIdx );
 			recArray = new ICFSecSecUser[0];
 		}
 		return( recArray );
@@ -471,26 +421,6 @@ public class CFSecRamSecUserTable
 		return( filteredList.toArray( new ICFSecSecUser[0] ) );
 	}
 
-	@Override
-	public ICFSecSecUser[] readRecByDefDevIdx( ICFSecAuthorization Authorization,
-		CFLibDbKeyHash256 DfltDevUserId,
-		String DfltDevName )
-	{
-		final String S_ProcName = "CFSecRamSecUser.readRecByDefDevIdx() ";
-		ICFSecSecUser buff;
-		ArrayList<ICFSecSecUser> filteredList = new ArrayList<ICFSecSecUser>();
-		ICFSecSecUser[] buffList = readDerivedByDefDevIdx( Authorization,
-			DfltDevUserId,
-			DfltDevName );
-		for( int idx = 0; idx < buffList.length; idx ++ ) {
-			buff = buffList[idx];
-			if( ( buff != null ) && ( buff.getClassCode() == ICFSecSecUser.CLASS_CODE ) ) {
-				filteredList.add( (ICFSecSecUser)buff );
-			}
-		}
-		return( filteredList.toArray( new ICFSecSecUser[0] ) );
-	}
-
 	/**
 	 *	Read a page array of the specific SecUser buffer instances identified by the duplicate key EMConfIdx.
 	 *
@@ -528,29 +458,6 @@ public class CFSecRamSecUserTable
 		CFLibDbKeyHash256 priorSecUserId )
 	{
 		final String S_ProcName = "pageRecByPwdResetIdx";
-		throw new CFLibNotImplementedYetException( getClass(), S_ProcName );
-	}
-
-	/**
-	 *	Read a page array of the specific SecUser buffer instances identified by the duplicate key DefDevIdx.
-	 *
-	 *	@param	Authorization	The session authorization information.
-	 *
-	 *	@param	DfltDevUserId	The SecUser key attribute of the instance generating the id.
-	 *
-	 *	@param	DfltDevName	The SecUser key attribute of the instance generating the id.
-	 *
-	 *	@return An array of derived buffer instances for the specified key, potentially with 0 elements in the set.
-	 *
-	 *	@throws	CFLibNotSupportedException thrown by client-side implementations.
-	 */
-	@Override
-	public ICFSecSecUser[] pageRecByDefDevIdx( ICFSecAuthorization Authorization,
-		CFLibDbKeyHash256 DfltDevUserId,
-		String DfltDevName,
-		CFLibDbKeyHash256 priorSecUserId )
-	{
-		final String S_ProcName = "pageRecByDefDevIdx";
 		throw new CFLibNotImplementedYetException( getClass(), S_ProcName );
 	}
 
@@ -592,14 +499,6 @@ public class CFSecRamSecUserTable
 
 		CFSecBuffSecUserByPwdResetIdxKey newKeyPwdResetIdx = (CFSecBuffSecUserByPwdResetIdxKey)schema.getFactorySecUser().newByPwdResetIdxKey();
 		newKeyPwdResetIdx.setOptionalPasswordResetUuid6( Buff.getOptionalPasswordResetUuid6() );
-
-		CFSecBuffSecUserByDefDevIdxKey existingKeyDefDevIdx = (CFSecBuffSecUserByDefDevIdxKey)schema.getFactorySecUser().newByDefDevIdxKey();
-		existingKeyDefDevIdx.setOptionalDfltDevUserId( existing.getOptionalDfltDevUserId() );
-		existingKeyDefDevIdx.setOptionalDfltDevName( existing.getOptionalDfltDevName() );
-
-		CFSecBuffSecUserByDefDevIdxKey newKeyDefDevIdx = (CFSecBuffSecUserByDefDevIdxKey)schema.getFactorySecUser().newByDefDevIdxKey();
-		newKeyDefDevIdx.setOptionalDfltDevUserId( Buff.getOptionalDfltDevUserId() );
-		newKeyDefDevIdx.setOptionalDfltDevName( Buff.getOptionalDfltDevName() );
 
 		// Check unique indexes
 
@@ -651,19 +550,6 @@ public class CFSecRamSecUserTable
 		}
 		subdict.put( pkey, Buff );
 
-		subdict = dictByDefDevIdx.get( existingKeyDefDevIdx );
-		if( subdict != null ) {
-			subdict.remove( pkey );
-		}
-		if( dictByDefDevIdx.containsKey( newKeyDefDevIdx ) ) {
-			subdict = dictByDefDevIdx.get( newKeyDefDevIdx );
-		}
-		else {
-			subdict = new HashMap< CFLibDbKeyHash256, CFSecBuffSecUser >();
-			dictByDefDevIdx.put( newKeyDefDevIdx, subdict );
-		}
-		subdict.put( pkey, Buff );
-
 		return(Buff);
 	}
 
@@ -685,35 +571,13 @@ public class CFSecRamSecUserTable
 				"deleteSecUser",
 				pkey );
 		}
-					{
-						CFSecBuffSecUser editBuff = (CFSecBuffSecUser)(schema.getTableSecUser().readDerivedByIdIdx( Authorization,
-						existing.getRequiredSecUserId() ));
-						editBuff.setOptionalLookupDefDev((CFLibDbKeyHash256)null, (String)null);
-						classCode = editBuff.getClassCode();
-						if( classCode == ICFSecSecUser.CLASS_CODE ) {
-							schema.getTableSecUser().updateSecUser( Authorization, editBuff );
-						}
-						else {
-							throw new CFLibUnsupportedClassException(getClass(), S_ProcName, "-delete-clear-top-dep-", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
-						}
-					}
-		CFSecBuffSecUser editSubobj = (CFSecBuffSecUser)(schema.getTableSecUser().readDerivedByIdIdx( Authorization,
-			existing.getRequiredSecUserId() ));
-			editSubobj.setOptionalLookupDefDev((CFLibDbKeyHash256)null, (String)null);
-		classCode = editSubobj.getClassCode();
-		if( classCode == ICFSecSecUser.CLASS_CODE ) {
-			schema.getTableSecUser().updateSecUser( Authorization, editSubobj );
+		// Short circuit self-referential code to prevent stack overflows
+		Object arrCheckSecUserSecSysGrpMemb[] = schema.getTableSecSysGrpMemb().readDerivedByUserIdx( Authorization,
+						existing.getRequiredSecUserId() );
+		if( arrCheckSecUserSecSysGrpMemb.length > 0 ) {
+			schema.getTableSecSysGrpMemb().deleteSecSysGrpMembByUserIdx( Authorization,
+						existing.getRequiredSecUserId() );
 		}
-		else {
-			throw new CFLibUnsupportedClassException(getClass(), S_ProcName, "-delete-clear-root-subobject-refs-", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
-		}
-		existing = editSubobj;
-					schema.getTableTSecGrpMemb().deleteTSecGrpMembByUserIdx( Authorization,
-						existing.getRequiredSecUserId() );
-					schema.getTableSecGrpMemb().deleteSecGrpMembByUserIdx( Authorization,
-						existing.getRequiredSecUserId() );
-					schema.getTableSecDevice().deleteSecDeviceByUserIdx( Authorization,
-						existing.getRequiredSecUserId() );
 		CFSecBuffSecUserByULoginIdxKey keyULoginIdx = (CFSecBuffSecUserByULoginIdxKey)schema.getFactorySecUser().newByULoginIdxKey();
 		keyULoginIdx.setRequiredLoginId( existing.getRequiredLoginId() );
 
@@ -722,10 +586,6 @@ public class CFSecRamSecUserTable
 
 		CFSecBuffSecUserByPwdResetIdxKey keyPwdResetIdx = (CFSecBuffSecUserByPwdResetIdxKey)schema.getFactorySecUser().newByPwdResetIdxKey();
 		keyPwdResetIdx.setOptionalPasswordResetUuid6( existing.getOptionalPasswordResetUuid6() );
-
-		CFSecBuffSecUserByDefDevIdxKey keyDefDevIdx = (CFSecBuffSecUserByDefDevIdxKey)schema.getFactorySecUser().newByDefDevIdxKey();
-		keyDefDevIdx.setOptionalDfltDevUserId( existing.getOptionalDfltDevUserId() );
-		keyDefDevIdx.setOptionalDfltDevName( existing.getOptionalDfltDevName() );
 
 		// Validate reverse foreign keys
 
@@ -740,9 +600,6 @@ public class CFSecRamSecUserTable
 		subdict.remove( pkey );
 
 		subdict = dictByPwdResetIdx.get( keyPwdResetIdx );
-		subdict.remove( pkey );
-
-		subdict = dictByDefDevIdx.get( keyDefDevIdx );
 		subdict.remove( pkey );
 
 	}
@@ -863,49 +720,6 @@ public class CFSecRamSecUserTable
 		CFSecBuffSecUser cur;
 		boolean anyNotNull = false;
 		if( argKey.getOptionalPasswordResetUuid6() != null ) {
-			anyNotNull = true;
-		}
-		if( ! anyNotNull ) {
-			return;
-		}
-		LinkedList<CFSecBuffSecUser> matchSet = new LinkedList<CFSecBuffSecUser>();
-		Iterator<CFSecBuffSecUser> values = dictByPKey.values().iterator();
-		while( values.hasNext() ) {
-			cur = values.next();
-			if( argKey.equals( cur ) ) {
-				matchSet.add( cur );
-			}
-		}
-		Iterator<CFSecBuffSecUser> iterMatch = matchSet.iterator();
-		while( iterMatch.hasNext() ) {
-			cur = iterMatch.next();
-			cur = (CFSecBuffSecUser)(schema.getTableSecUser().readDerivedByIdIdx( Authorization,
-				cur.getRequiredSecUserId() ));
-			deleteSecUser( Authorization, cur );
-		}
-	}
-
-	@Override
-	public void deleteSecUserByDefDevIdx( ICFSecAuthorization Authorization,
-		CFLibDbKeyHash256 argDfltDevUserId,
-		String argDfltDevName )
-	{
-		CFSecBuffSecUserByDefDevIdxKey key = (CFSecBuffSecUserByDefDevIdxKey)schema.getFactorySecUser().newByDefDevIdxKey();
-		key.setOptionalDfltDevUserId( argDfltDevUserId );
-		key.setOptionalDfltDevName( argDfltDevName );
-		deleteSecUserByDefDevIdx( Authorization, key );
-	}
-
-	@Override
-	public void deleteSecUserByDefDevIdx( ICFSecAuthorization Authorization,
-		ICFSecSecUserByDefDevIdxKey argKey )
-	{
-		CFSecBuffSecUser cur;
-		boolean anyNotNull = false;
-		if( argKey.getOptionalDfltDevUserId() != null ) {
-			anyNotNull = true;
-		}
-		if( argKey.getOptionalDfltDevName() != null ) {
 			anyNotNull = true;
 		}
 		if( ! anyNotNull ) {

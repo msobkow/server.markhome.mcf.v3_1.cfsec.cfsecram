@@ -53,25 +53,26 @@ public class CFSecRamSchema
 	public CFSecRamSchema() {
 		super();
 		tableCluster = new CFSecRamClusterTable( this );
-		tableHostNode = new CFSecRamHostNodeTable( this );
 		tableISOCcy = new CFSecRamISOCcyTable( this );
 		tableISOCtry = new CFSecRamISOCtryTable( this );
 		tableISOCtryCcy = new CFSecRamISOCtryCcyTable( this );
 		tableISOCtryLang = new CFSecRamISOCtryLangTable( this );
 		tableISOLang = new CFSecRamISOLangTable( this );
 		tableISOTZone = new CFSecRamISOTZoneTable( this );
-		tableSecDevice = new CFSecRamSecDeviceTable( this );
-		tableSecGroup = new CFSecRamSecGroupTable( this );
-		tableSecGrpInc = new CFSecRamSecGrpIncTable( this );
-		tableSecGrpMemb = new CFSecRamSecGrpMembTable( this );
+		tableSecClusGrp = new CFSecRamSecClusGrpTable( this );
+		tableSecClusGrpInc = new CFSecRamSecClusGrpIncTable( this );
+		tableSecClusGrpMemb = new CFSecRamSecClusGrpMembTable( this );
 		tableSecSession = new CFSecRamSecSessionTable( this );
+		tableSecSysGrp = new CFSecRamSecSysGrpTable( this );
+		tableSecSysGrpInc = new CFSecRamSecSysGrpIncTable( this );
+		tableSecSysGrpMemb = new CFSecRamSecSysGrpMembTable( this );
+		tableSecTentGrp = new CFSecRamSecTentGrpTable( this );
+		tableSecTentGrpInc = new CFSecRamSecTentGrpIncTable( this );
+		tableSecTentGrpMemb = new CFSecRamSecTentGrpMembTable( this );
 		tableSecUser = new CFSecRamSecUserTable( this );
-		tableService = new CFSecRamServiceTable( this );
-		tableServiceType = new CFSecRamServiceTypeTable( this );
+		tableSecUserPWHistory = new CFSecRamSecUserPWHistoryTable( this );
+		tableSecUserPassword = new CFSecRamSecUserPasswordTable( this );
 		tableSysCluster = new CFSecRamSysClusterTable( this );
-		tableTSecGroup = new CFSecRamTSecGroupTable( this );
-		tableTSecGrpInc = new CFSecRamTSecGrpIncTable( this );
-		tableTSecGrpMemb = new CFSecRamTSecGrpMembTable( this );
 		tableTenant = new CFSecRamTenantTable( this );
 	}
 
@@ -123,61 +124,25 @@ public class CFSecRamSchema
 	}
 
 	@Override
-	public CFLibDbKeyHash256 nextServiceTypeIdGen() {
-		CFLibDbKeyHash256 retval = new CFLibDbKeyHash256(0);
-		return( retval );
-	}
-
-	@Override
 	public CFLibDbKeyHash256 nextTenantIdGen() {
 		CFLibDbKeyHash256 retval = new CFLibDbKeyHash256(0);
 		return( retval );
 	}
 
 	@Override
-	public CFLibDbKeyHash256 nextHostNodeIdGen() {
+	public CFLibDbKeyHash256 nextSecSysGrpIdGen() {
 		CFLibDbKeyHash256 retval = new CFLibDbKeyHash256(0);
 		return( retval );
 	}
 
 	@Override
-	public CFLibDbKeyHash256 nextSecGroupIdGen() {
+	public CFLibDbKeyHash256 nextSecClusGrpIdGen() {
 		CFLibDbKeyHash256 retval = new CFLibDbKeyHash256(0);
 		return( retval );
 	}
 
 	@Override
-	public CFLibDbKeyHash256 nextSecGrpIncIdGen() {
-		CFLibDbKeyHash256 retval = new CFLibDbKeyHash256(0);
-		return( retval );
-	}
-
-	@Override
-	public CFLibDbKeyHash256 nextSecGrpMembIdGen() {
-		CFLibDbKeyHash256 retval = new CFLibDbKeyHash256(0);
-		return( retval );
-	}
-
-	@Override
-	public CFLibDbKeyHash256 nextServiceIdGen() {
-		CFLibDbKeyHash256 retval = new CFLibDbKeyHash256(0);
-		return( retval );
-	}
-
-	@Override
-	public CFLibDbKeyHash256 nextTSecGroupIdGen() {
-		CFLibDbKeyHash256 retval = new CFLibDbKeyHash256(0);
-		return( retval );
-	}
-
-	@Override
-	public CFLibDbKeyHash256 nextTSecGrpIncIdGen() {
-		CFLibDbKeyHash256 retval = new CFLibDbKeyHash256(0);
-		return( retval );
-	}
-
-	@Override
-	public CFLibDbKeyHash256 nextTSecGrpMembIdGen() {
+	public CFLibDbKeyHash256 nextSecTentGrpIdGen() {
 		CFLibDbKeyHash256 retval = new CFLibDbKeyHash256(0);
 		return( retval );
 	}
@@ -225,9 +190,6 @@ public class CFSecRamSchema
 		if (tableCluster == null || !(tableCluster instanceof CFSecRamClusterTable)) {
 			tableCluster = new CFSecRamClusterTable(this);
 		}
-		if (tableHostNode == null || !(tableHostNode instanceof CFSecRamHostNodeTable)) {
-			tableHostNode = new CFSecRamHostNodeTable(this);
-		}
 		if (tableISOCcy == null || !(tableISOCcy instanceof CFSecRamISOCcyTable)) {
 			tableISOCcy = new CFSecRamISOCcyTable(this);
 		}
@@ -246,17 +208,32 @@ public class CFSecRamSchema
 		if (tableISOTZone == null || !(tableISOTZone instanceof CFSecRamISOTZoneTable)) {
 			tableISOTZone = new CFSecRamISOTZoneTable(this);
 		}
-		if (tableSecDevice == null || !(tableSecDevice instanceof CFSecRamSecDeviceTable)) {
-			tableSecDevice = new CFSecRamSecDeviceTable(this);
+		if (tableSecSysGrp == null || !(tableSecSysGrp instanceof CFSecRamSecSysGrpTable)) {
+			tableSecSysGrp = new CFSecRamSecSysGrpTable(this);
 		}
-		if (tableSecGroup == null || !(tableSecGroup instanceof CFSecRamSecGroupTable)) {
-			tableSecGroup = new CFSecRamSecGroupTable(this);
+		if (tableSecSysGrpInc == null || !(tableSecSysGrpInc instanceof CFSecRamSecSysGrpIncTable)) {
+			tableSecSysGrpInc = new CFSecRamSecSysGrpIncTable(this);
 		}
-		if (tableSecGrpInc == null || !(tableSecGrpInc instanceof CFSecRamSecGrpIncTable)) {
-			tableSecGrpInc = new CFSecRamSecGrpIncTable(this);
+		if (tableSecSysGrpMemb == null || !(tableSecSysGrpMemb instanceof CFSecRamSecSysGrpMembTable)) {
+			tableSecSysGrpMemb = new CFSecRamSecSysGrpMembTable(this);
 		}
-		if (tableSecGrpMemb == null || !(tableSecGrpMemb instanceof CFSecRamSecGrpMembTable)) {
-			tableSecGrpMemb = new CFSecRamSecGrpMembTable(this);
+		if (tableSecClusGrp == null || !(tableSecClusGrp instanceof CFSecRamSecClusGrpTable)) {
+			tableSecClusGrp = new CFSecRamSecClusGrpTable(this);
+		}
+		if (tableSecClusGrpInc == null || !(tableSecClusGrpInc instanceof CFSecRamSecClusGrpIncTable)) {
+			tableSecClusGrpInc = new CFSecRamSecClusGrpIncTable(this);
+		}
+		if (tableSecClusGrpMemb == null || !(tableSecClusGrpMemb instanceof CFSecRamSecClusGrpMembTable)) {
+			tableSecClusGrpMemb = new CFSecRamSecClusGrpMembTable(this);
+		}
+		if (tableSecTentGrp == null || !(tableSecTentGrp instanceof CFSecRamSecTentGrpTable)) {
+			tableSecTentGrp = new CFSecRamSecTentGrpTable(this);
+		}
+		if (tableSecTentGrpInc == null || !(tableSecTentGrpInc instanceof CFSecRamSecTentGrpIncTable)) {
+			tableSecTentGrpInc = new CFSecRamSecTentGrpIncTable(this);
+		}
+		if (tableSecTentGrpMemb == null || !(tableSecTentGrpMemb instanceof CFSecRamSecTentGrpMembTable)) {
+			tableSecTentGrpMemb = new CFSecRamSecTentGrpMembTable(this);
 		}
 		if (tableSecSession == null || !(tableSecSession instanceof CFSecRamSecSessionTable)) {
 			tableSecSession = new CFSecRamSecSessionTable(this);
@@ -264,26 +241,17 @@ public class CFSecRamSchema
 		if (tableSecUser == null || !(tableSecUser instanceof CFSecRamSecUserTable)) {
 			tableSecUser = new CFSecRamSecUserTable(this);
 		}
-		if (tableService == null || !(tableService instanceof CFSecRamServiceTable)) {
-			tableService = new CFSecRamServiceTable(this);
+		if (tableSecUserPassword == null || !(tableSecUserPassword instanceof CFSecRamSecUserPasswordTable)) {
+			tableSecUserPassword = new CFSecRamSecUserPasswordTable(this);
 		}
-		if (tableServiceType == null || !(tableServiceType instanceof CFSecRamServiceTypeTable)) {
-			tableServiceType = new CFSecRamServiceTypeTable(this);
+		if (tableSecUserPWHistory == null || !(tableSecUserPWHistory instanceof CFSecRamSecUserPWHistoryTable)) {
+			tableSecUserPWHistory = new CFSecRamSecUserPWHistoryTable(this);
 		}
 		if (tableSysCluster == null || !(tableSysCluster instanceof CFSecRamSysClusterTable)) {
 			tableSysCluster = new CFSecRamSysClusterTable(this);
 		}
 		if (tableTenant == null || !(tableTenant instanceof CFSecRamTenantTable)) {
 			tableTenant = new CFSecRamTenantTable(this);
-		}
-		if (tableTSecGroup == null || !(tableTSecGroup instanceof CFSecRamTSecGroupTable)) {
-			tableTSecGroup = new CFSecRamTSecGroupTable(this);
-		}
-		if (tableTSecGrpInc == null || !(tableTSecGrpInc instanceof CFSecRamTSecGrpIncTable)) {
-			tableTSecGrpInc = new CFSecRamTSecGrpIncTable(this);
-		}
-		if (tableTSecGrpMemb == null || !(tableTSecGrpMemb instanceof CFSecRamTSecGrpMembTable)) {
-			tableTSecGrpMemb = new CFSecRamTSecGrpMembTable(this);
 		}
 	}
 }

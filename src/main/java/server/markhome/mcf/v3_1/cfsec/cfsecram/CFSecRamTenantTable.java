@@ -514,31 +514,7 @@ public class CFSecRamTenantTable
 				"deleteTenant",
 				pkey );
 		}
-		CFSecBuffTSecGroup buffDelIncludedByGroup;
-		ICFSecTSecGroup arrDelIncludedByGroup[] = schema.getTableTSecGroup().readDerivedByTenantIdx( Authorization,
-			existing.getRequiredId() );
-		for( int idxDelIncludedByGroup = 0; idxDelIncludedByGroup < arrDelIncludedByGroup.length; idxDelIncludedByGroup++ ) {
-			buffDelIncludedByGroup = (CFSecBuffTSecGroup)(arrDelIncludedByGroup[idxDelIncludedByGroup]);
-					schema.getTableTSecGrpInc().deleteTSecGrpIncByIncludeIdx( Authorization,
-						buffDelIncludedByGroup.getRequiredTSecGroupId() );
-		}
-		CFSecBuffTSecGroup buffDelGrpMembs;
-		ICFSecTSecGroup arrDelGrpMembs[] = schema.getTableTSecGroup().readDerivedByTenantIdx( Authorization,
-			existing.getRequiredId() );
-		for( int idxDelGrpMembs = 0; idxDelGrpMembs < arrDelGrpMembs.length; idxDelGrpMembs++ ) {
-			buffDelGrpMembs = (CFSecBuffTSecGroup)(arrDelGrpMembs[idxDelGrpMembs]);
-					schema.getTableTSecGrpMemb().deleteTSecGrpMembByGroupIdx( Authorization,
-						buffDelGrpMembs.getRequiredTSecGroupId() );
-		}
-		CFSecBuffTSecGroup buffDelGrpIncs;
-		ICFSecTSecGroup arrDelGrpIncs[] = schema.getTableTSecGroup().readDerivedByTenantIdx( Authorization,
-			existing.getRequiredId() );
-		for( int idxDelGrpIncs = 0; idxDelGrpIncs < arrDelGrpIncs.length; idxDelGrpIncs++ ) {
-			buffDelGrpIncs = (CFSecBuffTSecGroup)(arrDelGrpIncs[idxDelGrpIncs]);
-					schema.getTableTSecGrpInc().deleteTSecGrpIncByGroupIdx( Authorization,
-						buffDelGrpIncs.getRequiredTSecGroupId() );
-		}
-					schema.getTableTSecGroup().deleteTSecGroupByTenantIdx( Authorization,
+					schema.getTableSecTentGrp().deleteSecTentGrpByTenantIdx( Authorization,
 						existing.getRequiredId() );
 		CFSecBuffTenantByClusterIdxKey keyClusterIdx = (CFSecBuffTenantByClusterIdxKey)schema.getFactoryTenant().newByClusterIdxKey();
 		keyClusterIdx.setRequiredClusterId( existing.getRequiredClusterId() );
