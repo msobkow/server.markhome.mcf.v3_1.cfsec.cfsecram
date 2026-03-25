@@ -190,6 +190,9 @@ public class CFSecRamSchema
 		if (tableCluster == null || !(tableCluster instanceof CFSecRamClusterTable)) {
 			tableCluster = new CFSecRamClusterTable(this);
 		}
+		if (tableTenant == null || !(tableTenant instanceof CFSecRamTenantTable)) {
+			tableTenant = new CFSecRamTenantTable(this);
+		}
 		if (tableISOCcy == null || !(tableISOCcy instanceof CFSecRamISOCcyTable)) {
 			tableISOCcy = new CFSecRamISOCcyTable(this);
 		}
@@ -249,9 +252,6 @@ public class CFSecRamSchema
 		}
 		if (tableSysCluster == null || !(tableSysCluster instanceof CFSecRamSysClusterTable)) {
 			tableSysCluster = new CFSecRamSysClusterTable(this);
-		}
-		if (tableTenant == null || !(tableTenant instanceof CFSecRamTenantTable)) {
-			tableTenant = new CFSecRamTenantTable(this);
 		}
 	}
 }
