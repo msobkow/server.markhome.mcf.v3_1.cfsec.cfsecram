@@ -94,14 +94,14 @@ public class CFSecRamSecTentGrpIncTable
 		CFSecBuffSecTentGrpInc Buff = (CFSecBuffSecTentGrpInc)ensureRec(iBuff);
 		CFSecBuffSecTentGrpIncPKey pkey = (CFSecBuffSecTentGrpIncPKey)(schema.getFactorySecTentGrpInc().newPKey());
 		pkey.setRequiredSecTentGrpId( Buff.getRequiredSecTentGrpId() );
-		pkey.setRequiredIncName( Buff.getRequiredIncName() );
+		pkey.setRequiredInclName( Buff.getRequiredInclName() );
 		Buff.setRequiredSecTentGrpId( pkey.getRequiredSecTentGrpId() );
-		Buff.setRequiredIncName( pkey.getRequiredIncName() );
+		Buff.setRequiredInclName( pkey.getRequiredInclName() );
 		CFSecBuffSecTentGrpIncByTentGrpIdxKey keyTentGrpIdx = (CFSecBuffSecTentGrpIncByTentGrpIdxKey)schema.getFactorySecTentGrpInc().newByTentGrpIdxKey();
 		keyTentGrpIdx.setRequiredSecTentGrpId( Buff.getRequiredSecTentGrpId() );
 
 		CFSecBuffSecTentGrpIncByNameIdxKey keyNameIdx = (CFSecBuffSecTentGrpIncByNameIdxKey)schema.getFactorySecTentGrpInc().newByNameIdxKey();
-		keyNameIdx.setRequiredIncName( Buff.getRequiredIncName() );
+		keyNameIdx.setRequiredInclName( Buff.getRequiredInclName() );
 
 		// Validate unique indexes
 
@@ -154,21 +154,21 @@ public class CFSecRamSecTentGrpIncTable
 	@Override
 	public ICFSecSecTentGrpInc readDerived( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 SecTentGrpId,
-		String IncName )
+		String InclName )
 	{
 		{	CFLibDbKeyHash256 testSecTentGrpId = SecTentGrpId;
 			if (testSecTentGrpId == null) {
 				return( null );
 			}
 		}
-		{	String testIncName = IncName;
-			if (testIncName == null) {
+		{	String testInclName = InclName;
+			if (testInclName == null) {
 				return( null );
 			}
 		}
 		CFSecBuffSecTentGrpIncPKey key = (CFSecBuffSecTentGrpIncPKey)(schema.getFactorySecTentGrpInc().newPKey());
 		key.setRequiredSecTentGrpId( SecTentGrpId );
-		key.setRequiredIncName( IncName );
+		key.setRequiredInclName( InclName );
 		return( readDerived( Authorization, key ) );
 	}
 
@@ -178,7 +178,7 @@ public class CFSecRamSecTentGrpIncTable
 		final String S_ProcName = "CFSecRamSecTentGrpInc.readDerived";
 		CFSecBuffSecTentGrpIncPKey key = (CFSecBuffSecTentGrpIncPKey)(schema.getFactorySecTentGrpInc().newPKey());
 		key.setRequiredSecTentGrpId( PKey.getRequiredSecTentGrpId() );
-		key.setRequiredIncName( PKey.getRequiredIncName() );
+		key.setRequiredInclName( PKey.getRequiredInclName() );
 		ICFSecSecTentGrpInc buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -196,7 +196,7 @@ public class CFSecRamSecTentGrpIncTable
 		final String S_ProcName = "CFSecRamSecTentGrpInc.lockDerived";
 		CFSecBuffSecTentGrpIncPKey key = (CFSecBuffSecTentGrpIncPKey)(schema.getFactorySecTentGrpInc().newPKey());
 		key.setRequiredSecTentGrpId( PKey.getRequiredSecTentGrpId() );
-		key.setRequiredIncName( PKey.getRequiredIncName() );
+		key.setRequiredInclName( PKey.getRequiredInclName() );
 		ICFSecSecTentGrpInc buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -249,12 +249,12 @@ public class CFSecRamSecTentGrpIncTable
 
 	@Override
 	public ICFSecSecTentGrpInc[] readDerivedByNameIdx( ICFSecAuthorization Authorization,
-		String IncName )
+		String InclName )
 	{
 		final String S_ProcName = "CFSecRamSecTentGrpInc.readDerivedByNameIdx";
 		CFSecBuffSecTentGrpIncByNameIdxKey key = (CFSecBuffSecTentGrpIncByNameIdxKey)schema.getFactorySecTentGrpInc().newByNameIdxKey();
 
-		key.setRequiredIncName( IncName );
+		key.setRequiredInclName( InclName );
 		ICFSecSecTentGrpInc[] recArray;
 		if( dictByNameIdx.containsKey( key ) ) {
 			Map< CFSecBuffSecTentGrpIncPKey, CFSecBuffSecTentGrpInc > subdictNameIdx
@@ -278,12 +278,12 @@ public class CFSecRamSecTentGrpIncTable
 	@Override
 	public ICFSecSecTentGrpInc readDerivedByIdIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 SecTentGrpId,
-		String IncName )
+		String InclName )
 	{
 		final String S_ProcName = "CFSecRamSecTentGrpInc.readDerivedByIdIdx() ";
 		CFSecBuffSecTentGrpIncPKey key = (CFSecBuffSecTentGrpIncPKey)(schema.getFactorySecTentGrpInc().newPKey());
 		key.setRequiredSecTentGrpId( SecTentGrpId );
-		key.setRequiredIncName( IncName );
+		key.setRequiredInclName( InclName );
 		ICFSecSecTentGrpInc buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -297,11 +297,11 @@ public class CFSecRamSecTentGrpIncTable
 	@Override
 	public ICFSecSecTentGrpInc readRec( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 SecTentGrpId,
-		String IncName )
+		String InclName )
 	{
 		CFSecBuffSecTentGrpIncPKey key = (CFSecBuffSecTentGrpIncPKey)(schema.getFactorySecTentGrpInc().newPKey());
 		key.setRequiredSecTentGrpId( SecTentGrpId );
-		key.setRequiredIncName( IncName );
+		key.setRequiredInclName( InclName );
 		return( readRec( Authorization, key ) );
 	}
 
@@ -355,7 +355,7 @@ public class CFSecRamSecTentGrpIncTable
 	@Override
 	public ICFSecSecTentGrpInc[] pageAllRec( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 priorSecTentGrpId,
-		String priorIncName )
+		String priorInclName )
 	{
 		final String S_ProcName = "pageAllRec";
 		throw new CFLibNotImplementedYetException( getClass(), S_ProcName );
@@ -364,12 +364,12 @@ public class CFSecRamSecTentGrpIncTable
 	@Override
 	public ICFSecSecTentGrpInc readRecByIdIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 SecTentGrpId,
-		String IncName )
+		String InclName )
 	{
 		final String S_ProcName = "CFSecRamSecTentGrpInc.readRecByIdIdx() ";
 		ICFSecSecTentGrpInc buff = readDerivedByIdIdx( Authorization,
 			SecTentGrpId,
-			IncName );
+			InclName );
 		if( ( buff != null ) && ( buff.getClassCode() == ICFSecSecTentGrpInc.CLASS_CODE ) ) {
 			return( (ICFSecSecTentGrpInc)buff );
 		}
@@ -398,13 +398,13 @@ public class CFSecRamSecTentGrpIncTable
 
 	@Override
 	public ICFSecSecTentGrpInc[] readRecByNameIdx( ICFSecAuthorization Authorization,
-		String IncName )
+		String InclName )
 	{
 		final String S_ProcName = "CFSecRamSecTentGrpInc.readRecByNameIdx() ";
 		ICFSecSecTentGrpInc buff;
 		ArrayList<ICFSecSecTentGrpInc> filteredList = new ArrayList<ICFSecSecTentGrpInc>();
 		ICFSecSecTentGrpInc[] buffList = readDerivedByNameIdx( Authorization,
-			IncName );
+			InclName );
 		for( int idx = 0; idx < buffList.length; idx ++ ) {
 			buff = buffList[idx];
 			if( ( buff != null ) && ( buff.getClassCode() == ICFSecSecTentGrpInc.CLASS_CODE ) ) {
@@ -429,7 +429,7 @@ public class CFSecRamSecTentGrpIncTable
 	public ICFSecSecTentGrpInc[] pageRecByTentGrpIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 SecTentGrpId,
 		CFLibDbKeyHash256 priorSecTentGrpId,
-		String priorIncName )
+		String priorInclName )
 	{
 		final String S_ProcName = "pageRecByTentGrpIdx";
 		throw new CFLibNotImplementedYetException( getClass(), S_ProcName );
@@ -440,7 +440,7 @@ public class CFSecRamSecTentGrpIncTable
 	 *
 	 *	@param	Authorization	The session authorization information.
 	 *
-	 *	@param	IncName	The SecTentGrpInc key attribute of the instance generating the id.
+	 *	@param	InclName	The SecTentGrpInc key attribute of the instance generating the id.
 	 *
 	 *	@return An array of derived buffer instances for the specified key, potentially with 0 elements in the set.
 	 *
@@ -448,9 +448,9 @@ public class CFSecRamSecTentGrpIncTable
 	 */
 	@Override
 	public ICFSecSecTentGrpInc[] pageRecByNameIdx( ICFSecAuthorization Authorization,
-		String IncName,
+		String InclName,
 		CFLibDbKeyHash256 priorSecTentGrpId,
-		String priorIncName )
+		String priorInclName )
 	{
 		final String S_ProcName = "pageRecByNameIdx";
 		throw new CFLibNotImplementedYetException( getClass(), S_ProcName );
@@ -463,7 +463,7 @@ public class CFSecRamSecTentGrpIncTable
 		CFSecBuffSecTentGrpInc Buff = (CFSecBuffSecTentGrpInc)ensureRec(iBuff);
 		CFSecBuffSecTentGrpIncPKey pkey = (CFSecBuffSecTentGrpIncPKey)(schema.getFactorySecTentGrpInc().newPKey());
 		pkey.setRequiredSecTentGrpId( Buff.getRequiredSecTentGrpId() );
-		pkey.setRequiredIncName( Buff.getRequiredIncName() );
+		pkey.setRequiredInclName( Buff.getRequiredInclName() );
 		CFSecBuffSecTentGrpInc existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),
@@ -487,10 +487,10 @@ public class CFSecRamSecTentGrpIncTable
 		newKeyTentGrpIdx.setRequiredSecTentGrpId( Buff.getRequiredSecTentGrpId() );
 
 		CFSecBuffSecTentGrpIncByNameIdxKey existingKeyNameIdx = (CFSecBuffSecTentGrpIncByNameIdxKey)schema.getFactorySecTentGrpInc().newByNameIdxKey();
-		existingKeyNameIdx.setRequiredIncName( existing.getRequiredIncName() );
+		existingKeyNameIdx.setRequiredInclName( existing.getRequiredInclName() );
 
 		CFSecBuffSecTentGrpIncByNameIdxKey newKeyNameIdx = (CFSecBuffSecTentGrpIncByNameIdxKey)schema.getFactorySecTentGrpInc().newByNameIdxKey();
-		newKeyNameIdx.setRequiredIncName( Buff.getRequiredIncName() );
+		newKeyNameIdx.setRequiredInclName( Buff.getRequiredInclName() );
 
 		// Check unique indexes
 
@@ -554,7 +554,7 @@ public class CFSecRamSecTentGrpIncTable
 		keyTentGrpIdx.setRequiredSecTentGrpId( existing.getRequiredSecTentGrpId() );
 
 		CFSecBuffSecTentGrpIncByNameIdxKey keyNameIdx = (CFSecBuffSecTentGrpIncByNameIdxKey)schema.getFactorySecTentGrpInc().newByNameIdxKey();
-		keyNameIdx.setRequiredIncName( existing.getRequiredIncName() );
+		keyNameIdx.setRequiredInclName( existing.getRequiredInclName() );
 
 		// Validate reverse foreign keys
 
@@ -573,11 +573,11 @@ public class CFSecRamSecTentGrpIncTable
 	@Override
 	public void deleteSecTentGrpIncByIdIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 SecTentGrpId,
-		String IncName )
+		String InclName )
 	{
 		CFSecBuffSecTentGrpIncPKey key = (CFSecBuffSecTentGrpIncPKey)(schema.getFactorySecTentGrpInc().newPKey());
 		key.setRequiredSecTentGrpId( SecTentGrpId );
-		key.setRequiredIncName( IncName );
+		key.setRequiredInclName( InclName );
 		deleteSecTentGrpIncByIdIdx( Authorization, key );
 	}
 
@@ -587,7 +587,7 @@ public class CFSecRamSecTentGrpIncTable
 	{
 		CFSecBuffSecTentGrpIncPKey key = (CFSecBuffSecTentGrpIncPKey)(schema.getFactorySecTentGrpInc().newPKey());
 		key.setRequiredSecTentGrpId( PKey.getRequiredSecTentGrpId() );
-		key.setRequiredIncName( PKey.getRequiredIncName() );
+		key.setRequiredInclName( PKey.getRequiredInclName() );
 		CFSecBuffSecTentGrpIncPKey argKey = key;
 		boolean anyNotNull = false;
 		anyNotNull = true;
@@ -609,7 +609,7 @@ public class CFSecRamSecTentGrpIncTable
 			cur = iterMatch.next();
 			cur = (CFSecBuffSecTentGrpInc)(schema.getTableSecTentGrpInc().readDerivedByIdIdx( Authorization,
 				cur.getRequiredSecTentGrpId(),
-				cur.getRequiredIncName() ));
+				cur.getRequiredInclName() ));
 			deleteSecTentGrpInc( Authorization, cur );
 		}
 	}
@@ -646,17 +646,17 @@ public class CFSecRamSecTentGrpIncTable
 			cur = iterMatch.next();
 			cur = (CFSecBuffSecTentGrpInc)(schema.getTableSecTentGrpInc().readDerivedByIdIdx( Authorization,
 				cur.getRequiredSecTentGrpId(),
-				cur.getRequiredIncName() ));
+				cur.getRequiredInclName() ));
 			deleteSecTentGrpInc( Authorization, cur );
 		}
 	}
 
 	@Override
 	public void deleteSecTentGrpIncByNameIdx( ICFSecAuthorization Authorization,
-		String argIncName )
+		String argInclName )
 	{
 		CFSecBuffSecTentGrpIncByNameIdxKey key = (CFSecBuffSecTentGrpIncByNameIdxKey)schema.getFactorySecTentGrpInc().newByNameIdxKey();
-		key.setRequiredIncName( argIncName );
+		key.setRequiredInclName( argInclName );
 		deleteSecTentGrpIncByNameIdx( Authorization, key );
 	}
 
@@ -683,7 +683,7 @@ public class CFSecRamSecTentGrpIncTable
 			cur = iterMatch.next();
 			cur = (CFSecBuffSecTentGrpInc)(schema.getTableSecTentGrpInc().readDerivedByIdIdx( Authorization,
 				cur.getRequiredSecTentGrpId(),
-				cur.getRequiredIncName() ));
+				cur.getRequiredInclName() ));
 			deleteSecTentGrpInc( Authorization, cur );
 		}
 	}

@@ -59,10 +59,10 @@ public class CFSecRamSecClusGrpMembTable
 		= new HashMap< CFSecBuffSecClusGrpMembByClusGrpIdxKey,
 				Map< CFSecBuffSecClusGrpMembPKey,
 					CFSecBuffSecClusGrpMemb >>();
-	private Map< CFSecBuffSecClusGrpMembByUserIdxKey,
+	private Map< CFSecBuffSecClusGrpMembByLoginIdxKey,
 				Map< CFSecBuffSecClusGrpMembPKey,
-					CFSecBuffSecClusGrpMemb >> dictByUserIdx
-		= new HashMap< CFSecBuffSecClusGrpMembByUserIdxKey,
+					CFSecBuffSecClusGrpMemb >> dictByLoginIdx
+		= new HashMap< CFSecBuffSecClusGrpMembByLoginIdxKey,
 				Map< CFSecBuffSecClusGrpMembPKey,
 					CFSecBuffSecClusGrpMemb >>();
 
@@ -94,14 +94,14 @@ public class CFSecRamSecClusGrpMembTable
 		CFSecBuffSecClusGrpMemb Buff = (CFSecBuffSecClusGrpMemb)ensureRec(iBuff);
 		CFSecBuffSecClusGrpMembPKey pkey = (CFSecBuffSecClusGrpMembPKey)(schema.getFactorySecClusGrpMemb().newPKey());
 		pkey.setRequiredSecClusGrpId( Buff.getRequiredSecClusGrpId() );
-		pkey.setRequiredSecUserId( Buff.getRequiredSecUserId() );
+		pkey.setRequiredLoginId( Buff.getRequiredLoginId() );
 		Buff.setRequiredSecClusGrpId( pkey.getRequiredSecClusGrpId() );
-		Buff.setRequiredSecUserId( pkey.getRequiredSecUserId() );
+		Buff.setRequiredLoginId( pkey.getRequiredLoginId() );
 		CFSecBuffSecClusGrpMembByClusGrpIdxKey keyClusGrpIdx = (CFSecBuffSecClusGrpMembByClusGrpIdxKey)schema.getFactorySecClusGrpMemb().newByClusGrpIdxKey();
 		keyClusGrpIdx.setRequiredSecClusGrpId( Buff.getRequiredSecClusGrpId() );
 
-		CFSecBuffSecClusGrpMembByUserIdxKey keyUserIdx = (CFSecBuffSecClusGrpMembByUserIdxKey)schema.getFactorySecClusGrpMemb().newByUserIdxKey();
-		keyUserIdx.setRequiredSecUserId( Buff.getRequiredSecUserId() );
+		CFSecBuffSecClusGrpMembByLoginIdxKey keyLoginIdx = (CFSecBuffSecClusGrpMembByLoginIdxKey)schema.getFactorySecClusGrpMemb().newByLoginIdxKey();
+		keyLoginIdx.setRequiredLoginId( Buff.getRequiredLoginId() );
 
 		// Validate unique indexes
 
@@ -125,15 +125,15 @@ public class CFSecRamSecClusGrpMembTable
 		}
 		subdictClusGrpIdx.put( pkey, Buff );
 
-		Map< CFSecBuffSecClusGrpMembPKey, CFSecBuffSecClusGrpMemb > subdictUserIdx;
-		if( dictByUserIdx.containsKey( keyUserIdx ) ) {
-			subdictUserIdx = dictByUserIdx.get( keyUserIdx );
+		Map< CFSecBuffSecClusGrpMembPKey, CFSecBuffSecClusGrpMemb > subdictLoginIdx;
+		if( dictByLoginIdx.containsKey( keyLoginIdx ) ) {
+			subdictLoginIdx = dictByLoginIdx.get( keyLoginIdx );
 		}
 		else {
-			subdictUserIdx = new HashMap< CFSecBuffSecClusGrpMembPKey, CFSecBuffSecClusGrpMemb >();
-			dictByUserIdx.put( keyUserIdx, subdictUserIdx );
+			subdictLoginIdx = new HashMap< CFSecBuffSecClusGrpMembPKey, CFSecBuffSecClusGrpMemb >();
+			dictByLoginIdx.put( keyLoginIdx, subdictLoginIdx );
 		}
-		subdictUserIdx.put( pkey, Buff );
+		subdictLoginIdx.put( pkey, Buff );
 
 		if (Buff == null) {
 			return( null );
@@ -154,21 +154,21 @@ public class CFSecRamSecClusGrpMembTable
 	@Override
 	public ICFSecSecClusGrpMemb readDerived( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 SecClusGrpId,
-		CFLibDbKeyHash256 SecUserId )
+		String LoginId )
 	{
 		{	CFLibDbKeyHash256 testSecClusGrpId = SecClusGrpId;
 			if (testSecClusGrpId == null) {
 				return( null );
 			}
 		}
-		{	CFLibDbKeyHash256 testSecUserId = SecUserId;
-			if (testSecUserId == null) {
+		{	String testLoginId = LoginId;
+			if (testLoginId == null) {
 				return( null );
 			}
 		}
 		CFSecBuffSecClusGrpMembPKey key = (CFSecBuffSecClusGrpMembPKey)(schema.getFactorySecClusGrpMemb().newPKey());
 		key.setRequiredSecClusGrpId( SecClusGrpId );
-		key.setRequiredSecUserId( SecUserId );
+		key.setRequiredLoginId( LoginId );
 		return( readDerived( Authorization, key ) );
 	}
 
@@ -178,7 +178,7 @@ public class CFSecRamSecClusGrpMembTable
 		final String S_ProcName = "CFSecRamSecClusGrpMemb.readDerived";
 		CFSecBuffSecClusGrpMembPKey key = (CFSecBuffSecClusGrpMembPKey)(schema.getFactorySecClusGrpMemb().newPKey());
 		key.setRequiredSecClusGrpId( PKey.getRequiredSecClusGrpId() );
-		key.setRequiredSecUserId( PKey.getRequiredSecUserId() );
+		key.setRequiredLoginId( PKey.getRequiredLoginId() );
 		ICFSecSecClusGrpMemb buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -196,7 +196,7 @@ public class CFSecRamSecClusGrpMembTable
 		final String S_ProcName = "CFSecRamSecClusGrpMemb.lockDerived";
 		CFSecBuffSecClusGrpMembPKey key = (CFSecBuffSecClusGrpMembPKey)(schema.getFactorySecClusGrpMemb().newPKey());
 		key.setRequiredSecClusGrpId( PKey.getRequiredSecClusGrpId() );
-		key.setRequiredSecUserId( PKey.getRequiredSecUserId() );
+		key.setRequiredLoginId( PKey.getRequiredLoginId() );
 		ICFSecSecClusGrpMemb buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -248,28 +248,28 @@ public class CFSecRamSecClusGrpMembTable
 	}
 
 	@Override
-	public ICFSecSecClusGrpMemb[] readDerivedByUserIdx( ICFSecAuthorization Authorization,
-		CFLibDbKeyHash256 SecUserId )
+	public ICFSecSecClusGrpMemb[] readDerivedByLoginIdx( ICFSecAuthorization Authorization,
+		String LoginId )
 	{
-		final String S_ProcName = "CFSecRamSecClusGrpMemb.readDerivedByUserIdx";
-		CFSecBuffSecClusGrpMembByUserIdxKey key = (CFSecBuffSecClusGrpMembByUserIdxKey)schema.getFactorySecClusGrpMemb().newByUserIdxKey();
+		final String S_ProcName = "CFSecRamSecClusGrpMemb.readDerivedByLoginIdx";
+		CFSecBuffSecClusGrpMembByLoginIdxKey key = (CFSecBuffSecClusGrpMembByLoginIdxKey)schema.getFactorySecClusGrpMemb().newByLoginIdxKey();
 
-		key.setRequiredSecUserId( SecUserId );
+		key.setRequiredLoginId( LoginId );
 		ICFSecSecClusGrpMemb[] recArray;
-		if( dictByUserIdx.containsKey( key ) ) {
-			Map< CFSecBuffSecClusGrpMembPKey, CFSecBuffSecClusGrpMemb > subdictUserIdx
-				= dictByUserIdx.get( key );
-			recArray = new ICFSecSecClusGrpMemb[ subdictUserIdx.size() ];
-			Iterator< CFSecBuffSecClusGrpMemb > iter = subdictUserIdx.values().iterator();
+		if( dictByLoginIdx.containsKey( key ) ) {
+			Map< CFSecBuffSecClusGrpMembPKey, CFSecBuffSecClusGrpMemb > subdictLoginIdx
+				= dictByLoginIdx.get( key );
+			recArray = new ICFSecSecClusGrpMemb[ subdictLoginIdx.size() ];
+			Iterator< CFSecBuffSecClusGrpMemb > iter = subdictLoginIdx.values().iterator();
 			int idx = 0;
 			while( iter.hasNext() ) {
 				recArray[ idx++ ] = iter.next();
 			}
 		}
 		else {
-			Map< CFSecBuffSecClusGrpMembPKey, CFSecBuffSecClusGrpMemb > subdictUserIdx
+			Map< CFSecBuffSecClusGrpMembPKey, CFSecBuffSecClusGrpMemb > subdictLoginIdx
 				= new HashMap< CFSecBuffSecClusGrpMembPKey, CFSecBuffSecClusGrpMemb >();
-			dictByUserIdx.put( key, subdictUserIdx );
+			dictByLoginIdx.put( key, subdictLoginIdx );
 			recArray = new ICFSecSecClusGrpMemb[0];
 		}
 		return( recArray );
@@ -278,12 +278,12 @@ public class CFSecRamSecClusGrpMembTable
 	@Override
 	public ICFSecSecClusGrpMemb readDerivedByIdIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 SecClusGrpId,
-		CFLibDbKeyHash256 SecUserId )
+		String LoginId )
 	{
 		final String S_ProcName = "CFSecRamSecClusGrpMemb.readDerivedByIdIdx() ";
 		CFSecBuffSecClusGrpMembPKey key = (CFSecBuffSecClusGrpMembPKey)(schema.getFactorySecClusGrpMemb().newPKey());
 		key.setRequiredSecClusGrpId( SecClusGrpId );
-		key.setRequiredSecUserId( SecUserId );
+		key.setRequiredLoginId( LoginId );
 		ICFSecSecClusGrpMemb buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -297,11 +297,11 @@ public class CFSecRamSecClusGrpMembTable
 	@Override
 	public ICFSecSecClusGrpMemb readRec( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 SecClusGrpId,
-		CFLibDbKeyHash256 SecUserId )
+		String LoginId )
 	{
 		CFSecBuffSecClusGrpMembPKey key = (CFSecBuffSecClusGrpMembPKey)(schema.getFactorySecClusGrpMemb().newPKey());
 		key.setRequiredSecClusGrpId( SecClusGrpId );
-		key.setRequiredSecUserId( SecUserId );
+		key.setRequiredLoginId( LoginId );
 		return( readRec( Authorization, key ) );
 	}
 
@@ -355,7 +355,7 @@ public class CFSecRamSecClusGrpMembTable
 	@Override
 	public ICFSecSecClusGrpMemb[] pageAllRec( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 priorSecClusGrpId,
-		CFLibDbKeyHash256 priorSecUserId )
+		String priorLoginId )
 	{
 		final String S_ProcName = "pageAllRec";
 		throw new CFLibNotImplementedYetException( getClass(), S_ProcName );
@@ -364,12 +364,12 @@ public class CFSecRamSecClusGrpMembTable
 	@Override
 	public ICFSecSecClusGrpMemb readRecByIdIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 SecClusGrpId,
-		CFLibDbKeyHash256 SecUserId )
+		String LoginId )
 	{
 		final String S_ProcName = "CFSecRamSecClusGrpMemb.readRecByIdIdx() ";
 		ICFSecSecClusGrpMemb buff = readDerivedByIdIdx( Authorization,
 			SecClusGrpId,
-			SecUserId );
+			LoginId );
 		if( ( buff != null ) && ( buff.getClassCode() == ICFSecSecClusGrpMemb.CLASS_CODE ) ) {
 			return( (ICFSecSecClusGrpMemb)buff );
 		}
@@ -397,14 +397,14 @@ public class CFSecRamSecClusGrpMembTable
 	}
 
 	@Override
-	public ICFSecSecClusGrpMemb[] readRecByUserIdx( ICFSecAuthorization Authorization,
-		CFLibDbKeyHash256 SecUserId )
+	public ICFSecSecClusGrpMemb[] readRecByLoginIdx( ICFSecAuthorization Authorization,
+		String LoginId )
 	{
-		final String S_ProcName = "CFSecRamSecClusGrpMemb.readRecByUserIdx() ";
+		final String S_ProcName = "CFSecRamSecClusGrpMemb.readRecByLoginIdx() ";
 		ICFSecSecClusGrpMemb buff;
 		ArrayList<ICFSecSecClusGrpMemb> filteredList = new ArrayList<ICFSecSecClusGrpMemb>();
-		ICFSecSecClusGrpMemb[] buffList = readDerivedByUserIdx( Authorization,
-			SecUserId );
+		ICFSecSecClusGrpMemb[] buffList = readDerivedByLoginIdx( Authorization,
+			LoginId );
 		for( int idx = 0; idx < buffList.length; idx ++ ) {
 			buff = buffList[idx];
 			if( ( buff != null ) && ( buff.getClassCode() == ICFSecSecClusGrpMemb.CLASS_CODE ) ) {
@@ -429,30 +429,30 @@ public class CFSecRamSecClusGrpMembTable
 	public ICFSecSecClusGrpMemb[] pageRecByClusGrpIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 SecClusGrpId,
 		CFLibDbKeyHash256 priorSecClusGrpId,
-		CFLibDbKeyHash256 priorSecUserId )
+		String priorLoginId )
 	{
 		final String S_ProcName = "pageRecByClusGrpIdx";
 		throw new CFLibNotImplementedYetException( getClass(), S_ProcName );
 	}
 
 	/**
-	 *	Read a page array of the specific SecClusGrpMemb buffer instances identified by the duplicate key UserIdx.
+	 *	Read a page array of the specific SecClusGrpMemb buffer instances identified by the duplicate key LoginIdx.
 	 *
 	 *	@param	Authorization	The session authorization information.
 	 *
-	 *	@param	SecUserId	The SecClusGrpMemb key attribute of the instance generating the id.
+	 *	@param	LoginId	The SecClusGrpMemb key attribute of the instance generating the id.
 	 *
 	 *	@return An array of derived buffer instances for the specified key, potentially with 0 elements in the set.
 	 *
 	 *	@throws	CFLibNotSupportedException thrown by client-side implementations.
 	 */
 	@Override
-	public ICFSecSecClusGrpMemb[] pageRecByUserIdx( ICFSecAuthorization Authorization,
-		CFLibDbKeyHash256 SecUserId,
+	public ICFSecSecClusGrpMemb[] pageRecByLoginIdx( ICFSecAuthorization Authorization,
+		String LoginId,
 		CFLibDbKeyHash256 priorSecClusGrpId,
-		CFLibDbKeyHash256 priorSecUserId )
+		String priorLoginId )
 	{
-		final String S_ProcName = "pageRecByUserIdx";
+		final String S_ProcName = "pageRecByLoginIdx";
 		throw new CFLibNotImplementedYetException( getClass(), S_ProcName );
 	}
 
@@ -463,7 +463,7 @@ public class CFSecRamSecClusGrpMembTable
 		CFSecBuffSecClusGrpMemb Buff = (CFSecBuffSecClusGrpMemb)ensureRec(iBuff);
 		CFSecBuffSecClusGrpMembPKey pkey = (CFSecBuffSecClusGrpMembPKey)(schema.getFactorySecClusGrpMemb().newPKey());
 		pkey.setRequiredSecClusGrpId( Buff.getRequiredSecClusGrpId() );
-		pkey.setRequiredSecUserId( Buff.getRequiredSecUserId() );
+		pkey.setRequiredLoginId( Buff.getRequiredLoginId() );
 		CFSecBuffSecClusGrpMemb existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),
@@ -486,11 +486,11 @@ public class CFSecRamSecClusGrpMembTable
 		CFSecBuffSecClusGrpMembByClusGrpIdxKey newKeyClusGrpIdx = (CFSecBuffSecClusGrpMembByClusGrpIdxKey)schema.getFactorySecClusGrpMemb().newByClusGrpIdxKey();
 		newKeyClusGrpIdx.setRequiredSecClusGrpId( Buff.getRequiredSecClusGrpId() );
 
-		CFSecBuffSecClusGrpMembByUserIdxKey existingKeyUserIdx = (CFSecBuffSecClusGrpMembByUserIdxKey)schema.getFactorySecClusGrpMemb().newByUserIdxKey();
-		existingKeyUserIdx.setRequiredSecUserId( existing.getRequiredSecUserId() );
+		CFSecBuffSecClusGrpMembByLoginIdxKey existingKeyLoginIdx = (CFSecBuffSecClusGrpMembByLoginIdxKey)schema.getFactorySecClusGrpMemb().newByLoginIdxKey();
+		existingKeyLoginIdx.setRequiredLoginId( existing.getRequiredLoginId() );
 
-		CFSecBuffSecClusGrpMembByUserIdxKey newKeyUserIdx = (CFSecBuffSecClusGrpMembByUserIdxKey)schema.getFactorySecClusGrpMemb().newByUserIdxKey();
-		newKeyUserIdx.setRequiredSecUserId( Buff.getRequiredSecUserId() );
+		CFSecBuffSecClusGrpMembByLoginIdxKey newKeyLoginIdx = (CFSecBuffSecClusGrpMembByLoginIdxKey)schema.getFactorySecClusGrpMemb().newByLoginIdxKey();
+		newKeyLoginIdx.setRequiredLoginId( Buff.getRequiredLoginId() );
 
 		// Check unique indexes
 
@@ -516,16 +516,16 @@ public class CFSecRamSecClusGrpMembTable
 		}
 		subdict.put( pkey, Buff );
 
-		subdict = dictByUserIdx.get( existingKeyUserIdx );
+		subdict = dictByLoginIdx.get( existingKeyLoginIdx );
 		if( subdict != null ) {
 			subdict.remove( pkey );
 		}
-		if( dictByUserIdx.containsKey( newKeyUserIdx ) ) {
-			subdict = dictByUserIdx.get( newKeyUserIdx );
+		if( dictByLoginIdx.containsKey( newKeyLoginIdx ) ) {
+			subdict = dictByLoginIdx.get( newKeyLoginIdx );
 		}
 		else {
 			subdict = new HashMap< CFSecBuffSecClusGrpMembPKey, CFSecBuffSecClusGrpMemb >();
-			dictByUserIdx.put( newKeyUserIdx, subdict );
+			dictByLoginIdx.put( newKeyLoginIdx, subdict );
 		}
 		subdict.put( pkey, Buff );
 
@@ -553,8 +553,8 @@ public class CFSecRamSecClusGrpMembTable
 		CFSecBuffSecClusGrpMembByClusGrpIdxKey keyClusGrpIdx = (CFSecBuffSecClusGrpMembByClusGrpIdxKey)schema.getFactorySecClusGrpMemb().newByClusGrpIdxKey();
 		keyClusGrpIdx.setRequiredSecClusGrpId( existing.getRequiredSecClusGrpId() );
 
-		CFSecBuffSecClusGrpMembByUserIdxKey keyUserIdx = (CFSecBuffSecClusGrpMembByUserIdxKey)schema.getFactorySecClusGrpMemb().newByUserIdxKey();
-		keyUserIdx.setRequiredSecUserId( existing.getRequiredSecUserId() );
+		CFSecBuffSecClusGrpMembByLoginIdxKey keyLoginIdx = (CFSecBuffSecClusGrpMembByLoginIdxKey)schema.getFactorySecClusGrpMemb().newByLoginIdxKey();
+		keyLoginIdx.setRequiredLoginId( existing.getRequiredLoginId() );
 
 		// Validate reverse foreign keys
 
@@ -566,18 +566,18 @@ public class CFSecRamSecClusGrpMembTable
 		subdict = dictByClusGrpIdx.get( keyClusGrpIdx );
 		subdict.remove( pkey );
 
-		subdict = dictByUserIdx.get( keyUserIdx );
+		subdict = dictByLoginIdx.get( keyLoginIdx );
 		subdict.remove( pkey );
 
 	}
 	@Override
 	public void deleteSecClusGrpMembByIdIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 SecClusGrpId,
-		CFLibDbKeyHash256 SecUserId )
+		String LoginId )
 	{
 		CFSecBuffSecClusGrpMembPKey key = (CFSecBuffSecClusGrpMembPKey)(schema.getFactorySecClusGrpMemb().newPKey());
 		key.setRequiredSecClusGrpId( SecClusGrpId );
-		key.setRequiredSecUserId( SecUserId );
+		key.setRequiredLoginId( LoginId );
 		deleteSecClusGrpMembByIdIdx( Authorization, key );
 	}
 
@@ -587,7 +587,7 @@ public class CFSecRamSecClusGrpMembTable
 	{
 		CFSecBuffSecClusGrpMembPKey key = (CFSecBuffSecClusGrpMembPKey)(schema.getFactorySecClusGrpMemb().newPKey());
 		key.setRequiredSecClusGrpId( PKey.getRequiredSecClusGrpId() );
-		key.setRequiredSecUserId( PKey.getRequiredSecUserId() );
+		key.setRequiredLoginId( PKey.getRequiredLoginId() );
 		CFSecBuffSecClusGrpMembPKey argKey = key;
 		boolean anyNotNull = false;
 		anyNotNull = true;
@@ -609,7 +609,7 @@ public class CFSecRamSecClusGrpMembTable
 			cur = iterMatch.next();
 			cur = (CFSecBuffSecClusGrpMemb)(schema.getTableSecClusGrpMemb().readDerivedByIdIdx( Authorization,
 				cur.getRequiredSecClusGrpId(),
-				cur.getRequiredSecUserId() ));
+				cur.getRequiredLoginId() ));
 			deleteSecClusGrpMemb( Authorization, cur );
 		}
 	}
@@ -646,23 +646,23 @@ public class CFSecRamSecClusGrpMembTable
 			cur = iterMatch.next();
 			cur = (CFSecBuffSecClusGrpMemb)(schema.getTableSecClusGrpMemb().readDerivedByIdIdx( Authorization,
 				cur.getRequiredSecClusGrpId(),
-				cur.getRequiredSecUserId() ));
+				cur.getRequiredLoginId() ));
 			deleteSecClusGrpMemb( Authorization, cur );
 		}
 	}
 
 	@Override
-	public void deleteSecClusGrpMembByUserIdx( ICFSecAuthorization Authorization,
-		CFLibDbKeyHash256 argSecUserId )
+	public void deleteSecClusGrpMembByLoginIdx( ICFSecAuthorization Authorization,
+		String argLoginId )
 	{
-		CFSecBuffSecClusGrpMembByUserIdxKey key = (CFSecBuffSecClusGrpMembByUserIdxKey)schema.getFactorySecClusGrpMemb().newByUserIdxKey();
-		key.setRequiredSecUserId( argSecUserId );
-		deleteSecClusGrpMembByUserIdx( Authorization, key );
+		CFSecBuffSecClusGrpMembByLoginIdxKey key = (CFSecBuffSecClusGrpMembByLoginIdxKey)schema.getFactorySecClusGrpMemb().newByLoginIdxKey();
+		key.setRequiredLoginId( argLoginId );
+		deleteSecClusGrpMembByLoginIdx( Authorization, key );
 	}
 
 	@Override
-	public void deleteSecClusGrpMembByUserIdx( ICFSecAuthorization Authorization,
-		ICFSecSecClusGrpMembByUserIdxKey argKey )
+	public void deleteSecClusGrpMembByLoginIdx( ICFSecAuthorization Authorization,
+		ICFSecSecClusGrpMembByLoginIdxKey argKey )
 	{
 		CFSecBuffSecClusGrpMemb cur;
 		boolean anyNotNull = false;
@@ -683,7 +683,7 @@ public class CFSecRamSecClusGrpMembTable
 			cur = iterMatch.next();
 			cur = (CFSecBuffSecClusGrpMemb)(schema.getTableSecClusGrpMemb().readDerivedByIdIdx( Authorization,
 				cur.getRequiredSecClusGrpId(),
-				cur.getRequiredSecUserId() ));
+				cur.getRequiredLoginId() ));
 			deleteSecClusGrpMemb( Authorization, cur );
 		}
 	}

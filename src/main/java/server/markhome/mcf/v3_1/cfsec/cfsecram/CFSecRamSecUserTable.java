@@ -572,11 +572,11 @@ public class CFSecRamSecUserTable
 				pkey );
 		}
 		// Short circuit self-referential code to prevent stack overflows
-		Object arrCheckSecUserSecSysGrpMemb[] = schema.getTableSecSysGrpMemb().readDerivedByUserIdx( Authorization,
-						existing.getRequiredSecUserId() );
+		Object arrCheckSecUserSecSysGrpMemb[] = schema.getTableSecSysGrpMemb().readDerivedByLoginIdx( Authorization,
+						existing.getRequiredLoginId() );
 		if( arrCheckSecUserSecSysGrpMemb.length > 0 ) {
-			schema.getTableSecSysGrpMemb().deleteSecSysGrpMembByUserIdx( Authorization,
-						existing.getRequiredSecUserId() );
+			schema.getTableSecSysGrpMemb().deleteSecSysGrpMembByLoginIdx( Authorization,
+						existing.getRequiredLoginId() );
 		}
 		CFSecBuffSecUserByULoginIdxKey keyULoginIdx = (CFSecBuffSecUserByULoginIdxKey)schema.getFactorySecUser().newByULoginIdxKey();
 		keyULoginIdx.setRequiredLoginId( existing.getRequiredLoginId() );

@@ -208,6 +208,15 @@ public class CFSecRamSchema
 		if (tableISOTZone == null || !(tableISOTZone instanceof CFSecRamISOTZoneTable)) {
 			tableISOTZone = new CFSecRamISOTZoneTable(this);
 		}
+		if (tableSecUser == null || !(tableSecUser instanceof CFSecRamSecUserTable)) {
+			tableSecUser = new CFSecRamSecUserTable(this);
+		}
+		if (tableSecUserPassword == null || !(tableSecUserPassword instanceof CFSecRamSecUserPasswordTable)) {
+			tableSecUserPassword = new CFSecRamSecUserPasswordTable(this);
+		}
+		if (tableSecUserPWHistory == null || !(tableSecUserPWHistory instanceof CFSecRamSecUserPWHistoryTable)) {
+			tableSecUserPWHistory = new CFSecRamSecUserPWHistoryTable(this);
+		}
 		if (tableSecSysGrp == null || !(tableSecSysGrp instanceof CFSecRamSecSysGrpTable)) {
 			tableSecSysGrp = new CFSecRamSecSysGrpTable(this);
 		}
@@ -237,15 +246,6 @@ public class CFSecRamSchema
 		}
 		if (tableSecSession == null || !(tableSecSession instanceof CFSecRamSecSessionTable)) {
 			tableSecSession = new CFSecRamSecSessionTable(this);
-		}
-		if (tableSecUser == null || !(tableSecUser instanceof CFSecRamSecUserTable)) {
-			tableSecUser = new CFSecRamSecUserTable(this);
-		}
-		if (tableSecUserPassword == null || !(tableSecUserPassword instanceof CFSecRamSecUserPasswordTable)) {
-			tableSecUserPassword = new CFSecRamSecUserPasswordTable(this);
-		}
-		if (tableSecUserPWHistory == null || !(tableSecUserPWHistory instanceof CFSecRamSecUserPWHistoryTable)) {
-			tableSecUserPWHistory = new CFSecRamSecUserPWHistoryTable(this);
 		}
 		if (tableSysCluster == null || !(tableSysCluster instanceof CFSecRamSysClusterTable)) {
 			tableSysCluster = new CFSecRamSysClusterTable(this);
