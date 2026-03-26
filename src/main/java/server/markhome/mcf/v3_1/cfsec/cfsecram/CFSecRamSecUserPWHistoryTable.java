@@ -115,24 +115,24 @@ public class CFSecRamSecUserPWHistoryTable
 		if( dictByUserIdx.containsKey( keyUserIdx ) ) {
 			throw new CFLibUniqueIndexViolationException( getClass(),
 				S_ProcName,
-				"SecUserUserIdx",
-				"SecUserUserIdx",
+				"SecUserPWHistUserIdx",
+				"SecUserPWHistUserIdx",
 				keyUserIdx );
 		}
 
 		if( dictBySetStampIdx.containsKey( keySetStampIdx ) ) {
 			throw new CFLibUniqueIndexViolationException( getClass(),
 				S_ProcName,
-				"SecUserSetStampIdx",
-				"SecUserSetStampIdx",
+				"SecUserPWHistSetStampIdx",
+				"SecUserPWHistSetStampIdx",
 				keySetStampIdx );
 		}
 
 		if( dictByReplacedStampIdx.containsKey( keyReplacedStampIdx ) ) {
 			throw new CFLibUniqueIndexViolationException( getClass(),
 				S_ProcName,
-				"SecUserReplacedStampIdx",
-				"SecUserReplacedStampIdx",
+				"SecUserPWHistReplacedStampIdx",
+				"SecUserPWHistReplacedStampIdx",
 				keyReplacedStampIdx );
 		}
 
@@ -466,8 +466,8 @@ public class CFSecRamSecUserPWHistoryTable
 			if( dictByUserIdx.containsKey( newKeyUserIdx ) ) {
 				throw new CFLibUniqueIndexViolationException( getClass(),
 					"updateSecUserPWHistory",
-					"SecUserUserIdx",
-					"SecUserUserIdx",
+					"SecUserPWHistUserIdx",
+					"SecUserPWHistUserIdx",
 					newKeyUserIdx );
 			}
 		}
@@ -476,8 +476,8 @@ public class CFSecRamSecUserPWHistoryTable
 			if( dictBySetStampIdx.containsKey( newKeySetStampIdx ) ) {
 				throw new CFLibUniqueIndexViolationException( getClass(),
 					"updateSecUserPWHistory",
-					"SecUserSetStampIdx",
-					"SecUserSetStampIdx",
+					"SecUserPWHistSetStampIdx",
+					"SecUserPWHistSetStampIdx",
 					newKeySetStampIdx );
 			}
 		}
@@ -486,8 +486,8 @@ public class CFSecRamSecUserPWHistoryTable
 			if( dictByReplacedStampIdx.containsKey( newKeyReplacedStampIdx ) ) {
 				throw new CFLibUniqueIndexViolationException( getClass(),
 					"updateSecUserPWHistory",
-					"SecUserReplacedStampIdx",
-					"SecUserReplacedStampIdx",
+					"SecUserPWHistReplacedStampIdx",
+					"SecUserPWHistReplacedStampIdx",
 					newKeyReplacedStampIdx );
 			}
 		}

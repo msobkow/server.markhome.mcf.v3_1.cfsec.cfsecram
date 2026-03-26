@@ -54,9 +54,11 @@ public class CFSecRamSecUserPasswordTable
 		= new HashMap< CFLibDbKeyHash256,
 				CFSecBuffSecUserPassword >();
 	private Map< CFSecBuffSecUserPasswordBySetStampIdxKey,
-			CFSecBuffSecUserPassword > dictBySetStampIdx
+				Map< CFLibDbKeyHash256,
+					CFSecBuffSecUserPassword >> dictBySetStampIdx
 		= new HashMap< CFSecBuffSecUserPasswordBySetStampIdxKey,
-			CFSecBuffSecUserPassword >();
+				Map< CFLibDbKeyHash256,
+					CFSecBuffSecUserPassword >>();
 
 	public CFSecRamSecUserPasswordTable( ICFSecSchema argSchema ) {
 		schema = argSchema;
@@ -96,21 +98,21 @@ public class CFSecRamSecUserPasswordTable
 			throw new CFLibPrimaryKeyNotNewException( getClass(), S_ProcName, pkey );
 		}
 
-		if( dictBySetStampIdx.containsKey( keySetStampIdx ) ) {
-			throw new CFLibUniqueIndexViolationException( getClass(),
-				S_ProcName,
-				"SecUserSetStampIdx",
-				"SecUserSetStampIdx",
-				keySetStampIdx );
-		}
-
 		// Validate foreign keys
 
 		// Proceed with adding the new record
 
 		dictByPKey.put( pkey, Buff );
 
-		dictBySetStampIdx.put( keySetStampIdx, Buff );
+		Map< CFLibDbKeyHash256, CFSecBuffSecUserPassword > subdictSetStampIdx;
+		if( dictBySetStampIdx.containsKey( keySetStampIdx ) ) {
+			subdictSetStampIdx = dictBySetStampIdx.get( keySetStampIdx );
+		}
+		else {
+			subdictSetStampIdx = new HashMap< CFLibDbKeyHash256, CFSecBuffSecUserPassword >();
+			dictBySetStampIdx.put( keySetStampIdx, subdictSetStampIdx );
+		}
+		subdictSetStampIdx.put( pkey, Buff );
 
 		if (Buff == null) {
 			return( null );
@@ -174,21 +176,31 @@ public class CFSecRamSecUserPasswordTable
 	}
 
 	@Override
-	public ICFSecSecUserPassword readDerivedBySetStampIdx( ICFSecAuthorization Authorization,
+	public ICFSecSecUserPassword[] readDerivedBySetStampIdx( ICFSecAuthorization Authorization,
 		LocalDateTime PWSetStamp )
 	{
 		final String S_ProcName = "CFSecRamSecUserPassword.readDerivedBySetStampIdx";
 		CFSecBuffSecUserPasswordBySetStampIdxKey key = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getFactorySecUserPassword().newBySetStampIdxKey();
 
 		key.setRequiredPWSetStamp( PWSetStamp );
-		ICFSecSecUserPassword buff;
+		ICFSecSecUserPassword[] recArray;
 		if( dictBySetStampIdx.containsKey( key ) ) {
-			buff = dictBySetStampIdx.get( key );
+			Map< CFLibDbKeyHash256, CFSecBuffSecUserPassword > subdictSetStampIdx
+				= dictBySetStampIdx.get( key );
+			recArray = new ICFSecSecUserPassword[ subdictSetStampIdx.size() ];
+			Iterator< CFSecBuffSecUserPassword > iter = subdictSetStampIdx.values().iterator();
+			int idx = 0;
+			while( iter.hasNext() ) {
+				recArray[ idx++ ] = iter.next();
+			}
 		}
 		else {
-			buff = null;
+			Map< CFLibDbKeyHash256, CFSecBuffSecUserPassword > subdictSetStampIdx
+				= new HashMap< CFLibDbKeyHash256, CFSecBuffSecUserPassword >();
+			dictBySetStampIdx.put( key, subdictSetStampIdx );
+			recArray = new ICFSecSecUserPassword[0];
 		}
-		return( buff );
+		return( recArray );
 	}
 
 	@Override
@@ -262,18 +274,21 @@ public class CFSecRamSecUserPasswordTable
 	}
 
 	@Override
-	public ICFSecSecUserPassword readRecBySetStampIdx( ICFSecAuthorization Authorization,
+	public ICFSecSecUserPassword[] readRecBySetStampIdx( ICFSecAuthorization Authorization,
 		LocalDateTime PWSetStamp )
 	{
 		final String S_ProcName = "CFSecRamSecUserPassword.readRecBySetStampIdx() ";
-		ICFSecSecUserPassword buff = readDerivedBySetStampIdx( Authorization,
+		ICFSecSecUserPassword buff;
+		ArrayList<ICFSecSecUserPassword> filteredList = new ArrayList<ICFSecSecUserPassword>();
+		ICFSecSecUserPassword[] buffList = readDerivedBySetStampIdx( Authorization,
 			PWSetStamp );
-		if( ( buff != null ) && ( buff.getClassCode() == ICFSecSecUserPassword.CLASS_CODE ) ) {
-			return( (ICFSecSecUserPassword)buff );
+		for( int idx = 0; idx < buffList.length; idx ++ ) {
+			buff = buffList[idx];
+			if( ( buff != null ) && ( buff.getClassCode() == ICFSecSecUserPassword.CLASS_CODE ) ) {
+				filteredList.add( (ICFSecSecUserPassword)buff );
+			}
 		}
-		else {
-			return( null );
-		}
+		return( filteredList.toArray( new ICFSecSecUserPassword[0] ) );
 	}
 
 	public ICFSecSecUserPassword updateSecUserPassword( ICFSecAuthorization Authorization,
@@ -305,16 +320,6 @@ public class CFSecRamSecUserPasswordTable
 
 		// Check unique indexes
 
-		if( ! existingKeySetStampIdx.equals( newKeySetStampIdx ) ) {
-			if( dictBySetStampIdx.containsKey( newKeySetStampIdx ) ) {
-				throw new CFLibUniqueIndexViolationException( getClass(),
-					"updateSecUserPassword",
-					"SecUserSetStampIdx",
-					"SecUserSetStampIdx",
-					newKeySetStampIdx );
-			}
-		}
-
 		// Validate foreign keys
 
 		// Update is valid
@@ -324,8 +329,18 @@ public class CFSecRamSecUserPasswordTable
 		dictByPKey.remove( pkey );
 		dictByPKey.put( pkey, Buff );
 
-		dictBySetStampIdx.remove( existingKeySetStampIdx );
-		dictBySetStampIdx.put( newKeySetStampIdx, Buff );
+		subdict = dictBySetStampIdx.get( existingKeySetStampIdx );
+		if( subdict != null ) {
+			subdict.remove( pkey );
+		}
+		if( dictBySetStampIdx.containsKey( newKeySetStampIdx ) ) {
+			subdict = dictBySetStampIdx.get( newKeySetStampIdx );
+		}
+		else {
+			subdict = new HashMap< CFLibDbKeyHash256, CFSecBuffSecUserPassword >();
+			dictBySetStampIdx.put( newKeySetStampIdx, subdict );
+		}
+		subdict.put( pkey, Buff );
 
 		return(Buff);
 	}
@@ -358,7 +373,8 @@ public class CFSecRamSecUserPasswordTable
 
 		dictByPKey.remove( pkey );
 
-		dictBySetStampIdx.remove( keySetStampIdx );
+		subdict = dictBySetStampIdx.get( keySetStampIdx );
+		subdict.remove( pkey );
 
 	}
 	@Override
