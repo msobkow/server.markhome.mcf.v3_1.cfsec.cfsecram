@@ -308,9 +308,7 @@ public class CFSecRamSecUserPWHistoryTable
 	@Override
 	public ICFSecSecUserPWHistory readRec( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 SecUserId,
-		LocalDateTime PWSetStamp,
-		LocalDateTime PWReplacedStamp,
-		String PasswordHash )
+		LocalDateTime PWSetStamp )
 	{
 		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getFactorySecUserPWHistory().newPKey());
 		key.setRequiredSecUserId( SecUserId );
