@@ -93,10 +93,10 @@ public class CFSecRamSecClusGrpIncTable
 		
 		CFSecBuffSecClusGrpInc Buff = (CFSecBuffSecClusGrpInc)ensureRec(iBuff);
 		CFSecBuffSecClusGrpIncPKey pkey = (CFSecBuffSecClusGrpIncPKey)(schema.getFactorySecClusGrpInc().newPKey());
-		pkey.setRequiredSecClusGrpId( Buff.getRequiredSecClusGrpId() );
-		pkey.setRequiredInclName( Buff.getRequiredInclName() );
-		Buff.setRequiredSecClusGrpId( pkey.getRequiredSecClusGrpId() );
-		Buff.setRequiredInclName( pkey.getRequiredInclName() );
+		pkey.setRequiredContainerGroup( Buff.getRequiredSecClusGrpId() );
+		pkey.setRequiredParentSubGroup( Buff.getRequiredInclName() );
+		Buff.setRequiredContainerGroup( pkey.getRequiredSecClusGrpId() );
+		Buff.setRequiredParentSubGroup( pkey.getRequiredInclName() );
 		CFSecBuffSecClusGrpIncByClusGrpIdxKey keyClusGrpIdx = (CFSecBuffSecClusGrpIncByClusGrpIdxKey)schema.getFactorySecClusGrpInc().newByClusGrpIdxKey();
 		keyClusGrpIdx.setRequiredSecClusGrpId( Buff.getRequiredSecClusGrpId() );
 
@@ -110,6 +110,26 @@ public class CFSecRamSecClusGrpIncTable
 		}
 
 		// Validate foreign keys
+
+		{
+			boolean allNull = true;
+			allNull = false;
+			if( ! allNull ) {
+				if( null == schema.getTableSecClusGrp().readDerivedByIdIdx( Authorization,
+						Buff.getRequiredSecClusGrpId() ) )
+				{
+					throw new CFLibUnresolvedRelationException( getClass(),
+						S_ProcName,
+						"Container",
+						"Container",
+						"SecClusGrpIncGroup",
+						"SecClusGrpIncGroup",
+						"SecClusGrp",
+						"SecClusGrp",
+						null );
+				}
+			}
+		}
 
 		// Proceed with adding the new record
 
@@ -167,8 +187,8 @@ public class CFSecRamSecClusGrpIncTable
 			}
 		}
 		CFSecBuffSecClusGrpIncPKey key = (CFSecBuffSecClusGrpIncPKey)(schema.getFactorySecClusGrpInc().newPKey());
-		key.setRequiredSecClusGrpId( SecClusGrpId );
-		key.setRequiredInclName( InclName );
+		key.setRequiredContainerGroup( SecClusGrpId );
+		key.setRequiredParentSubGroup( InclName );
 		return( readDerived( Authorization, key ) );
 	}
 
@@ -177,8 +197,8 @@ public class CFSecRamSecClusGrpIncTable
 	{
 		final String S_ProcName = "CFSecRamSecClusGrpInc.readDerived";
 		CFSecBuffSecClusGrpIncPKey key = (CFSecBuffSecClusGrpIncPKey)(schema.getFactorySecClusGrpInc().newPKey());
-		key.setRequiredSecClusGrpId( PKey.getRequiredSecClusGrpId() );
-		key.setRequiredInclName( PKey.getRequiredInclName() );
+		key.setRequiredContainerGroup( PKey.getRequiredSecClusGrpId() );
+		key.setRequiredParentSubGroup( PKey.getRequiredInclName() );
 		ICFSecSecClusGrpInc buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -195,8 +215,8 @@ public class CFSecRamSecClusGrpIncTable
 	{
 		final String S_ProcName = "CFSecRamSecClusGrpInc.lockDerived";
 		CFSecBuffSecClusGrpIncPKey key = (CFSecBuffSecClusGrpIncPKey)(schema.getFactorySecClusGrpInc().newPKey());
-		key.setRequiredSecClusGrpId( PKey.getRequiredSecClusGrpId() );
-		key.setRequiredInclName( PKey.getRequiredInclName() );
+		key.setRequiredContainerGroup( PKey.getRequiredSecClusGrpId() );
+		key.setRequiredParentSubGroup( PKey.getRequiredInclName() );
 		ICFSecSecClusGrpInc buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -282,8 +302,8 @@ public class CFSecRamSecClusGrpIncTable
 	{
 		final String S_ProcName = "CFSecRamSecClusGrpInc.readDerivedByIdIdx() ";
 		CFSecBuffSecClusGrpIncPKey key = (CFSecBuffSecClusGrpIncPKey)(schema.getFactorySecClusGrpInc().newPKey());
-		key.setRequiredSecClusGrpId( SecClusGrpId );
-		key.setRequiredInclName( InclName );
+		key.setRequiredContainerGroup( SecClusGrpId );
+		key.setRequiredParentSubGroup( InclName );
 		ICFSecSecClusGrpInc buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -300,8 +320,8 @@ public class CFSecRamSecClusGrpIncTable
 		String InclName )
 	{
 		CFSecBuffSecClusGrpIncPKey key = (CFSecBuffSecClusGrpIncPKey)(schema.getFactorySecClusGrpInc().newPKey());
-		key.setRequiredSecClusGrpId( SecClusGrpId );
-		key.setRequiredInclName( InclName );
+		key.setRequiredContainerGroup( SecClusGrpId );
+		key.setRequiredParentSubGroup( InclName );
 		return( readRec( Authorization, key ) );
 	}
 
@@ -462,8 +482,8 @@ public class CFSecRamSecClusGrpIncTable
 	{
 		CFSecBuffSecClusGrpInc Buff = (CFSecBuffSecClusGrpInc)ensureRec(iBuff);
 		CFSecBuffSecClusGrpIncPKey pkey = (CFSecBuffSecClusGrpIncPKey)(schema.getFactorySecClusGrpInc().newPKey());
-		pkey.setRequiredSecClusGrpId( Buff.getRequiredSecClusGrpId() );
-		pkey.setRequiredInclName( Buff.getRequiredInclName() );
+		pkey.setRequiredContainerGroup( Buff.getRequiredSecClusGrpId() );
+		pkey.setRequiredParentSubGroup( Buff.getRequiredInclName() );
 		CFSecBuffSecClusGrpInc existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),
@@ -495,6 +515,26 @@ public class CFSecRamSecClusGrpIncTable
 		// Check unique indexes
 
 		// Validate foreign keys
+
+		{
+			boolean allNull = true;
+
+			if( allNull ) {
+				if( null == schema.getTableSecClusGrp().readDerivedByIdIdx( Authorization,
+						Buff.getRequiredSecClusGrpId() ) )
+				{
+					throw new CFLibUnresolvedRelationException( getClass(),
+						"updateSecClusGrpInc",
+						"Container",
+						"Container",
+						"SecClusGrpIncGroup",
+						"SecClusGrpIncGroup",
+						"SecClusGrp",
+						"SecClusGrp",
+						null );
+				}
+			}
+		}
 
 		// Update is valid
 
@@ -576,8 +616,8 @@ public class CFSecRamSecClusGrpIncTable
 		String InclName )
 	{
 		CFSecBuffSecClusGrpIncPKey key = (CFSecBuffSecClusGrpIncPKey)(schema.getFactorySecClusGrpInc().newPKey());
-		key.setRequiredSecClusGrpId( SecClusGrpId );
-		key.setRequiredInclName( InclName );
+		key.setRequiredContainerGroup( SecClusGrpId );
+		key.setRequiredParentSubGroup( InclName );
 		deleteSecClusGrpIncByIdIdx( Authorization, key );
 	}
 
@@ -586,8 +626,8 @@ public class CFSecRamSecClusGrpIncTable
 		ICFSecSecClusGrpIncPKey PKey )
 	{
 		CFSecBuffSecClusGrpIncPKey key = (CFSecBuffSecClusGrpIncPKey)(schema.getFactorySecClusGrpInc().newPKey());
-		key.setRequiredSecClusGrpId( PKey.getRequiredSecClusGrpId() );
-		key.setRequiredInclName( PKey.getRequiredInclName() );
+		key.setRequiredContainerGroup( PKey.getRequiredSecClusGrpId() );
+		key.setRequiredParentSubGroup( PKey.getRequiredInclName() );
 		CFSecBuffSecClusGrpIncPKey argKey = key;
 		boolean anyNotNull = false;
 		anyNotNull = true;

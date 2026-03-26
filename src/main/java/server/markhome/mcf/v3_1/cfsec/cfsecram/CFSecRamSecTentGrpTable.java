@@ -125,6 +125,26 @@ public class CFSecRamSecTentGrpTable
 
 		// Validate foreign keys
 
+		{
+			boolean allNull = true;
+			allNull = false;
+			if( ! allNull ) {
+				if( null == schema.getTableTenant().readDerivedByIdIdx( Authorization,
+						Buff.getRequiredTenantId() ) )
+				{
+					throw new CFLibUnresolvedRelationException( getClass(),
+						S_ProcName,
+						"Owner",
+						"Owner",
+						"SecTentGrpTenant",
+						"SecTentGrpTenant",
+						"Tenant",
+						"Tenant",
+						null );
+				}
+			}
+		}
+
 		// Proceed with adding the new record
 
 		dictByPKey.put( pkey, Buff );
@@ -466,6 +486,26 @@ public class CFSecRamSecTentGrpTable
 
 		// Validate foreign keys
 
+		{
+			boolean allNull = true;
+
+			if( allNull ) {
+				if( null == schema.getTableTenant().readDerivedByIdIdx( Authorization,
+						Buff.getRequiredTenantId() ) )
+				{
+					throw new CFLibUnresolvedRelationException( getClass(),
+						"updateSecTentGrp",
+						"Owner",
+						"Owner",
+						"SecTentGrpTenant",
+						"SecTentGrpTenant",
+						"Tenant",
+						"Tenant",
+						null );
+				}
+			}
+		}
+
 		// Update is valid
 
 		Map< CFLibDbKeyHash256, CFSecBuffSecTentGrp > subdict;
@@ -522,6 +562,20 @@ public class CFSecRamSecTentGrpTable
 			throw new CFLibCollisionDetectedException( getClass(),
 				"deleteSecTentGrp",
 				pkey );
+		}
+		// Short circuit self-referential code to prevent stack overflows
+		Object arrCheckSecTentGrpIncByGrp[] = schema.getTableSecTentGrpInc().readDerivedByTentGrpIdx( Authorization,
+						existing.getRequiredSecTentGrpId() );
+		if( arrCheckSecTentGrpIncByGrp.length > 0 ) {
+			schema.getTableSecTentGrpInc().deleteSecTentGrpIncByTentGrpIdx( Authorization,
+						existing.getRequiredSecTentGrpId() );
+		}
+		// Short circuit self-referential code to prevent stack overflows
+		Object arrCheckSecTentGrpMembByGrp[] = schema.getTableSecTentGrpMemb().readDerivedByTentGrpIdx( Authorization,
+						existing.getRequiredSecTentGrpId() );
+		if( arrCheckSecTentGrpMembByGrp.length > 0 ) {
+			schema.getTableSecTentGrpMemb().deleteSecTentGrpMembByTentGrpIdx( Authorization,
+						existing.getRequiredSecTentGrpId() );
 		}
 		CFSecBuffSecTentGrpByTenantIdxKey keyTenantIdx = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getFactorySecTentGrp().newByTenantIdxKey();
 		keyTenantIdx.setRequiredTenantId( existing.getRequiredTenantId() );

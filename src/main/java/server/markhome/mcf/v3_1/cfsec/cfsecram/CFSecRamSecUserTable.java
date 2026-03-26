@@ -578,6 +578,20 @@ public class CFSecRamSecUserTable
 			schema.getTableSecSysGrpMemb().deleteSecSysGrpMembByLoginIdx( Authorization,
 						existing.getRequiredLoginId() );
 		}
+		// Short circuit self-referential code to prevent stack overflows
+		Object arrCheckSecUserSecClusGrpMemb[] = schema.getTableSecClusGrpMemb().readDerivedByLoginIdx( Authorization,
+						existing.getRequiredLoginId() );
+		if( arrCheckSecUserSecClusGrpMemb.length > 0 ) {
+			schema.getTableSecClusGrpMemb().deleteSecClusGrpMembByLoginIdx( Authorization,
+						existing.getRequiredLoginId() );
+		}
+		// Short circuit self-referential code to prevent stack overflows
+		Object arrCheckSecUserSecTentGrpMemb[] = schema.getTableSecTentGrpMemb().readDerivedByUserIdx( Authorization,
+						existing.getRequiredLoginId() );
+		if( arrCheckSecUserSecTentGrpMemb.length > 0 ) {
+			schema.getTableSecTentGrpMemb().deleteSecTentGrpMembByUserIdx( Authorization,
+						existing.getRequiredLoginId() );
+		}
 		CFSecBuffSecUserByULoginIdxKey keyULoginIdx = (CFSecBuffSecUserByULoginIdxKey)schema.getFactorySecUser().newByULoginIdxKey();
 		keyULoginIdx.setRequiredLoginId( existing.getRequiredLoginId() );
 
