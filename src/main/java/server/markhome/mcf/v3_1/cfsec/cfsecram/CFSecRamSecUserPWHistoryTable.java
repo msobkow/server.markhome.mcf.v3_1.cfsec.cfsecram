@@ -356,6 +356,22 @@ public class CFSecRamSecUserPWHistoryTable
 		return( filteredList.toArray( new ICFSecSecUserPWHistory[0] ) );
 	}
 
+	/**
+	 *	Read a page of all the specific SecUserPWHistory buffer instances.
+	 *
+	 *	@param	Authorization	The session authorization information.
+	 *
+	 *	@return All the specific SecUserPWHistory instances in the database accessible for the Authorization.
+	 */
+	@Override
+	public ICFSecSecUserPWHistory[] pageAllRec( ICFSecAuthorization Authorization,
+		CFLibDbKeyHash256 priorSecUserId,
+		LocalDateTime priorPWSetStamp )
+	{
+		final String S_ProcName = "pageAllRec";
+		throw new CFLibNotImplementedYetException( getClass(), S_ProcName );
+	}
+
 	@Override
 	public ICFSecSecUserPWHistory readRecByIdIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 SecUserId,

@@ -70,7 +70,9 @@ public class CFSecRamSchema
 		tableSecTentGrpInc = new CFSecRamSecTentGrpIncTable( this );
 		tableSecTentGrpMemb = new CFSecRamSecTentGrpMembTable( this );
 		tableSecUser = new CFSecRamSecUserTable( this );
+		tableSecUserEMConf = new CFSecRamSecUserEMConfTable( this );
 		tableSecUserPWHistory = new CFSecRamSecUserPWHistoryTable( this );
+		tableSecUserPWReset = new CFSecRamSecUserPWResetTable( this );
 		tableSecUserPassword = new CFSecRamSecUserPasswordTable( this );
 		tableSysCluster = new CFSecRamSysClusterTable( this );
 		tableTenant = new CFSecRamTenantTable( this );
@@ -216,6 +218,12 @@ public class CFSecRamSchema
 		}
 		if (tableSecUserPassword == null || !(tableSecUserPassword instanceof CFSecRamSecUserPasswordTable)) {
 			tableSecUserPassword = new CFSecRamSecUserPasswordTable(this);
+		}
+		if (tableSecUserEMConf == null || !(tableSecUserEMConf instanceof CFSecRamSecUserEMConfTable)) {
+			tableSecUserEMConf = new CFSecRamSecUserEMConfTable(this);
+		}
+		if (tableSecUserPWReset == null || !(tableSecUserPWReset instanceof CFSecRamSecUserPWResetTable)) {
+			tableSecUserPWReset = new CFSecRamSecUserPWResetTable(this);
 		}
 		if (tableSecUserPWHistory == null || !(tableSecUserPWHistory instanceof CFSecRamSecUserPWHistoryTable)) {
 			tableSecUserPWHistory = new CFSecRamSecUserPWHistoryTable(this);

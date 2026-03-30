@@ -87,8 +87,8 @@ public class CFSecRamSecUserPasswordTable
 		
 		CFSecBuffSecUserPassword Buff = (CFSecBuffSecUserPassword)ensureRec(iBuff);
 		CFLibDbKeyHash256 pkey;
-		pkey = Buff.getRequiredSecUserId();
-		Buff.setRequiredSecUserId( pkey );
+		pkey.setRequiredContainerUser( Buff.getRequiredSecUserId() );
+		Buff.setRequiredContainerUser( pkey.getRequiredSecUserId() );
 		CFSecBuffSecUserPasswordBySetStampIdxKey keySetStampIdx = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getFactorySecUserPassword().newBySetStampIdxKey();
 		keySetStampIdx.setRequiredPWSetStamp( Buff.getRequiredPWSetStamp() );
 
@@ -99,6 +99,26 @@ public class CFSecRamSecUserPasswordTable
 		}
 
 		// Validate foreign keys
+
+		{
+			boolean allNull = true;
+			allNull = false;
+			if( ! allNull ) {
+				if( null == schema.getTableSecUser().readDerivedByIdIdx( Authorization,
+						Buff.getRequiredSecUserId() ) )
+				{
+					throw new CFLibUnresolvedRelationException( getClass(),
+						S_ProcName,
+						"Container",
+						"Container",
+						"SecUser",
+						"SecUser",
+						"SecUser",
+						"SecUser",
+						null );
+				}
+			}
+		}
 
 		// Proceed with adding the new record
 
@@ -321,6 +341,26 @@ public class CFSecRamSecUserPasswordTable
 		// Check unique indexes
 
 		// Validate foreign keys
+
+		{
+			boolean allNull = true;
+
+			if( allNull ) {
+				if( null == schema.getTableSecUser().readDerivedByIdIdx( Authorization,
+						Buff.getRequiredSecUserId() ) )
+				{
+					throw new CFLibUnresolvedRelationException( getClass(),
+						"updateSecUserPassword",
+						"Container",
+						"Container",
+						"SecUser",
+						"SecUser",
+						"SecUser",
+						"SecUser",
+						null );
+				}
+			}
+		}
 
 		// Update is valid
 
