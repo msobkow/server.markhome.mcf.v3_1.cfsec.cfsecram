@@ -432,22 +432,6 @@ public class CFSecRamClusterTable
 				"deleteCluster",
 				pkey );
 		}
-		CFSecBuffSecClusGrp buffDelSecGrpMembs;
-		ICFSecSecClusGrp arrDelSecGrpMembs[] = schema.getTableSecClusGrp().readDerivedByClusterIdx( Authorization,
-			existing.getRequiredId() );
-		for( int idxDelSecGrpMembs = 0; idxDelSecGrpMembs < arrDelSecGrpMembs.length; idxDelSecGrpMembs++ ) {
-			buffDelSecGrpMembs = (CFSecBuffSecClusGrp)(arrDelSecGrpMembs[idxDelSecGrpMembs]);
-					schema.getTableSecClusGrpMemb().deleteSecClusGrpMembByClusGrpIdx( Authorization,
-						buffDelSecGrpMembs.getRequiredSecClusGrpId() );
-		}
-		CFSecBuffSecClusGrp buffDelSecGrpIncs;
-		ICFSecSecClusGrp arrDelSecGrpIncs[] = schema.getTableSecClusGrp().readDerivedByClusterIdx( Authorization,
-			existing.getRequiredId() );
-		for( int idxDelSecGrpIncs = 0; idxDelSecGrpIncs < arrDelSecGrpIncs.length; idxDelSecGrpIncs++ ) {
-			buffDelSecGrpIncs = (CFSecBuffSecClusGrp)(arrDelSecGrpIncs[idxDelSecGrpIncs]);
-					schema.getTableSecClusGrpInc().deleteSecClusGrpIncByClusGrpIdx( Authorization,
-						buffDelSecGrpIncs.getRequiredSecClusGrpId() );
-		}
 					schema.getTableSecClusGrp().deleteSecClusGrpByClusterIdx( Authorization,
 						existing.getRequiredId() );
 					schema.getTableTenant().deleteTenantByClusterIdx( Authorization,

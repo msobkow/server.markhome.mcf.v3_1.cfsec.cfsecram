@@ -563,20 +563,10 @@ public class CFSecRamSecTentGrpTable
 				"deleteSecTentGrp",
 				pkey );
 		}
-		// Short circuit self-referential code to prevent stack overflows
-		Object arrCheckSecTentGrpIncByGrp[] = schema.getTableSecTentGrpInc().readDerivedByTentGrpIdx( Authorization,
+					schema.getTableSecTentGrpMemb().deleteSecTentGrpMembByTentGrpIdx( Authorization,
 						existing.getRequiredSecTentGrpId() );
-		if( arrCheckSecTentGrpIncByGrp.length > 0 ) {
-			schema.getTableSecTentGrpInc().deleteSecTentGrpIncByTentGrpIdx( Authorization,
+					schema.getTableSecTentGrpInc().deleteSecTentGrpIncByTentGrpIdx( Authorization,
 						existing.getRequiredSecTentGrpId() );
-		}
-		// Short circuit self-referential code to prevent stack overflows
-		Object arrCheckSecTentGrpMembByGrp[] = schema.getTableSecTentGrpMemb().readDerivedByTentGrpIdx( Authorization,
-						existing.getRequiredSecTentGrpId() );
-		if( arrCheckSecTentGrpMembByGrp.length > 0 ) {
-			schema.getTableSecTentGrpMemb().deleteSecTentGrpMembByTentGrpIdx( Authorization,
-						existing.getRequiredSecTentGrpId() );
-		}
 		CFSecBuffSecTentGrpByTenantIdxKey keyTenantIdx = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getFactorySecTentGrp().newByTenantIdxKey();
 		keyTenantIdx.setRequiredTenantId( existing.getRequiredTenantId() );
 

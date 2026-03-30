@@ -563,20 +563,10 @@ public class CFSecRamSecClusGrpTable
 				"deleteSecClusGrp",
 				pkey );
 		}
-		// Short circuit self-referential code to prevent stack overflows
-		Object arrCheckSecClusGrpIncByGrp[] = schema.getTableSecClusGrpInc().readDerivedByClusGrpIdx( Authorization,
+					schema.getTableSecClusGrpMemb().deleteSecClusGrpMembByClusGrpIdx( Authorization,
 						existing.getRequiredSecClusGrpId() );
-		if( arrCheckSecClusGrpIncByGrp.length > 0 ) {
-			schema.getTableSecClusGrpInc().deleteSecClusGrpIncByClusGrpIdx( Authorization,
+					schema.getTableSecClusGrpInc().deleteSecClusGrpIncByClusGrpIdx( Authorization,
 						existing.getRequiredSecClusGrpId() );
-		}
-		// Short circuit self-referential code to prevent stack overflows
-		Object arrCheckSecClusGrpMembByGrp[] = schema.getTableSecClusGrpMemb().readDerivedByClusGrpIdx( Authorization,
-						existing.getRequiredSecClusGrpId() );
-		if( arrCheckSecClusGrpMembByGrp.length > 0 ) {
-			schema.getTableSecClusGrpMemb().deleteSecClusGrpMembByClusGrpIdx( Authorization,
-						existing.getRequiredSecClusGrpId() );
-		}
 		CFSecBuffSecClusGrpByClusterIdxKey keyClusterIdx = (CFSecBuffSecClusGrpByClusterIdxKey)schema.getFactorySecClusGrp().newByClusterIdxKey();
 		keyClusterIdx.setRequiredClusterId( existing.getRequiredClusterId() );
 

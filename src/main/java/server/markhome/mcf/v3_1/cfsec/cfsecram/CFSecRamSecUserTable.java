@@ -467,45 +467,18 @@ public class CFSecRamSecUserTable
 				"deleteSecUser",
 				pkey );
 		}
-		// Short circuit self-referential code to prevent stack overflows
-		if( null != schema.getTableSecUserPassword().readDerivedByIdIdx( Authorization,
-						existing.getRequiredSecUserId() ) ) {
-			schema.getTableSecUserPassword().deleteSecUserPasswordByIdIdx( Authorization,
+					schema.getTableSecUserPassword().deleteSecUserPasswordByIdIdx( Authorization,
 						existing.getRequiredSecUserId() );
-		}
-		// Short circuit self-referential code to prevent stack overflows
-		if( null != schema.getTableSecUserEMConf().readDerivedByIdIdx( Authorization,
-						existing.getRequiredSecUserId() ) ) {
-			schema.getTableSecUserEMConf().deleteSecUserEMConfByIdIdx( Authorization,
+					schema.getTableSecSysGrpMemb().deleteSecSysGrpMembByLoginIdx( Authorization,
+						existing.getRequiredLoginId() );
+					schema.getTableSecClusGrpMemb().deleteSecClusGrpMembByLoginIdx( Authorization,
+						existing.getRequiredLoginId() );
+					schema.getTableSecTentGrpMemb().deleteSecTentGrpMembByUserIdx( Authorization,
+						existing.getRequiredLoginId() );
+					schema.getTableSecUserPWReset().deleteSecUserPWResetByIdIdx( Authorization,
 						existing.getRequiredSecUserId() );
-		}
-		// Short circuit self-referential code to prevent stack overflows
-		if( null != schema.getTableSecUserPWReset().readDerivedByIdIdx( Authorization,
-						existing.getRequiredSecUserId() ) ) {
-			schema.getTableSecUserPWReset().deleteSecUserPWResetByIdIdx( Authorization,
+					schema.getTableSecUserEMConf().deleteSecUserEMConfByIdIdx( Authorization,
 						existing.getRequiredSecUserId() );
-		}
-		// Short circuit self-referential code to prevent stack overflows
-		Object arrCheckSecUserSecSysGrpMemb[] = schema.getTableSecSysGrpMemb().readDerivedByLoginIdx( Authorization,
-						existing.getRequiredLoginId() );
-		if( arrCheckSecUserSecSysGrpMemb.length > 0 ) {
-			schema.getTableSecSysGrpMemb().deleteSecSysGrpMembByLoginIdx( Authorization,
-						existing.getRequiredLoginId() );
-		}
-		// Short circuit self-referential code to prevent stack overflows
-		Object arrCheckSecUserSecClusGrpMemb[] = schema.getTableSecClusGrpMemb().readDerivedByLoginIdx( Authorization,
-						existing.getRequiredLoginId() );
-		if( arrCheckSecUserSecClusGrpMemb.length > 0 ) {
-			schema.getTableSecClusGrpMemb().deleteSecClusGrpMembByLoginIdx( Authorization,
-						existing.getRequiredLoginId() );
-		}
-		// Short circuit self-referential code to prevent stack overflows
-		Object arrCheckSecUserSecTentGrpMemb[] = schema.getTableSecTentGrpMemb().readDerivedByUserIdx( Authorization,
-						existing.getRequiredLoginId() );
-		if( arrCheckSecUserSecTentGrpMemb.length > 0 ) {
-			schema.getTableSecTentGrpMemb().deleteSecTentGrpMembByUserIdx( Authorization,
-						existing.getRequiredLoginId() );
-		}
 		CFSecBuffSecUserByULoginIdxKey keyULoginIdx = (CFSecBuffSecUserByULoginIdxKey)schema.getFactorySecUser().newByULoginIdxKey();
 		keyULoginIdx.setRequiredLoginId( existing.getRequiredLoginId() );
 
