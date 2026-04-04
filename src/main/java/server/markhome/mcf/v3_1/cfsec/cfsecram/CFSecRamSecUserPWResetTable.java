@@ -97,8 +97,8 @@ public class CFSecRamSecUserPWResetTable
 		
 		CFSecBuffSecUserPWReset Buff = (CFSecBuffSecUserPWReset)ensureRec(iBuff);
 		CFLibDbKeyHash256 pkey;
-		pkey.setRequiredContainerUser( Buff.getRequiredSecUserId() );
-		Buff.setRequiredContainerUser( pkey.getRequiredSecUserId() );
+		pkey = Buff.getRequiredSecUserId();
+		Buff.setRequiredContainerUser( pkey );
 		CFSecBuffSecUserPWResetByUUuid6IdxKey keyUUuid6Idx = (CFSecBuffSecUserPWResetByUUuid6IdxKey)schema.getFactorySecUserPWReset().newByUUuid6IdxKey();
 		keyUUuid6Idx.setRequiredPasswordResetUuid6( Buff.getRequiredPasswordResetUuid6() );
 

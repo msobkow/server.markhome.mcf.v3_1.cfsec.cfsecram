@@ -87,8 +87,8 @@ public class CFSecRamSecUserPasswordTable
 		
 		CFSecBuffSecUserPassword Buff = (CFSecBuffSecUserPassword)ensureRec(iBuff);
 		CFLibDbKeyHash256 pkey;
-		pkey.setRequiredContainerUser( Buff.getRequiredSecUserId() );
-		Buff.setRequiredContainerUser( pkey.getRequiredSecUserId() );
+		pkey = Buff.getRequiredSecUserId();
+		Buff.setRequiredContainerUser( pkey );
 		CFSecBuffSecUserPasswordBySetStampIdxKey keySetStampIdx = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getFactorySecUserPassword().newBySetStampIdxKey();
 		keySetStampIdx.setRequiredPWSetStamp( Buff.getRequiredPWSetStamp() );
 
