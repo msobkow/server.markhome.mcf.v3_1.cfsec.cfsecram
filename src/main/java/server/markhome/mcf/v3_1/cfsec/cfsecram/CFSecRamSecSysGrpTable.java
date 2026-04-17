@@ -58,13 +58,11 @@ public class CFSecRamSecSysGrpTable
 		= new HashMap< CFSecBuffSecSysGrpByUNameIdxKey,
 			CFSecBuffSecSysGrp >();
 	private Map< CFSecBuffSecSysGrpBySecLevelIdxKey,
-			CFSecBuffSecSysGrp > dictBySecLevelIdx
+				Map< CFLibDbKeyHash256,
+					CFSecBuffSecSysGrp >> dictBySecLevelIdx
 		= new HashMap< CFSecBuffSecSysGrpBySecLevelIdxKey,
-			CFSecBuffSecSysGrp >();
-	private Map< CFSecBuffSecSysGrpBySecLevelNmIdxKey,
-			CFSecBuffSecSysGrp > dictBySecLevelNmIdx
-		= new HashMap< CFSecBuffSecSysGrpBySecLevelNmIdxKey,
-			CFSecBuffSecSysGrp >();
+				Map< CFLibDbKeyHash256,
+					CFSecBuffSecSysGrp >>();
 
 	public CFSecRamSecSysGrpTable( ICFSecSchema argSchema ) {
 		schema = argSchema;
@@ -101,10 +99,6 @@ public class CFSecRamSecSysGrpTable
 		CFSecBuffSecSysGrpBySecLevelIdxKey keySecLevelIdx = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getFactorySecSysGrp().newBySecLevelIdxKey();
 		keySecLevelIdx.setRequiredSecLevel( Buff.getRequiredSecLevel() );
 
-		CFSecBuffSecSysGrpBySecLevelNmIdxKey keySecLevelNmIdx = (CFSecBuffSecSysGrpBySecLevelNmIdxKey)schema.getFactorySecSysGrp().newBySecLevelNmIdxKey();
-		keySecLevelNmIdx.setRequiredSecLevel( Buff.getRequiredSecLevel() );
-		keySecLevelNmIdx.setRequiredName( Buff.getRequiredName() );
-
 		// Validate unique indexes
 
 		if( dictByPKey.containsKey( pkey ) ) {
@@ -119,22 +113,6 @@ public class CFSecRamSecSysGrpTable
 				keyUNameIdx );
 		}
 
-		if( dictBySecLevelIdx.containsKey( keySecLevelIdx ) ) {
-			throw new CFLibUniqueIndexViolationException( getClass(),
-				S_ProcName,
-				"SecSysGrpLevelIdx",
-				"SecSysGrpLevelIdx",
-				keySecLevelIdx );
-		}
-
-		if( dictBySecLevelNmIdx.containsKey( keySecLevelNmIdx ) ) {
-			throw new CFLibUniqueIndexViolationException( getClass(),
-				S_ProcName,
-				"SecSysGrpLevelNameIdx",
-				"SecSysGrpLevelNameIdx",
-				keySecLevelNmIdx );
-		}
-
 		// Validate foreign keys
 
 		// Proceed with adding the new record
@@ -143,9 +121,15 @@ public class CFSecRamSecSysGrpTable
 
 		dictByUNameIdx.put( keyUNameIdx, Buff );
 
-		dictBySecLevelIdx.put( keySecLevelIdx, Buff );
-
-		dictBySecLevelNmIdx.put( keySecLevelNmIdx, Buff );
+		Map< CFLibDbKeyHash256, CFSecBuffSecSysGrp > subdictSecLevelIdx;
+		if( dictBySecLevelIdx.containsKey( keySecLevelIdx ) ) {
+			subdictSecLevelIdx = dictBySecLevelIdx.get( keySecLevelIdx );
+		}
+		else {
+			subdictSecLevelIdx = new HashMap< CFLibDbKeyHash256, CFSecBuffSecSysGrp >();
+			dictBySecLevelIdx.put( keySecLevelIdx, subdictSecLevelIdx );
+		}
+		subdictSecLevelIdx.put( pkey, Buff );
 
 		if (Buff == null) {
 			return( null );
@@ -227,41 +211,31 @@ public class CFSecRamSecSysGrpTable
 	}
 
 	@Override
-	public ICFSecSecSysGrp readDerivedBySecLevelIdx( ICFSecAuthorization Authorization,
+	public ICFSecSecSysGrp[] readDerivedBySecLevelIdx( ICFSecAuthorization Authorization,
 		ICFSecSchema.SecLevelEnum SecLevel )
 	{
 		final String S_ProcName = "CFSecRamSecSysGrp.readDerivedBySecLevelIdx";
 		CFSecBuffSecSysGrpBySecLevelIdxKey key = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getFactorySecSysGrp().newBySecLevelIdxKey();
 
 		key.setRequiredSecLevel( SecLevel );
-		ICFSecSecSysGrp buff;
+		ICFSecSecSysGrp[] recArray;
 		if( dictBySecLevelIdx.containsKey( key ) ) {
-			buff = dictBySecLevelIdx.get( key );
+			Map< CFLibDbKeyHash256, CFSecBuffSecSysGrp > subdictSecLevelIdx
+				= dictBySecLevelIdx.get( key );
+			recArray = new ICFSecSecSysGrp[ subdictSecLevelIdx.size() ];
+			Iterator< CFSecBuffSecSysGrp > iter = subdictSecLevelIdx.values().iterator();
+			int idx = 0;
+			while( iter.hasNext() ) {
+				recArray[ idx++ ] = iter.next();
+			}
 		}
 		else {
-			buff = null;
+			Map< CFLibDbKeyHash256, CFSecBuffSecSysGrp > subdictSecLevelIdx
+				= new HashMap< CFLibDbKeyHash256, CFSecBuffSecSysGrp >();
+			dictBySecLevelIdx.put( key, subdictSecLevelIdx );
+			recArray = new ICFSecSecSysGrp[0];
 		}
-		return( buff );
-	}
-
-	@Override
-	public ICFSecSecSysGrp readDerivedBySecLevelNmIdx( ICFSecAuthorization Authorization,
-		ICFSecSchema.SecLevelEnum SecLevel,
-		String Name )
-	{
-		final String S_ProcName = "CFSecRamSecSysGrp.readDerivedBySecLevelNmIdx";
-		CFSecBuffSecSysGrpBySecLevelNmIdxKey key = (CFSecBuffSecSysGrpBySecLevelNmIdxKey)schema.getFactorySecSysGrp().newBySecLevelNmIdxKey();
-
-		key.setRequiredSecLevel( SecLevel );
-		key.setRequiredName( Name );
-		ICFSecSecSysGrp buff;
-		if( dictBySecLevelNmIdx.containsKey( key ) ) {
-			buff = dictBySecLevelNmIdx.get( key );
-		}
-		else {
-			buff = null;
-		}
-		return( buff );
+		return( recArray );
 	}
 
 	@Override
@@ -350,35 +324,21 @@ public class CFSecRamSecSysGrpTable
 	}
 
 	@Override
-	public ICFSecSecSysGrp readRecBySecLevelIdx( ICFSecAuthorization Authorization,
+	public ICFSecSecSysGrp[] readRecBySecLevelIdx( ICFSecAuthorization Authorization,
 		ICFSecSchema.SecLevelEnum SecLevel )
 	{
 		final String S_ProcName = "CFSecRamSecSysGrp.readRecBySecLevelIdx() ";
-		ICFSecSecSysGrp buff = readDerivedBySecLevelIdx( Authorization,
+		ICFSecSecSysGrp buff;
+		ArrayList<ICFSecSecSysGrp> filteredList = new ArrayList<ICFSecSecSysGrp>();
+		ICFSecSecSysGrp[] buffList = readDerivedBySecLevelIdx( Authorization,
 			SecLevel );
-		if( ( buff != null ) && ( buff.getClassCode() == ICFSecSecSysGrp.CLASS_CODE ) ) {
-			return( (ICFSecSecSysGrp)buff );
+		for( int idx = 0; idx < buffList.length; idx ++ ) {
+			buff = buffList[idx];
+			if( ( buff != null ) && ( buff.getClassCode() == ICFSecSecSysGrp.CLASS_CODE ) ) {
+				filteredList.add( (ICFSecSecSysGrp)buff );
+			}
 		}
-		else {
-			return( null );
-		}
-	}
-
-	@Override
-	public ICFSecSecSysGrp readRecBySecLevelNmIdx( ICFSecAuthorization Authorization,
-		ICFSecSchema.SecLevelEnum SecLevel,
-		String Name )
-	{
-		final String S_ProcName = "CFSecRamSecSysGrp.readRecBySecLevelNmIdx() ";
-		ICFSecSecSysGrp buff = readDerivedBySecLevelNmIdx( Authorization,
-			SecLevel,
-			Name );
-		if( ( buff != null ) && ( buff.getClassCode() == ICFSecSecSysGrp.CLASS_CODE ) ) {
-			return( (ICFSecSecSysGrp)buff );
-		}
-		else {
-			return( null );
-		}
+		return( filteredList.toArray( new ICFSecSecSysGrp[0] ) );
 	}
 
 	public ICFSecSecSysGrp updateSecSysGrp( ICFSecAuthorization Authorization,
@@ -414,14 +374,6 @@ public class CFSecRamSecSysGrpTable
 		CFSecBuffSecSysGrpBySecLevelIdxKey newKeySecLevelIdx = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getFactorySecSysGrp().newBySecLevelIdxKey();
 		newKeySecLevelIdx.setRequiredSecLevel( Buff.getRequiredSecLevel() );
 
-		CFSecBuffSecSysGrpBySecLevelNmIdxKey existingKeySecLevelNmIdx = (CFSecBuffSecSysGrpBySecLevelNmIdxKey)schema.getFactorySecSysGrp().newBySecLevelNmIdxKey();
-		existingKeySecLevelNmIdx.setRequiredSecLevel( existing.getRequiredSecLevel() );
-		existingKeySecLevelNmIdx.setRequiredName( existing.getRequiredName() );
-
-		CFSecBuffSecSysGrpBySecLevelNmIdxKey newKeySecLevelNmIdx = (CFSecBuffSecSysGrpBySecLevelNmIdxKey)schema.getFactorySecSysGrp().newBySecLevelNmIdxKey();
-		newKeySecLevelNmIdx.setRequiredSecLevel( Buff.getRequiredSecLevel() );
-		newKeySecLevelNmIdx.setRequiredName( Buff.getRequiredName() );
-
 		// Check unique indexes
 
 		if( ! existingKeyUNameIdx.equals( newKeyUNameIdx ) ) {
@@ -431,26 +383,6 @@ public class CFSecRamSecSysGrpTable
 					"SecSysGrpUNameIdx",
 					"SecSysGrpUNameIdx",
 					newKeyUNameIdx );
-			}
-		}
-
-		if( ! existingKeySecLevelIdx.equals( newKeySecLevelIdx ) ) {
-			if( dictBySecLevelIdx.containsKey( newKeySecLevelIdx ) ) {
-				throw new CFLibUniqueIndexViolationException( getClass(),
-					"updateSecSysGrp",
-					"SecSysGrpLevelIdx",
-					"SecSysGrpLevelIdx",
-					newKeySecLevelIdx );
-			}
-		}
-
-		if( ! existingKeySecLevelNmIdx.equals( newKeySecLevelNmIdx ) ) {
-			if( dictBySecLevelNmIdx.containsKey( newKeySecLevelNmIdx ) ) {
-				throw new CFLibUniqueIndexViolationException( getClass(),
-					"updateSecSysGrp",
-					"SecSysGrpLevelNameIdx",
-					"SecSysGrpLevelNameIdx",
-					newKeySecLevelNmIdx );
 			}
 		}
 
@@ -466,11 +398,18 @@ public class CFSecRamSecSysGrpTable
 		dictByUNameIdx.remove( existingKeyUNameIdx );
 		dictByUNameIdx.put( newKeyUNameIdx, Buff );
 
-		dictBySecLevelIdx.remove( existingKeySecLevelIdx );
-		dictBySecLevelIdx.put( newKeySecLevelIdx, Buff );
-
-		dictBySecLevelNmIdx.remove( existingKeySecLevelNmIdx );
-		dictBySecLevelNmIdx.put( newKeySecLevelNmIdx, Buff );
+		subdict = dictBySecLevelIdx.get( existingKeySecLevelIdx );
+		if( subdict != null ) {
+			subdict.remove( pkey );
+		}
+		if( dictBySecLevelIdx.containsKey( newKeySecLevelIdx ) ) {
+			subdict = dictBySecLevelIdx.get( newKeySecLevelIdx );
+		}
+		else {
+			subdict = new HashMap< CFLibDbKeyHash256, CFSecBuffSecSysGrp >();
+			dictBySecLevelIdx.put( newKeySecLevelIdx, subdict );
+		}
+		subdict.put( pkey, Buff );
 
 		return(Buff);
 	}
@@ -503,10 +442,6 @@ public class CFSecRamSecSysGrpTable
 		CFSecBuffSecSysGrpBySecLevelIdxKey keySecLevelIdx = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getFactorySecSysGrp().newBySecLevelIdxKey();
 		keySecLevelIdx.setRequiredSecLevel( existing.getRequiredSecLevel() );
 
-		CFSecBuffSecSysGrpBySecLevelNmIdxKey keySecLevelNmIdx = (CFSecBuffSecSysGrpBySecLevelNmIdxKey)schema.getFactorySecSysGrp().newBySecLevelNmIdxKey();
-		keySecLevelNmIdx.setRequiredSecLevel( existing.getRequiredSecLevel() );
-		keySecLevelNmIdx.setRequiredName( existing.getRequiredName() );
-
 		// Validate reverse foreign keys
 
 		// Delete is valid
@@ -516,9 +451,8 @@ public class CFSecRamSecSysGrpTable
 
 		dictByUNameIdx.remove( keyUNameIdx );
 
-		dictBySecLevelIdx.remove( keySecLevelIdx );
-
-		dictBySecLevelNmIdx.remove( keySecLevelNmIdx );
+		subdict = dictBySecLevelIdx.get( keySecLevelIdx );
+		subdict.remove( pkey );
 
 	}
 	@Override
@@ -599,45 +533,6 @@ public class CFSecRamSecSysGrpTable
 	{
 		CFSecBuffSecSysGrp cur;
 		boolean anyNotNull = false;
-		anyNotNull = true;
-		if( ! anyNotNull ) {
-			return;
-		}
-		LinkedList<CFSecBuffSecSysGrp> matchSet = new LinkedList<CFSecBuffSecSysGrp>();
-		Iterator<CFSecBuffSecSysGrp> values = dictByPKey.values().iterator();
-		while( values.hasNext() ) {
-			cur = values.next();
-			if( argKey.equals( cur ) ) {
-				matchSet.add( cur );
-			}
-		}
-		Iterator<CFSecBuffSecSysGrp> iterMatch = matchSet.iterator();
-		while( iterMatch.hasNext() ) {
-			cur = iterMatch.next();
-			cur = (CFSecBuffSecSysGrp)(schema.getTableSecSysGrp().readDerivedByIdIdx( Authorization,
-				cur.getRequiredSecSysGrpId() ));
-			deleteSecSysGrp( Authorization, cur );
-		}
-	}
-
-	@Override
-	public void deleteSecSysGrpBySecLevelNmIdx( ICFSecAuthorization Authorization,
-		ICFSecSchema.SecLevelEnum argSecLevel,
-		String argName )
-	{
-		CFSecBuffSecSysGrpBySecLevelNmIdxKey key = (CFSecBuffSecSysGrpBySecLevelNmIdxKey)schema.getFactorySecSysGrp().newBySecLevelNmIdxKey();
-		key.setRequiredSecLevel( argSecLevel );
-		key.setRequiredName( argName );
-		deleteSecSysGrpBySecLevelNmIdx( Authorization, key );
-	}
-
-	@Override
-	public void deleteSecSysGrpBySecLevelNmIdx( ICFSecAuthorization Authorization,
-		ICFSecSecSysGrpBySecLevelNmIdxKey argKey )
-	{
-		CFSecBuffSecSysGrp cur;
-		boolean anyNotNull = false;
-		anyNotNull = true;
 		anyNotNull = true;
 		if( ! anyNotNull ) {
 			return;
