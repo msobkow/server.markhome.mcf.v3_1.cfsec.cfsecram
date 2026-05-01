@@ -62,6 +62,11 @@ public class CFSecRamSchema
 		tableSecClusGrp = new CFSecRamSecClusGrpTable( this );
 		tableSecClusGrpInc = new CFSecRamSecClusGrpIncTable( this );
 		tableSecClusGrpMemb = new CFSecRamSecClusGrpMembTable( this );
+		tableSecClusRole = new CFSecRamSecClusRoleTable( this );
+		tableSecClusRoleMemb = new CFSecRamSecClusRoleMembTable( this );
+		tableSecRole = new CFSecRamSecRoleTable( this );
+		tableSecRoleEnables = new CFSecRamSecRoleEnablesTable( this );
+		tableSecRoleMemb = new CFSecRamSecRoleMembTable( this );
 		tableSecSession = new CFSecRamSecSessionTable( this );
 		tableSecSysGrp = new CFSecRamSecSysGrpTable( this );
 		tableSecSysGrpInc = new CFSecRamSecSysGrpIncTable( this );
@@ -69,6 +74,8 @@ public class CFSecRamSchema
 		tableSecTentGrp = new CFSecRamSecTentGrpTable( this );
 		tableSecTentGrpInc = new CFSecRamSecTentGrpIncTable( this );
 		tableSecTentGrpMemb = new CFSecRamSecTentGrpMembTable( this );
+		tableSecTentRole = new CFSecRamSecTentRoleTable( this );
+		tableSecTentRoleMemb = new CFSecRamSecTentRoleMembTable( this );
 		tableSecUser = new CFSecRamSecUserTable( this );
 		tableSecUserEMConf = new CFSecRamSecUserEMConfTable( this );
 		tableSecUserPWHistory = new CFSecRamSecUserPWHistoryTable( this );
@@ -144,7 +151,19 @@ public class CFSecRamSchema
 	}
 
 	@Override
+	public CFLibDbKeyHash256 nextSecClusRoleIdGen() {
+		CFLibDbKeyHash256 retval = new CFLibDbKeyHash256(0);
+		return( retval );
+	}
+
+	@Override
 	public CFLibDbKeyHash256 nextSecTentGrpIdGen() {
+		CFLibDbKeyHash256 retval = new CFLibDbKeyHash256(0);
+		return( retval );
+	}
+
+	@Override
+	public CFLibDbKeyHash256 nextSecTentRoleIdGen() {
 		CFLibDbKeyHash256 retval = new CFLibDbKeyHash256(0);
 		return( retval );
 	}
@@ -254,6 +273,27 @@ public class CFSecRamSchema
 		}
 		if (tableSecTentGrpMemb == null || !(tableSecTentGrpMemb instanceof CFSecRamSecTentGrpMembTable)) {
 			tableSecTentGrpMemb = new CFSecRamSecTentGrpMembTable(this);
+		}
+		if (tableSecRole == null || !(tableSecRole instanceof CFSecRamSecRoleTable)) {
+			tableSecRole = new CFSecRamSecRoleTable(this);
+		}
+		if (tableSecRoleEnables == null || !(tableSecRoleEnables instanceof CFSecRamSecRoleEnablesTable)) {
+			tableSecRoleEnables = new CFSecRamSecRoleEnablesTable(this);
+		}
+		if (tableSecRoleMemb == null || !(tableSecRoleMemb instanceof CFSecRamSecRoleMembTable)) {
+			tableSecRoleMemb = new CFSecRamSecRoleMembTable(this);
+		}
+		if (tableSecClusRole == null || !(tableSecClusRole instanceof CFSecRamSecClusRoleTable)) {
+			tableSecClusRole = new CFSecRamSecClusRoleTable(this);
+		}
+		if (tableSecClusRoleMemb == null || !(tableSecClusRoleMemb instanceof CFSecRamSecClusRoleMembTable)) {
+			tableSecClusRoleMemb = new CFSecRamSecClusRoleMembTable(this);
+		}
+		if (tableSecTentRole == null || !(tableSecTentRole instanceof CFSecRamSecTentRoleTable)) {
+			tableSecTentRole = new CFSecRamSecTentRoleTable(this);
+		}
+		if (tableSecTentRoleMemb == null || !(tableSecTentRoleMemb instanceof CFSecRamSecTentRoleMembTable)) {
+			tableSecTentRoleMemb = new CFSecRamSecTentRoleMembTable(this);
 		}
 		if (tableSecSession == null || !(tableSecSession instanceof CFSecRamSecSessionTable)) {
 			tableSecSession = new CFSecRamSecSessionTable(this);
