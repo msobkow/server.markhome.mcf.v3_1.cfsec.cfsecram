@@ -125,6 +125,26 @@ public class CFSecRamSecClusRoleTable
 
 		// Validate foreign keys
 
+		{
+			boolean allNull = true;
+			allNull = false;
+			if( ! allNull ) {
+				if( null == schema.getTableCluster().readDerivedByIdIdx( Authorization,
+						Buff.getRequiredClusterId() ) )
+				{
+					throw new CFLibUnresolvedRelationException( getClass(),
+						S_ProcName,
+						"Owner",
+						"Owner",
+						"SecClusRoleCluster",
+						"SecClusRoleCluster",
+						"Cluster",
+						"Cluster",
+						null );
+				}
+			}
+		}
+
 		// Proceed with adding the new record
 
 		dictByPKey.put( pkey, Buff );
@@ -466,6 +486,26 @@ public class CFSecRamSecClusRoleTable
 
 		// Validate foreign keys
 
+		{
+			boolean allNull = true;
+
+			if( allNull ) {
+				if( null == schema.getTableCluster().readDerivedByIdIdx( Authorization,
+						Buff.getRequiredClusterId() ) )
+				{
+					throw new CFLibUnresolvedRelationException( getClass(),
+						"updateSecClusRole",
+						"Owner",
+						"Owner",
+						"SecClusRoleCluster",
+						"SecClusRoleCluster",
+						"Cluster",
+						"Cluster",
+						null );
+				}
+			}
+		}
+
 		// Update is valid
 
 		Map< CFLibDbKeyHash256, CFSecBuffSecClusRole > subdict;
@@ -522,6 +562,13 @@ public class CFSecRamSecClusRoleTable
 			throw new CFLibCollisionDetectedException( getClass(),
 				"deleteSecClusRole",
 				pkey );
+		}
+		// Short circuit self-referential code to prevent stack overflows
+		Object arrCheckSecClusRoleMembByGrp[] = schema.getTableSecClusRoleMemb().readDerivedByClusRoleIdx( Authorization,
+						existing.getRequiredSecClusRoleId() );
+		if( arrCheckSecClusRoleMembByGrp.length > 0 ) {
+			schema.getTableSecClusRoleMemb().deleteSecClusRoleMembByClusRoleIdx( Authorization,
+						existing.getRequiredSecClusRoleId() );
 		}
 		CFSecBuffSecClusRoleByClusterIdxKey keyClusterIdx = (CFSecBuffSecClusRoleByClusterIdxKey)schema.getFactorySecClusRole().newByClusterIdxKey();
 		keyClusterIdx.setRequiredClusterId( existing.getRequiredClusterId() );
