@@ -145,6 +145,26 @@ public class CFSecRamSecClusRoleTable
 			}
 		}
 
+		{
+			boolean allNull = true;
+			allNull = false;
+			if( ! allNull ) {
+				if( null == schema.getTableSecSysGrp().readDerivedByUNameIdx( Authorization,
+						Buff.getRequiredName() ) )
+				{
+					throw new CFLibUnresolvedRelationException( getClass(),
+						S_ProcName,
+						"Container",
+						"Container",
+						"SecClusRoleMembSysRol",
+						"SecClusRoleMembSysRol",
+						"SecSysGrp",
+						"SecSysGrp",
+						null );
+				}
+			}
+		}
+
 		// Proceed with adding the new record
 
 		dictByPKey.put( pkey, Buff );
@@ -501,6 +521,26 @@ public class CFSecRamSecClusRoleTable
 						"SecClusRoleCluster",
 						"Cluster",
 						"Cluster",
+						null );
+				}
+			}
+		}
+
+		{
+			boolean allNull = true;
+
+			if( allNull ) {
+				if( null == schema.getTableSecSysGrp().readDerivedByUNameIdx( Authorization,
+						Buff.getRequiredName() ) )
+				{
+					throw new CFLibUnresolvedRelationException( getClass(),
+						"updateSecClusRole",
+						"Container",
+						"Container",
+						"SecClusRoleMembSysRol",
+						"SecClusRoleMembSysRol",
+						"SecSysGrp",
+						"SecSysGrp",
 						null );
 				}
 			}

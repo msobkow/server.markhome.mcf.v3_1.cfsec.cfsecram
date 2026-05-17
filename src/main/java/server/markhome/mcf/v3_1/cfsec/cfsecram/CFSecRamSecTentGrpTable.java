@@ -565,8 +565,6 @@ public class CFSecRamSecTentGrpTable
 		}
 					schema.getTableSecTentGrpMemb().deleteSecTentGrpMembByTentGrpIdx( Authorization,
 						existing.getRequiredSecTentGrpId() );
-					schema.getTableSecTentGrpInc().deleteSecTentGrpIncByTentGrpIdx( Authorization,
-						existing.getRequiredSecTentGrpId() );
 		CFSecBuffSecTentGrpByTenantIdxKey keyTenantIdx = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getFactorySecTentGrp().newByTenantIdxKey();
 		keyTenantIdx.setRequiredTenantId( existing.getRequiredTenantId() );
 

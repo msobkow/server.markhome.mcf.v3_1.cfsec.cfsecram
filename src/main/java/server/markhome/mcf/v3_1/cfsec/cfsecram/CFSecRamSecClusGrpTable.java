@@ -565,8 +565,6 @@ public class CFSecRamSecClusGrpTable
 		}
 					schema.getTableSecClusGrpMemb().deleteSecClusGrpMembByClusGrpIdx( Authorization,
 						existing.getRequiredSecClusGrpId() );
-					schema.getTableSecClusGrpInc().deleteSecClusGrpIncByClusGrpIdx( Authorization,
-						existing.getRequiredSecClusGrpId() );
 		CFSecBuffSecClusGrpByClusterIdxKey keyClusterIdx = (CFSecBuffSecClusGrpByClusterIdxKey)schema.getFactorySecClusGrp().newByClusterIdxKey();
 		keyClusterIdx.setRequiredClusterId( existing.getRequiredClusterId() );
 

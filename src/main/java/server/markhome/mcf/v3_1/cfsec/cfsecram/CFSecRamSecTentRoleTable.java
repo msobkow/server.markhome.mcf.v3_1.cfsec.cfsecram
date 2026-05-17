@@ -129,26 +129,6 @@ public class CFSecRamSecTentRoleTable
 			boolean allNull = true;
 			allNull = false;
 			if( ! allNull ) {
-				if( null == schema.getTableSecSysGrp().readDerivedByUNameIdx( Authorization,
-						Buff.getRequiredName() ) )
-				{
-					throw new CFLibUnresolvedRelationException( getClass(),
-						S_ProcName,
-						"Container",
-						"Container",
-						"SecTentRoleRole",
-						"SecTentRoleRole",
-						"SecSysGrp",
-						"SecSysGrp",
-						null );
-				}
-			}
-		}
-
-		{
-			boolean allNull = true;
-			allNull = false;
-			if( ! allNull ) {
 				if( null == schema.getTableTenant().readDerivedByIdIdx( Authorization,
 						Buff.getRequiredTenantId() ) )
 				{
@@ -160,6 +140,26 @@ public class CFSecRamSecTentRoleTable
 						"SecTentRoleTenant",
 						"Tenant",
 						"Tenant",
+						null );
+				}
+			}
+		}
+
+		{
+			boolean allNull = true;
+			allNull = false;
+			if( ! allNull ) {
+				if( null == schema.getTableSecSysGrp().readDerivedByUNameIdx( Authorization,
+						Buff.getRequiredName() ) )
+				{
+					throw new CFLibUnresolvedRelationException( getClass(),
+						S_ProcName,
+						"Container",
+						"Container",
+						"SecTentRoleSysRole",
+						"SecTentRoleSysRole",
+						"SecSysGrp",
+						"SecSysGrp",
 						null );
 				}
 			}
@@ -510,26 +510,6 @@ public class CFSecRamSecTentRoleTable
 			boolean allNull = true;
 
 			if( allNull ) {
-				if( null == schema.getTableSecSysGrp().readDerivedByUNameIdx( Authorization,
-						Buff.getRequiredName() ) )
-				{
-					throw new CFLibUnresolvedRelationException( getClass(),
-						"updateSecTentRole",
-						"Container",
-						"Container",
-						"SecTentRoleRole",
-						"SecTentRoleRole",
-						"SecSysGrp",
-						"SecSysGrp",
-						null );
-				}
-			}
-		}
-
-		{
-			boolean allNull = true;
-
-			if( allNull ) {
 				if( null == schema.getTableTenant().readDerivedByIdIdx( Authorization,
 						Buff.getRequiredTenantId() ) )
 				{
@@ -541,6 +521,26 @@ public class CFSecRamSecTentRoleTable
 						"SecTentRoleTenant",
 						"Tenant",
 						"Tenant",
+						null );
+				}
+			}
+		}
+
+		{
+			boolean allNull = true;
+
+			if( allNull ) {
+				if( null == schema.getTableSecSysGrp().readDerivedByUNameIdx( Authorization,
+						Buff.getRequiredName() ) )
+				{
+					throw new CFLibUnresolvedRelationException( getClass(),
+						"updateSecTentRole",
+						"Container",
+						"Container",
+						"SecTentRoleSysRole",
+						"SecTentRoleSysRole",
+						"SecSysGrp",
+						"SecSysGrp",
 						null );
 				}
 			}
