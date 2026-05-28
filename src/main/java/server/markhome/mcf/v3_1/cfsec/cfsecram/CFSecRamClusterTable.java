@@ -432,6 +432,8 @@ public class CFSecRamClusterTable
 				"deleteCluster",
 				pkey );
 		}
+					schema.getTableSecClusRole().deleteSecClusRoleByClusterIdx( Authorization,
+						existing.getRequiredId() );
 					schema.getTableSecClusGrp().deleteSecClusGrpByClusterIdx( Authorization,
 						existing.getRequiredId() );
 					schema.getTableTenant().deleteTenantByClusterIdx( Authorization,

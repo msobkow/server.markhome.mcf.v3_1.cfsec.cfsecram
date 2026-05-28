@@ -134,8 +134,8 @@ public class CFSecRamSecTentGrpTable
 				{
 					throw new CFLibUnresolvedRelationException( getClass(),
 						S_ProcName,
-						"Owner",
-						"Owner",
+						"Container",
+						"Container",
 						"SecTentGrpTenant",
 						"SecTentGrpTenant",
 						"Tenant",
@@ -495,8 +495,8 @@ public class CFSecRamSecTentGrpTable
 				{
 					throw new CFLibUnresolvedRelationException( getClass(),
 						"updateSecTentGrp",
-						"Owner",
-						"Owner",
+						"Container",
+						"Container",
 						"SecTentGrpTenant",
 						"SecTentGrpTenant",
 						"Tenant",

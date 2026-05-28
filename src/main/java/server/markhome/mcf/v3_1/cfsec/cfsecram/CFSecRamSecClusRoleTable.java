@@ -134,32 +134,12 @@ public class CFSecRamSecClusRoleTable
 				{
 					throw new CFLibUnresolvedRelationException( getClass(),
 						S_ProcName,
-						"Owner",
-						"Owner",
+						"Container",
+						"Container",
 						"SecClusRoleCluster",
 						"SecClusRoleCluster",
 						"Cluster",
 						"Cluster",
-						null );
-				}
-			}
-		}
-
-		{
-			boolean allNull = true;
-			allNull = false;
-			if( ! allNull ) {
-				if( null == schema.getTableSecSysGrp().readDerivedByUNameIdx( Authorization,
-						Buff.getRequiredName() ) )
-				{
-					throw new CFLibUnresolvedRelationException( getClass(),
-						S_ProcName,
-						"Container",
-						"Container",
-						"SecClusRoleMembSysRol",
-						"SecClusRoleMembSysRol",
-						"SecSysGrp",
-						"SecSysGrp",
 						null );
 				}
 			}
@@ -515,32 +495,12 @@ public class CFSecRamSecClusRoleTable
 				{
 					throw new CFLibUnresolvedRelationException( getClass(),
 						"updateSecClusRole",
-						"Owner",
-						"Owner",
+						"Container",
+						"Container",
 						"SecClusRoleCluster",
 						"SecClusRoleCluster",
 						"Cluster",
 						"Cluster",
-						null );
-				}
-			}
-		}
-
-		{
-			boolean allNull = true;
-
-			if( allNull ) {
-				if( null == schema.getTableSecSysGrp().readDerivedByUNameIdx( Authorization,
-						Buff.getRequiredName() ) )
-				{
-					throw new CFLibUnresolvedRelationException( getClass(),
-						"updateSecClusRole",
-						"Container",
-						"Container",
-						"SecClusRoleMembSysRol",
-						"SecClusRoleMembSysRol",
-						"SecSysGrp",
-						"SecSysGrp",
 						null );
 				}
 			}

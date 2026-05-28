@@ -514,6 +514,16 @@ public class CFSecRamTenantTable
 				"deleteTenant",
 				pkey );
 		}
+					schema.getTableSecTentRole().deleteSecTentRoleByTenantIdx( Authorization,
+						existing.getRequiredId() );
+		CFSecBuffSecTentGrp buffDelTentGrpMembs;
+		ICFSecSecTentGrp arrDelTentGrpMembs[] = schema.getTableSecTentGrp().readDerivedByTenantIdx( Authorization,
+			existing.getRequiredId() );
+		for( int idxDelTentGrpMembs = 0; idxDelTentGrpMembs < arrDelTentGrpMembs.length; idxDelTentGrpMembs++ ) {
+			buffDelTentGrpMembs = (CFSecBuffSecTentGrp)(arrDelTentGrpMembs[idxDelTentGrpMembs]);
+					schema.getTableSecTentGrpMemb().deleteSecTentGrpMembByTentGrpIdx( Authorization,
+						buffDelTentGrpMembs.getRequiredSecTentGrpId() );
+		}
 					schema.getTableSecTentGrp().deleteSecTentGrpByTenantIdx( Authorization,
 						existing.getRequiredId() );
 		CFSecBuffTenantByClusterIdxKey keyClusterIdx = (CFSecBuffTenantByClusterIdxKey)schema.getFactoryTenant().newByClusterIdxKey();
