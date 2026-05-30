@@ -315,7 +315,7 @@ public class CFSecRamSysClusterTable
 		ICFSecSysCluster iBuff )
 	{
 		CFSecBuffSysCluster Buff = (CFSecBuffSysCluster)ensureRec(iBuff);
-		Integer pkey = Buff.getPKey();
+		Integer pkey = (Integer)Buff.getPKey();
 		CFSecBuffSysCluster existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),

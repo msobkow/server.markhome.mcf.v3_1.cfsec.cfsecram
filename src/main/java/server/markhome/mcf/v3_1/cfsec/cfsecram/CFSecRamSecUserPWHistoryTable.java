@@ -440,8 +440,7 @@ public class CFSecRamSecUserPWHistoryTable
 	{
 		CFSecBuffSecUserPWHistory Buff = (CFSecBuffSecUserPWHistory)ensureRec(iBuff);
 		CFSecBuffSecUserPWHistoryPKey pkey = (CFSecBuffSecUserPWHistoryPKey)(schema.getFactorySecUserPWHistory().newPKey());
-		pkey.setRequiredSecUserId( Buff.getRequiredSecUserId() );
-		pkey.setRequiredPWSetStamp( Buff.getRequiredPWSetStamp() );
+		pkey = (CFSecBuffSecUserPWHistoryPKey)Buff.getPKey();
 		CFSecBuffSecUserPWHistory existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),

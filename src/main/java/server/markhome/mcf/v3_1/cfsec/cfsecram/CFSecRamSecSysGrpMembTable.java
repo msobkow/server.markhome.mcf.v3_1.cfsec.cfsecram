@@ -93,8 +93,8 @@ public class CFSecRamSecSysGrpMembTable
 		
 		CFSecBuffSecSysGrpMemb Buff = (CFSecBuffSecSysGrpMemb)ensureRec(iBuff);
 		CFSecBuffSecSysGrpMembPKey pkey = (CFSecBuffSecSysGrpMembPKey)(schema.getFactorySecSysGrpMemb().newPKey());
-		pkey.setRequiredContainerGroup( Buff.getRequiredSecSysGrpId() );
-		pkey.setRequiredParentUser( Buff.getRequiredLoginId() );
+		pkey.setRequiredSecSysGrpId(Buff.getRequiredSecSysGrpId());
+		pkey.setRequiredLoginId(Buff.getRequiredLoginId());
 		Buff.setRequiredContainerGroup( pkey.getRequiredSecSysGrpId() );
 		Buff.setRequiredParentUser( pkey.getRequiredLoginId() );
 		CFSecBuffSecSysGrpMembBySysGrpIdxKey keySysGrpIdx = (CFSecBuffSecSysGrpMembBySysGrpIdxKey)schema.getFactorySecSysGrpMemb().newBySysGrpIdxKey();
@@ -187,8 +187,8 @@ public class CFSecRamSecSysGrpMembTable
 			}
 		}
 		CFSecBuffSecSysGrpMembPKey key = (CFSecBuffSecSysGrpMembPKey)(schema.getFactorySecSysGrpMemb().newPKey());
-		key.setRequiredContainerGroup( SecSysGrpId );
-		key.setRequiredParentUser( LoginId );
+		key.setRequiredSecSysGrpId( SecSysGrpId );
+		key.setRequiredLoginId( LoginId );
 		return( readDerived( Authorization, key ) );
 	}
 
@@ -197,8 +197,8 @@ public class CFSecRamSecSysGrpMembTable
 	{
 		final String S_ProcName = "CFSecRamSecSysGrpMemb.readDerived";
 		CFSecBuffSecSysGrpMembPKey key = (CFSecBuffSecSysGrpMembPKey)(schema.getFactorySecSysGrpMemb().newPKey());
-		key.setRequiredContainerGroup( PKey.getRequiredSecSysGrpId() );
-		key.setRequiredParentUser( PKey.getRequiredLoginId() );
+		key.setRequiredSecSysGrpId( PKey.getRequiredSecSysGrpId() );
+		key.setRequiredLoginId( PKey.getRequiredLoginId() );
 		ICFSecSecSysGrpMemb buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -215,8 +215,8 @@ public class CFSecRamSecSysGrpMembTable
 	{
 		final String S_ProcName = "CFSecRamSecSysGrpMemb.lockDerived";
 		CFSecBuffSecSysGrpMembPKey key = (CFSecBuffSecSysGrpMembPKey)(schema.getFactorySecSysGrpMemb().newPKey());
-		key.setRequiredContainerGroup( PKey.getRequiredSecSysGrpId() );
-		key.setRequiredParentUser( PKey.getRequiredLoginId() );
+		key.setRequiredSecSysGrpId( PKey.getRequiredSecSysGrpId() );
+		key.setRequiredLoginId( PKey.getRequiredLoginId() );
 		ICFSecSecSysGrpMemb buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -302,8 +302,8 @@ public class CFSecRamSecSysGrpMembTable
 	{
 		final String S_ProcName = "CFSecRamSecSysGrpMemb.readDerivedByIdIdx() ";
 		CFSecBuffSecSysGrpMembPKey key = (CFSecBuffSecSysGrpMembPKey)(schema.getFactorySecSysGrpMemb().newPKey());
-		key.setRequiredContainerGroup( SecSysGrpId );
-		key.setRequiredParentUser( LoginId );
+		key.setRequiredSecSysGrpId( SecSysGrpId );
+		key.setRequiredLoginId( LoginId );
 		ICFSecSecSysGrpMemb buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -320,8 +320,8 @@ public class CFSecRamSecSysGrpMembTable
 		String LoginId )
 	{
 		CFSecBuffSecSysGrpMembPKey key = (CFSecBuffSecSysGrpMembPKey)(schema.getFactorySecSysGrpMemb().newPKey());
-		key.setRequiredContainerGroup( SecSysGrpId );
-		key.setRequiredParentUser( LoginId );
+		key.setRequiredSecSysGrpId( SecSysGrpId );
+		key.setRequiredLoginId( LoginId );
 		return( readRec( Authorization, key ) );
 	}
 
@@ -482,8 +482,7 @@ public class CFSecRamSecSysGrpMembTable
 	{
 		CFSecBuffSecSysGrpMemb Buff = (CFSecBuffSecSysGrpMemb)ensureRec(iBuff);
 		CFSecBuffSecSysGrpMembPKey pkey = (CFSecBuffSecSysGrpMembPKey)(schema.getFactorySecSysGrpMemb().newPKey());
-		pkey.setRequiredContainerGroup( Buff.getRequiredSecSysGrpId() );
-		pkey.setRequiredParentUser( Buff.getRequiredLoginId() );
+		pkey = (CFSecBuffSecSysGrpMembPKey)Buff.getPKey();
 		CFSecBuffSecSysGrpMemb existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),
@@ -616,8 +615,8 @@ public class CFSecRamSecSysGrpMembTable
 		String LoginId )
 	{
 		CFSecBuffSecSysGrpMembPKey key = (CFSecBuffSecSysGrpMembPKey)(schema.getFactorySecSysGrpMemb().newPKey());
-		key.setRequiredContainerGroup( SecSysGrpId );
-		key.setRequiredParentUser( LoginId );
+		key.setRequiredSecSysGrpId( SecSysGrpId );
+		key.setRequiredLoginId( LoginId );
 		deleteSecSysGrpMembByIdIdx( Authorization, key );
 	}
 
@@ -626,8 +625,8 @@ public class CFSecRamSecSysGrpMembTable
 		ICFSecSecSysGrpMembPKey PKey )
 	{
 		CFSecBuffSecSysGrpMembPKey key = (CFSecBuffSecSysGrpMembPKey)(schema.getFactorySecSysGrpMemb().newPKey());
-		key.setRequiredContainerGroup( PKey.getRequiredSecSysGrpId() );
-		key.setRequiredParentUser( PKey.getRequiredLoginId() );
+		key.setRequiredSecSysGrpId( PKey.getRequiredSecSysGrpId() );
+		key.setRequiredLoginId( PKey.getRequiredLoginId() );
 		CFSecBuffSecSysGrpMembPKey argKey = key;
 		boolean anyNotNull = false;
 		anyNotNull = true;

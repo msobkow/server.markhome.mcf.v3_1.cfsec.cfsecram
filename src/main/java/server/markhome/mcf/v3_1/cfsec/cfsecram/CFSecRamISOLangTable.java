@@ -345,7 +345,7 @@ public class CFSecRamISOLangTable
 		ICFSecISOLang iBuff )
 	{
 		CFSecBuffISOLang Buff = (CFSecBuffISOLang)ensureRec(iBuff);
-		Short pkey = Buff.getPKey();
+		Short pkey = (Short)Buff.getPKey();
 		CFSecBuffISOLang existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),

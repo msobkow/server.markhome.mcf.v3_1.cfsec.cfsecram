@@ -93,8 +93,8 @@ public class CFSecRamSecClusRoleMembTable
 		
 		CFSecBuffSecClusRoleMemb Buff = (CFSecBuffSecClusRoleMemb)ensureRec(iBuff);
 		CFSecBuffSecClusRoleMembPKey pkey = (CFSecBuffSecClusRoleMembPKey)(schema.getFactorySecClusRoleMemb().newPKey());
-		pkey.setRequiredContainerRole( Buff.getRequiredSecClusRoleId() );
-		pkey.setRequiredParentUser( Buff.getRequiredLoginId() );
+		pkey.setRequiredSecClusRoleId(Buff.getRequiredSecClusRoleId());
+		pkey.setRequiredLoginId(Buff.getRequiredLoginId());
 		Buff.setRequiredContainerRole( pkey.getRequiredSecClusRoleId() );
 		Buff.setRequiredParentUser( pkey.getRequiredLoginId() );
 		CFSecBuffSecClusRoleMembByClusRoleIdxKey keyClusRoleIdx = (CFSecBuffSecClusRoleMembByClusRoleIdxKey)schema.getFactorySecClusRoleMemb().newByClusRoleIdxKey();
@@ -187,8 +187,8 @@ public class CFSecRamSecClusRoleMembTable
 			}
 		}
 		CFSecBuffSecClusRoleMembPKey key = (CFSecBuffSecClusRoleMembPKey)(schema.getFactorySecClusRoleMemb().newPKey());
-		key.setRequiredContainerRole( SecClusRoleId );
-		key.setRequiredParentUser( LoginId );
+		key.setRequiredSecClusRoleId( SecClusRoleId );
+		key.setRequiredLoginId( LoginId );
 		return( readDerived( Authorization, key ) );
 	}
 
@@ -197,8 +197,8 @@ public class CFSecRamSecClusRoleMembTable
 	{
 		final String S_ProcName = "CFSecRamSecClusRoleMemb.readDerived";
 		CFSecBuffSecClusRoleMembPKey key = (CFSecBuffSecClusRoleMembPKey)(schema.getFactorySecClusRoleMemb().newPKey());
-		key.setRequiredContainerRole( PKey.getRequiredSecClusRoleId() );
-		key.setRequiredParentUser( PKey.getRequiredLoginId() );
+		key.setRequiredSecClusRoleId( PKey.getRequiredSecClusRoleId() );
+		key.setRequiredLoginId( PKey.getRequiredLoginId() );
 		ICFSecSecClusRoleMemb buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -215,8 +215,8 @@ public class CFSecRamSecClusRoleMembTable
 	{
 		final String S_ProcName = "CFSecRamSecClusRoleMemb.lockDerived";
 		CFSecBuffSecClusRoleMembPKey key = (CFSecBuffSecClusRoleMembPKey)(schema.getFactorySecClusRoleMemb().newPKey());
-		key.setRequiredContainerRole( PKey.getRequiredSecClusRoleId() );
-		key.setRequiredParentUser( PKey.getRequiredLoginId() );
+		key.setRequiredSecClusRoleId( PKey.getRequiredSecClusRoleId() );
+		key.setRequiredLoginId( PKey.getRequiredLoginId() );
 		ICFSecSecClusRoleMemb buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -302,8 +302,8 @@ public class CFSecRamSecClusRoleMembTable
 	{
 		final String S_ProcName = "CFSecRamSecClusRoleMemb.readDerivedByIdIdx() ";
 		CFSecBuffSecClusRoleMembPKey key = (CFSecBuffSecClusRoleMembPKey)(schema.getFactorySecClusRoleMemb().newPKey());
-		key.setRequiredContainerRole( SecClusRoleId );
-		key.setRequiredParentUser( LoginId );
+		key.setRequiredSecClusRoleId( SecClusRoleId );
+		key.setRequiredLoginId( LoginId );
 		ICFSecSecClusRoleMemb buff;
 		if( dictByPKey.containsKey( key ) ) {
 			buff = dictByPKey.get( key );
@@ -320,8 +320,8 @@ public class CFSecRamSecClusRoleMembTable
 		String LoginId )
 	{
 		CFSecBuffSecClusRoleMembPKey key = (CFSecBuffSecClusRoleMembPKey)(schema.getFactorySecClusRoleMemb().newPKey());
-		key.setRequiredContainerRole( SecClusRoleId );
-		key.setRequiredParentUser( LoginId );
+		key.setRequiredSecClusRoleId( SecClusRoleId );
+		key.setRequiredLoginId( LoginId );
 		return( readRec( Authorization, key ) );
 	}
 
@@ -482,8 +482,7 @@ public class CFSecRamSecClusRoleMembTable
 	{
 		CFSecBuffSecClusRoleMemb Buff = (CFSecBuffSecClusRoleMemb)ensureRec(iBuff);
 		CFSecBuffSecClusRoleMembPKey pkey = (CFSecBuffSecClusRoleMembPKey)(schema.getFactorySecClusRoleMemb().newPKey());
-		pkey.setRequiredContainerRole( Buff.getRequiredSecClusRoleId() );
-		pkey.setRequiredParentUser( Buff.getRequiredLoginId() );
+		pkey = (CFSecBuffSecClusRoleMembPKey)Buff.getPKey();
 		CFSecBuffSecClusRoleMemb existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),
@@ -616,8 +615,8 @@ public class CFSecRamSecClusRoleMembTable
 		String LoginId )
 	{
 		CFSecBuffSecClusRoleMembPKey key = (CFSecBuffSecClusRoleMembPKey)(schema.getFactorySecClusRoleMemb().newPKey());
-		key.setRequiredContainerRole( SecClusRoleId );
-		key.setRequiredParentUser( LoginId );
+		key.setRequiredSecClusRoleId( SecClusRoleId );
+		key.setRequiredLoginId( LoginId );
 		deleteSecClusRoleMembByIdIdx( Authorization, key );
 	}
 
@@ -626,8 +625,8 @@ public class CFSecRamSecClusRoleMembTable
 		ICFSecSecClusRoleMembPKey PKey )
 	{
 		CFSecBuffSecClusRoleMembPKey key = (CFSecBuffSecClusRoleMembPKey)(schema.getFactorySecClusRoleMemb().newPKey());
-		key.setRequiredContainerRole( PKey.getRequiredSecClusRoleId() );
-		key.setRequiredParentUser( PKey.getRequiredLoginId() );
+		key.setRequiredSecClusRoleId( PKey.getRequiredSecClusRoleId() );
+		key.setRequiredLoginId( PKey.getRequiredLoginId() );
 		CFSecBuffSecClusRoleMembPKey argKey = key;
 		boolean anyNotNull = false;
 		anyNotNull = true;

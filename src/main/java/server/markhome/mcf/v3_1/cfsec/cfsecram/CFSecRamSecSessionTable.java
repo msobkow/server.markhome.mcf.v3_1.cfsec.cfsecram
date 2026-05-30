@@ -563,7 +563,7 @@ public class CFSecRamSecSessionTable
 		ICFSecSecSession iBuff )
 	{
 		CFSecBuffSecSession Buff = (CFSecBuffSecSession)ensureRec(iBuff);
-		CFLibDbKeyHash256 pkey = Buff.getPKey();
+		CFLibDbKeyHash256 pkey = (CFLibDbKeyHash256)Buff.getPKey();
 		CFSecBuffSecSession existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),

@@ -415,7 +415,7 @@ public class CFSecRamISOTZoneTable
 		ICFSecISOTZone iBuff )
 	{
 		CFSecBuffISOTZone Buff = (CFSecBuffISOTZone)ensureRec(iBuff);
-		Short pkey = Buff.getPKey();
+		Short pkey = (Short)Buff.getPKey();
 		CFSecBuffISOTZone existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),

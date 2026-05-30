@@ -435,7 +435,7 @@ public class CFSecRamSecTentGrpTable
 		ICFSecSecTentGrp iBuff )
 	{
 		CFSecBuffSecTentGrp Buff = (CFSecBuffSecTentGrp)ensureRec(iBuff);
-		CFLibDbKeyHash256 pkey = Buff.getPKey();
+		CFLibDbKeyHash256 pkey = (CFLibDbKeyHash256)Buff.getPKey();
 		CFSecBuffSecTentGrp existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),

@@ -405,7 +405,7 @@ public class CFSecRamTenantTable
 		ICFSecTenant iBuff )
 	{
 		CFSecBuffTenant Buff = (CFSecBuffTenant)ensureRec(iBuff);
-		CFLibDbKeyHash256 pkey = Buff.getPKey();
+		CFLibDbKeyHash256 pkey = (CFLibDbKeyHash256)Buff.getPKey();
 		CFSecBuffTenant existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),

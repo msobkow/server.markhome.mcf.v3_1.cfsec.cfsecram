@@ -98,6 +98,7 @@ public class CFSecRamSecUserPWResetTable
 		CFSecBuffSecUserPWReset Buff = (CFSecBuffSecUserPWReset)ensureRec(iBuff);
 		CFLibDbKeyHash256 pkey;
 		pkey = Buff.getRequiredSecUserId();
+		pkey = Buff.getRequiredSecUserId();
 		Buff.setRequiredContainerUser( pkey );
 		CFSecBuffSecUserPWResetByUUuid6IdxKey keyUUuid6Idx = (CFSecBuffSecUserPWResetByUUuid6IdxKey)schema.getFactorySecUserPWReset().newByUUuid6IdxKey();
 		keyUUuid6Idx.setRequiredPasswordResetUuid6( Buff.getRequiredPasswordResetUuid6() );
@@ -485,7 +486,7 @@ public class CFSecRamSecUserPWResetTable
 		ICFSecSecUserPWReset iBuff )
 	{
 		CFSecBuffSecUserPWReset Buff = (CFSecBuffSecUserPWReset)ensureRec(iBuff);
-		CFLibDbKeyHash256 pkey = Buff.getPKey();
+		CFLibDbKeyHash256 pkey = (CFLibDbKeyHash256)Buff.getPKey();
 		CFSecBuffSecUserPWReset existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),

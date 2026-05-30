@@ -330,7 +330,7 @@ public class CFSecRamISOCcyTable
 		ICFSecISOCcy iBuff )
 	{
 		CFSecBuffISOCcy Buff = (CFSecBuffISOCcy)ensureRec(iBuff);
-		Short pkey = Buff.getPKey();
+		Short pkey = (Short)Buff.getPKey();
 		CFSecBuffISOCcy existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),

@@ -280,7 +280,7 @@ public class CFSecRamSecSysRoleTable
 		ICFSecSecSysRole iBuff )
 	{
 		CFSecBuffSecSysRole Buff = (CFSecBuffSecSysRole)ensureRec(iBuff);
-		CFLibDbKeyHash256 pkey = Buff.getPKey();
+		CFLibDbKeyHash256 pkey = (CFLibDbKeyHash256)Buff.getPKey();
 		CFSecBuffSecSysRole existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),

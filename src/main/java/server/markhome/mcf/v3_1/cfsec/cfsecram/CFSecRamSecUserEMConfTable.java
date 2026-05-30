@@ -104,6 +104,7 @@ public class CFSecRamSecUserEMConfTable
 		CFSecBuffSecUserEMConf Buff = (CFSecBuffSecUserEMConf)ensureRec(iBuff);
 		CFLibDbKeyHash256 pkey;
 		pkey = Buff.getRequiredSecUserId();
+		pkey = Buff.getRequiredSecUserId();
 		Buff.setRequiredContainerUser( pkey );
 		CFSecBuffSecUserEMConfByUUuid6IdxKey keyUUuid6Idx = (CFSecBuffSecUserEMConfByUUuid6IdxKey)schema.getFactorySecUserEMConf().newByUUuid6IdxKey();
 		keyUUuid6Idx.setRequiredEMConfirmationUuid6( Buff.getRequiredEMConfirmationUuid6() );
@@ -570,7 +571,7 @@ public class CFSecRamSecUserEMConfTable
 		ICFSecSecUserEMConf iBuff )
 	{
 		CFSecBuffSecUserEMConf Buff = (CFSecBuffSecUserEMConf)ensureRec(iBuff);
-		CFLibDbKeyHash256 pkey = Buff.getPKey();
+		CFLibDbKeyHash256 pkey = (CFLibDbKeyHash256)Buff.getPKey();
 		CFSecBuffSecUserEMConf existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),

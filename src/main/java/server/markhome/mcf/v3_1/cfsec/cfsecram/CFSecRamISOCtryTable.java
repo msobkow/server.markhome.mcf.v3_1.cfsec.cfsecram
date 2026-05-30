@@ -330,7 +330,7 @@ public class CFSecRamISOCtryTable
 		ICFSecISOCtry iBuff )
 	{
 		CFSecBuffISOCtry Buff = (CFSecBuffISOCtry)ensureRec(iBuff);
-		Short pkey = Buff.getPKey();
+		Short pkey = (Short)Buff.getPKey();
 		CFSecBuffISOCtry existing = dictByPKey.get( pkey );
 		if( existing == null ) {
 			throw new CFLibStaleCacheDetectedException( getClass(),
