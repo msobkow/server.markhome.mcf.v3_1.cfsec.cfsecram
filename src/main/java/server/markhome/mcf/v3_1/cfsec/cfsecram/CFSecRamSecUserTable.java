@@ -475,6 +475,8 @@ public class CFSecRamSecUserTable
 						existing.getRequiredLoginId() );
 					schema.getTableSecTentGrpMemb().deleteSecTentGrpMembByUserIdx( Authorization,
 						existing.getRequiredLoginId() );
+					schema.getTableSecUserPassword().deleteSecUserPasswordByIdIdx( Authorization,
+						existing.getRequiredSecUserId() );
 					schema.getTableSecUserPWReset().deleteSecUserPWResetByIdIdx( Authorization,
 						existing.getRequiredSecUserId() );
 					schema.getTableSecUserEMConf().deleteSecUserEMConfByIdIdx( Authorization,
