@@ -134,12 +134,32 @@ public class CFSecRamSecTentGrpTable
 				{
 					throw new CFLibUnresolvedRelationException( getClass(),
 						S_ProcName,
-						"Container",
-						"Container",
+						"Owner",
+						"Owner",
 						"SecTentGrpTenant",
 						"SecTentGrpTenant",
 						"Tenant",
 						"Tenant",
+						null );
+				}
+			}
+		}
+
+		{
+			boolean allNull = true;
+			allNull = false;
+			if( ! allNull ) {
+				if( null == schema.getTableSecSysGrp().readDerivedByUNameIdx( Authorization,
+						Buff.getRequiredName() ) )
+				{
+					throw new CFLibUnresolvedRelationException( getClass(),
+						S_ProcName,
+						"Container",
+						"Container",
+						"SecTentGrpRefSysGrp",
+						"SecTentGrpRefSysGrp",
+						"SecSysGrp",
+						"SecSysGrp",
 						null );
 				}
 			}
@@ -495,12 +515,32 @@ public class CFSecRamSecTentGrpTable
 				{
 					throw new CFLibUnresolvedRelationException( getClass(),
 						"updateSecTentGrp",
-						"Container",
-						"Container",
+						"Owner",
+						"Owner",
 						"SecTentGrpTenant",
 						"SecTentGrpTenant",
 						"Tenant",
 						"Tenant",
+						null );
+				}
+			}
+		}
+
+		{
+			boolean allNull = true;
+
+			if( allNull ) {
+				if( null == schema.getTableSecSysGrp().readDerivedByUNameIdx( Authorization,
+						Buff.getRequiredName() ) )
+				{
+					throw new CFLibUnresolvedRelationException( getClass(),
+						"updateSecTentGrp",
+						"Container",
+						"Container",
+						"SecTentGrpRefSysGrp",
+						"SecTentGrpRefSysGrp",
+						"SecSysGrp",
+						"SecSysGrp",
 						null );
 				}
 			}
