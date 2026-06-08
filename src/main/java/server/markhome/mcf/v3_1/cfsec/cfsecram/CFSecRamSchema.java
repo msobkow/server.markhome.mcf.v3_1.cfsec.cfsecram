@@ -48,6 +48,7 @@ public class CFSecRamSchema
 	protected short nextISOCtryIdGenValue = 1;
 	protected short nextISOLangIdGenValue = 1;
 	protected short nextISOTZoneIdGenValue = 1;
+	protected int nextTableInfoIdGenValue = 1;
 
 
 	public CFSecRamSchema() {
@@ -80,6 +81,7 @@ public class CFSecRamSchema
 		tableSecUserPWReset = new CFSecRamSecUserPWResetTable( this );
 		tableSecUserPassword = new CFSecRamSecUserPasswordTable( this );
 		tableSysCluster = new CFSecRamSysClusterTable( this );
+		tableTableInfo = new CFSecRamTableInfoTable( this );
 		tableTenant = new CFSecRamTenantTable( this );
 	}
 
@@ -109,6 +111,12 @@ public class CFSecRamSchema
 	@Override
 	public short nextISOTZoneIdGen() {
 		short next = nextISOTZoneIdGenValue++;
+		return( next );
+	}
+
+	@Override
+	public int nextTableInfoIdGen() {
+		int next = nextTableInfoIdGenValue++;
 		return( next );
 	}
 
@@ -211,6 +219,9 @@ public class CFSecRamSchema
 		}
 		if (tableTenant == null || !(tableTenant instanceof CFSecRamTenantTable)) {
 			tableTenant = new CFSecRamTenantTable(this);
+		}
+		if (tableTableInfo == null || !(tableTableInfo instanceof CFSecRamTableInfoTable)) {
+			tableTableInfo = new CFSecRamTableInfoTable(this);
 		}
 		if (tableISOCcy == null || !(tableISOCcy instanceof CFSecRamISOCcyTable)) {
 			tableISOCcy = new CFSecRamISOCcyTable(this);
