@@ -57,6 +57,12 @@ public class CFSecRamTableInfoTable
 			CFSecBuffTableInfo > dictByTableNameIdx
 		= new HashMap< CFSecBuffTableInfoByTableNameIdxKey,
 			CFSecBuffTableInfo >();
+	private Map< CFSecBuffTableInfoBySuperNameIdxKey,
+				Map< Integer,
+					CFSecBuffTableInfo >> dictBySuperNameIdx
+		= new HashMap< CFSecBuffTableInfoBySuperNameIdxKey,
+				Map< Integer,
+					CFSecBuffTableInfo >>();
 	private Map< CFSecBuffTableInfoBySchemaNameIdxKey,
 				Map< Integer,
 					CFSecBuffTableInfo >> dictBySchemaNameIdx
@@ -103,6 +109,9 @@ public class CFSecRamTableInfoTable
 		Buff.setRequiredTableInfoId( pkey );
 		CFSecBuffTableInfoByTableNameIdxKey keyTableNameIdx = (CFSecBuffTableInfoByTableNameIdxKey)schema.getFactoryTableInfo().newByTableNameIdxKey();
 		keyTableNameIdx.setRequiredTableName( Buff.getRequiredTableName() );
+
+		CFSecBuffTableInfoBySuperNameIdxKey keySuperNameIdx = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getFactoryTableInfo().newBySuperNameIdxKey();
+		keySuperNameIdx.setOptionalSuperName( Buff.getOptionalSuperName() );
 
 		CFSecBuffTableInfoBySchemaNameIdxKey keySchemaNameIdx = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getFactoryTableInfo().newBySchemaNameIdxKey();
 		keySchemaNameIdx.setRequiredSchemaName( Buff.getRequiredSchemaName() );
@@ -151,6 +160,16 @@ public class CFSecRamTableInfoTable
 		dictByPKey.put( pkey, Buff );
 
 		dictByTableNameIdx.put( keyTableNameIdx, Buff );
+
+		Map< Integer, CFSecBuffTableInfo > subdictSuperNameIdx;
+		if( dictBySuperNameIdx.containsKey( keySuperNameIdx ) ) {
+			subdictSuperNameIdx = dictBySuperNameIdx.get( keySuperNameIdx );
+		}
+		else {
+			subdictSuperNameIdx = new HashMap< Integer, CFSecBuffTableInfo >();
+			dictBySuperNameIdx.put( keySuperNameIdx, subdictSuperNameIdx );
+		}
+		subdictSuperNameIdx.put( pkey, Buff );
 
 		Map< Integer, CFSecBuffTableInfo > subdictSchemaNameIdx;
 		if( dictBySchemaNameIdx.containsKey( keySchemaNameIdx ) ) {
@@ -243,6 +262,34 @@ public class CFSecRamTableInfoTable
 			buff = null;
 		}
 		return( buff );
+	}
+
+	@Override
+	public ICFSecTableInfo[] readDerivedBySuperNameIdx( ICFSecAuthorization Authorization,
+		String SuperName )
+	{
+		final String S_ProcName = "CFSecRamTableInfo.readDerivedBySuperNameIdx";
+		CFSecBuffTableInfoBySuperNameIdxKey key = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getFactoryTableInfo().newBySuperNameIdxKey();
+
+		key.setOptionalSuperName( SuperName );
+		ICFSecTableInfo[] recArray;
+		if( dictBySuperNameIdx.containsKey( key ) ) {
+			Map< Integer, CFSecBuffTableInfo > subdictSuperNameIdx
+				= dictBySuperNameIdx.get( key );
+			recArray = new ICFSecTableInfo[ subdictSuperNameIdx.size() ];
+			Iterator< CFSecBuffTableInfo > iter = subdictSuperNameIdx.values().iterator();
+			int idx = 0;
+			while( iter.hasNext() ) {
+				recArray[ idx++ ] = iter.next();
+			}
+		}
+		else {
+			Map< Integer, CFSecBuffTableInfo > subdictSuperNameIdx
+				= new HashMap< Integer, CFSecBuffTableInfo >();
+			dictBySuperNameIdx.put( key, subdictSuperNameIdx );
+			recArray = new ICFSecTableInfo[0];
+		}
+		return( recArray );
 	}
 
 	@Override
@@ -397,6 +444,24 @@ public class CFSecRamTableInfoTable
 	}
 
 	@Override
+	public ICFSecTableInfo[] readRecBySuperNameIdx( ICFSecAuthorization Authorization,
+		String SuperName )
+	{
+		final String S_ProcName = "CFSecRamTableInfo.readRecBySuperNameIdx() ";
+		ICFSecTableInfo buff;
+		ArrayList<ICFSecTableInfo> filteredList = new ArrayList<ICFSecTableInfo>();
+		ICFSecTableInfo[] buffList = readDerivedBySuperNameIdx( Authorization,
+			SuperName );
+		for( int idx = 0; idx < buffList.length; idx ++ ) {
+			buff = buffList[idx];
+			if( ( buff != null ) && ( buff.getClassCode() == ICFSecTableInfo.CLASS_CODE ) ) {
+				filteredList.add( (ICFSecTableInfo)buff );
+			}
+		}
+		return( filteredList.toArray( new ICFSecTableInfo[0] ) );
+	}
+
+	@Override
 	public ICFSecTableInfo[] readRecBySchemaNameIdx( ICFSecAuthorization Authorization,
 		String SchemaName )
 	{
@@ -473,6 +538,12 @@ public class CFSecRamTableInfoTable
 		CFSecBuffTableInfoByTableNameIdxKey newKeyTableNameIdx = (CFSecBuffTableInfoByTableNameIdxKey)schema.getFactoryTableInfo().newByTableNameIdxKey();
 		newKeyTableNameIdx.setRequiredTableName( Buff.getRequiredTableName() );
 
+		CFSecBuffTableInfoBySuperNameIdxKey existingKeySuperNameIdx = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getFactoryTableInfo().newBySuperNameIdxKey();
+		existingKeySuperNameIdx.setOptionalSuperName( existing.getOptionalSuperName() );
+
+		CFSecBuffTableInfoBySuperNameIdxKey newKeySuperNameIdx = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getFactoryTableInfo().newBySuperNameIdxKey();
+		newKeySuperNameIdx.setOptionalSuperName( Buff.getOptionalSuperName() );
+
 		CFSecBuffTableInfoBySchemaNameIdxKey existingKeySchemaNameIdx = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getFactoryTableInfo().newBySchemaNameIdxKey();
 		existingKeySchemaNameIdx.setRequiredSchemaName( existing.getRequiredSchemaName() );
 
@@ -537,6 +608,19 @@ public class CFSecRamTableInfoTable
 		dictByTableNameIdx.remove( existingKeyTableNameIdx );
 		dictByTableNameIdx.put( newKeyTableNameIdx, Buff );
 
+		subdict = dictBySuperNameIdx.get( existingKeySuperNameIdx );
+		if( subdict != null ) {
+			subdict.remove( pkey );
+		}
+		if( dictBySuperNameIdx.containsKey( newKeySuperNameIdx ) ) {
+			subdict = dictBySuperNameIdx.get( newKeySuperNameIdx );
+		}
+		else {
+			subdict = new HashMap< Integer, CFSecBuffTableInfo >();
+			dictBySuperNameIdx.put( newKeySuperNameIdx, subdict );
+		}
+		subdict.put( pkey, Buff );
+
 		subdict = dictBySchemaNameIdx.get( existingKeySchemaNameIdx );
 		if( subdict != null ) {
 			subdict.remove( pkey );
@@ -577,8 +661,18 @@ public class CFSecRamTableInfoTable
 				"deleteTableInfo",
 				pkey );
 		}
+		// Short circuit self-referential code to prevent stack overflows
+		Object arrCheckTableInfoSubRefs[] = schema.getTableTableInfo().readDerivedBySuperNameIdx( Authorization,
+						existing.getRequiredTableName() );
+		if( arrCheckTableInfoSubRefs.length > 0 ) {
+			schema.getTableTableInfo().deleteTableInfoBySuperNameIdx( Authorization,
+						existing.getRequiredTableName() );
+		}
 		CFSecBuffTableInfoByTableNameIdxKey keyTableNameIdx = (CFSecBuffTableInfoByTableNameIdxKey)schema.getFactoryTableInfo().newByTableNameIdxKey();
 		keyTableNameIdx.setRequiredTableName( existing.getRequiredTableName() );
+
+		CFSecBuffTableInfoBySuperNameIdxKey keySuperNameIdx = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getFactoryTableInfo().newBySuperNameIdxKey();
+		keySuperNameIdx.setOptionalSuperName( existing.getOptionalSuperName() );
 
 		CFSecBuffTableInfoBySchemaNameIdxKey keySchemaNameIdx = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getFactoryTableInfo().newBySchemaNameIdxKey();
 		keySchemaNameIdx.setRequiredSchemaName( existing.getRequiredSchemaName() );
@@ -598,6 +692,9 @@ public class CFSecRamTableInfoTable
 		dictByPKey.remove( pkey );
 
 		dictByTableNameIdx.remove( keyTableNameIdx );
+
+		subdict = dictBySuperNameIdx.get( keySuperNameIdx );
+		subdict.remove( pkey );
 
 		subdict = dictBySchemaNameIdx.get( keySchemaNameIdx );
 		subdict.remove( pkey );
@@ -650,6 +747,44 @@ public class CFSecRamTableInfoTable
 		CFSecBuffTableInfo cur;
 		boolean anyNotNull = false;
 		anyNotNull = true;
+		if( ! anyNotNull ) {
+			return;
+		}
+		LinkedList<CFSecBuffTableInfo> matchSet = new LinkedList<CFSecBuffTableInfo>();
+		Iterator<CFSecBuffTableInfo> values = dictByPKey.values().iterator();
+		while( values.hasNext() ) {
+			cur = values.next();
+			if( argKey.equals( cur ) ) {
+				matchSet.add( cur );
+			}
+		}
+		Iterator<CFSecBuffTableInfo> iterMatch = matchSet.iterator();
+		while( iterMatch.hasNext() ) {
+			cur = iterMatch.next();
+			cur = (CFSecBuffTableInfo)(schema.getTableTableInfo().readDerivedByIdIdx( Authorization,
+				cur.getRequiredTableInfoId() ));
+			deleteTableInfo( Authorization, cur );
+		}
+	}
+
+	@Override
+	public void deleteTableInfoBySuperNameIdx( ICFSecAuthorization Authorization,
+		String argSuperName )
+	{
+		CFSecBuffTableInfoBySuperNameIdxKey key = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getFactoryTableInfo().newBySuperNameIdxKey();
+		key.setOptionalSuperName( argSuperName );
+		deleteTableInfoBySuperNameIdx( Authorization, key );
+	}
+
+	@Override
+	public void deleteTableInfoBySuperNameIdx( ICFSecAuthorization Authorization,
+		ICFSecTableInfoBySuperNameIdxKey argKey )
+	{
+		CFSecBuffTableInfo cur;
+		boolean anyNotNull = false;
+		if( argKey.getOptionalSuperName() != null ) {
+			anyNotNull = true;
+		}
 		if( ! anyNotNull ) {
 			return;
 		}
