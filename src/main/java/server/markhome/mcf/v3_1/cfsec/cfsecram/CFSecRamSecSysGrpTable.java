@@ -74,11 +74,11 @@ public class CFSecRamSecSysGrpTable
 		}
 		else {
 			int classCode = rec.getClassCode();
-			if (classCode == ICFSecSecSysGrp.CLASS_CODE) {
-				return( ((CFSecBuffSecSysGrpDefaultFactory)(schema.getFactorySecSysGrp())).ensureRec((ICFSecSecSysGrp)rec) );
-			}
-			else {
-				throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
+			switch (classCode) {
+				case ICFSecSecSysGrp.CLASS_CODE:
+					return(((CFSecBuffSecSysGrpFactoryService)(schema.getCFSecFactory().getFactorySecSysGrp())).ensureRec((ICFSecSecSysGrp)rec) );
+				default:
+					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
 			}
 		}
 	}
@@ -93,10 +93,10 @@ public class CFSecRamSecSysGrpTable
 		CFLibDbKeyHash256 pkey;
 		pkey = schema.nextSecSysGrpIdGen();
 		Buff.setRequiredSecSysGrpId( pkey );
-		CFSecBuffSecSysGrpByUNameIdxKey keyUNameIdx = (CFSecBuffSecSysGrpByUNameIdxKey)schema.getFactorySecSysGrp().newByUNameIdxKey();
+		CFSecBuffSecSysGrpByUNameIdxKey keyUNameIdx = (CFSecBuffSecSysGrpByUNameIdxKey)schema.getCFSecFactory().getFactorySecSysGrp().newByUNameIdxKey();
 		keyUNameIdx.setRequiredName( Buff.getRequiredName() );
 
-		CFSecBuffSecSysGrpBySecLevelIdxKey keySecLevelIdx = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getFactorySecSysGrp().newBySecLevelIdxKey();
+		CFSecBuffSecSysGrpBySecLevelIdxKey keySecLevelIdx = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getCFSecFactory().getFactorySecSysGrp().newBySecLevelIdxKey();
 		keySecLevelIdx.setRequiredSecLevel( Buff.getRequiredSecLevel() );
 
 		// Validate unique indexes
@@ -137,7 +137,7 @@ public class CFSecRamSecSysGrpTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecSecSysGrp.CLASS_CODE) {
-				CFSecBuffSecSysGrp retbuff = ((CFSecBuffSecSysGrp)(schema.getFactorySecSysGrp().newRec()));
+				CFSecBuffSecSysGrp retbuff = ((CFSecBuffSecSysGrp)(schema.getCFSecFactory().getFactorySecSysGrp().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -197,7 +197,7 @@ public class CFSecRamSecSysGrpTable
 		String Name )
 	{
 		final String S_ProcName = "CFSecRamSecSysGrp.readDerivedByUNameIdx";
-		CFSecBuffSecSysGrpByUNameIdxKey key = (CFSecBuffSecSysGrpByUNameIdxKey)schema.getFactorySecSysGrp().newByUNameIdxKey();
+		CFSecBuffSecSysGrpByUNameIdxKey key = (CFSecBuffSecSysGrpByUNameIdxKey)schema.getCFSecFactory().getFactorySecSysGrp().newByUNameIdxKey();
 
 		key.setRequiredName( Name );
 		ICFSecSecSysGrp buff;
@@ -215,7 +215,7 @@ public class CFSecRamSecSysGrpTable
 		ICFSecSchema.SecLevelEnum SecLevel )
 	{
 		final String S_ProcName = "CFSecRamSecSysGrp.readDerivedBySecLevelIdx";
-		CFSecBuffSecSysGrpBySecLevelIdxKey key = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getFactorySecSysGrp().newBySecLevelIdxKey();
+		CFSecBuffSecSysGrpBySecLevelIdxKey key = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getCFSecFactory().getFactorySecSysGrp().newBySecLevelIdxKey();
 
 		key.setRequiredSecLevel( SecLevel );
 		ICFSecSecSysGrp[] recArray;
@@ -362,16 +362,16 @@ public class CFSecRamSecSysGrpTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffSecSysGrpByUNameIdxKey existingKeyUNameIdx = (CFSecBuffSecSysGrpByUNameIdxKey)schema.getFactorySecSysGrp().newByUNameIdxKey();
+		CFSecBuffSecSysGrpByUNameIdxKey existingKeyUNameIdx = (CFSecBuffSecSysGrpByUNameIdxKey)schema.getCFSecFactory().getFactorySecSysGrp().newByUNameIdxKey();
 		existingKeyUNameIdx.setRequiredName( existing.getRequiredName() );
 
-		CFSecBuffSecSysGrpByUNameIdxKey newKeyUNameIdx = (CFSecBuffSecSysGrpByUNameIdxKey)schema.getFactorySecSysGrp().newByUNameIdxKey();
+		CFSecBuffSecSysGrpByUNameIdxKey newKeyUNameIdx = (CFSecBuffSecSysGrpByUNameIdxKey)schema.getCFSecFactory().getFactorySecSysGrp().newByUNameIdxKey();
 		newKeyUNameIdx.setRequiredName( Buff.getRequiredName() );
 
-		CFSecBuffSecSysGrpBySecLevelIdxKey existingKeySecLevelIdx = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getFactorySecSysGrp().newBySecLevelIdxKey();
+		CFSecBuffSecSysGrpBySecLevelIdxKey existingKeySecLevelIdx = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getCFSecFactory().getFactorySecSysGrp().newBySecLevelIdxKey();
 		existingKeySecLevelIdx.setRequiredSecLevel( existing.getRequiredSecLevel() );
 
-		CFSecBuffSecSysGrpBySecLevelIdxKey newKeySecLevelIdx = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getFactorySecSysGrp().newBySecLevelIdxKey();
+		CFSecBuffSecSysGrpBySecLevelIdxKey newKeySecLevelIdx = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getCFSecFactory().getFactorySecSysGrp().newBySecLevelIdxKey();
 		newKeySecLevelIdx.setRequiredSecLevel( Buff.getRequiredSecLevel() );
 
 		// Check unique indexes
@@ -436,10 +436,10 @@ public class CFSecRamSecSysGrpTable
 						existing.getRequiredSecSysGrpId() );
 					schema.getTableSecSysGrpInc().deleteSecSysGrpIncBySysGrpIdx( Authorization,
 						existing.getRequiredSecSysGrpId() );
-		CFSecBuffSecSysGrpByUNameIdxKey keyUNameIdx = (CFSecBuffSecSysGrpByUNameIdxKey)schema.getFactorySecSysGrp().newByUNameIdxKey();
+		CFSecBuffSecSysGrpByUNameIdxKey keyUNameIdx = (CFSecBuffSecSysGrpByUNameIdxKey)schema.getCFSecFactory().getFactorySecSysGrp().newByUNameIdxKey();
 		keyUNameIdx.setRequiredName( existing.getRequiredName() );
 
-		CFSecBuffSecSysGrpBySecLevelIdxKey keySecLevelIdx = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getFactorySecSysGrp().newBySecLevelIdxKey();
+		CFSecBuffSecSysGrpBySecLevelIdxKey keySecLevelIdx = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getCFSecFactory().getFactorySecSysGrp().newBySecLevelIdxKey();
 		keySecLevelIdx.setRequiredSecLevel( existing.getRequiredSecLevel() );
 
 		// Validate reverse foreign keys
@@ -486,7 +486,7 @@ public class CFSecRamSecSysGrpTable
 	public void deleteSecSysGrpByUNameIdx( ICFSecAuthorization Authorization,
 		String argName )
 	{
-		CFSecBuffSecSysGrpByUNameIdxKey key = (CFSecBuffSecSysGrpByUNameIdxKey)schema.getFactorySecSysGrp().newByUNameIdxKey();
+		CFSecBuffSecSysGrpByUNameIdxKey key = (CFSecBuffSecSysGrpByUNameIdxKey)schema.getCFSecFactory().getFactorySecSysGrp().newByUNameIdxKey();
 		key.setRequiredName( argName );
 		deleteSecSysGrpByUNameIdx( Authorization, key );
 	}
@@ -522,7 +522,7 @@ public class CFSecRamSecSysGrpTable
 	public void deleteSecSysGrpBySecLevelIdx( ICFSecAuthorization Authorization,
 		ICFSecSchema.SecLevelEnum argSecLevel )
 	{
-		CFSecBuffSecSysGrpBySecLevelIdxKey key = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getFactorySecSysGrp().newBySecLevelIdxKey();
+		CFSecBuffSecSysGrpBySecLevelIdxKey key = (CFSecBuffSecSysGrpBySecLevelIdxKey)schema.getCFSecFactory().getFactorySecSysGrp().newBySecLevelIdxKey();
 		key.setRequiredSecLevel( argSecLevel );
 		deleteSecSysGrpBySecLevelIdx( Authorization, key );
 	}

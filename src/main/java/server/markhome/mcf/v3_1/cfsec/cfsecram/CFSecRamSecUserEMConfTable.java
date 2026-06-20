@@ -86,11 +86,11 @@ public class CFSecRamSecUserEMConfTable
 		}
 		else {
 			int classCode = rec.getClassCode();
-			if (classCode == ICFSecSecUserEMConf.CLASS_CODE) {
-				return( ((CFSecBuffSecUserEMConfDefaultFactory)(schema.getFactorySecUserEMConf())).ensureRec((ICFSecSecUserEMConf)rec) );
-			}
-			else {
-				throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
+			switch (classCode) {
+				case ICFSecSecUserEMConf.CLASS_CODE:
+					return(((CFSecBuffSecUserEMConfFactoryService)(schema.getCFSecFactory().getFactorySecUserEMConf())).ensureRec((ICFSecSecUserEMConf)rec) );
+				default:
+					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
 			}
 		}
 	}
@@ -106,16 +106,16 @@ public class CFSecRamSecUserEMConfTable
 		pkey = Buff.getRequiredSecUserId();
 		pkey = Buff.getRequiredSecUserId();
 		Buff.setRequiredContainerUser( pkey );
-		CFSecBuffSecUserEMConfByUUuid6IdxKey keyUUuid6Idx = (CFSecBuffSecUserEMConfByUUuid6IdxKey)schema.getFactorySecUserEMConf().newByUUuid6IdxKey();
+		CFSecBuffSecUserEMConfByUUuid6IdxKey keyUUuid6Idx = (CFSecBuffSecUserEMConfByUUuid6IdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByUUuid6IdxKey();
 		keyUUuid6Idx.setRequiredEMConfirmationUuid6( Buff.getRequiredEMConfirmationUuid6() );
 
-		CFSecBuffSecUserEMConfByConfEMAddrIdxKey keyConfEMAddrIdx = (CFSecBuffSecUserEMConfByConfEMAddrIdxKey)schema.getFactorySecUserEMConf().newByConfEMAddrIdxKey();
+		CFSecBuffSecUserEMConfByConfEMAddrIdxKey keyConfEMAddrIdx = (CFSecBuffSecUserEMConfByConfEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByConfEMAddrIdxKey();
 		keyConfEMAddrIdx.setRequiredConfirmEMailAddr( Buff.getRequiredConfirmEMailAddr() );
 
-		CFSecBuffSecUserEMConfBySentStampIdxKey keySentStampIdx = (CFSecBuffSecUserEMConfBySentStampIdxKey)schema.getFactorySecUserEMConf().newBySentStampIdxKey();
+		CFSecBuffSecUserEMConfBySentStampIdxKey keySentStampIdx = (CFSecBuffSecUserEMConfBySentStampIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newBySentStampIdxKey();
 		keySentStampIdx.setRequiredEMailSentStamp( Buff.getRequiredEMailSentStamp() );
 
-		CFSecBuffSecUserEMConfByNewAcctIdxKey keyNewAcctIdx = (CFSecBuffSecUserEMConfByNewAcctIdxKey)schema.getFactorySecUserEMConf().newByNewAcctIdxKey();
+		CFSecBuffSecUserEMConfByNewAcctIdxKey keyNewAcctIdx = (CFSecBuffSecUserEMConfByNewAcctIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByNewAcctIdxKey();
 		keyNewAcctIdx.setRequiredNewAccount( Buff.getRequiredNewAccount() );
 
 		// Validate unique indexes
@@ -196,7 +196,7 @@ public class CFSecRamSecUserEMConfTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecSecUserEMConf.CLASS_CODE) {
-				CFSecBuffSecUserEMConf retbuff = ((CFSecBuffSecUserEMConf)(schema.getFactorySecUserEMConf().newRec()));
+				CFSecBuffSecUserEMConf retbuff = ((CFSecBuffSecUserEMConf)(schema.getCFSecFactory().getFactorySecUserEMConf().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -256,7 +256,7 @@ public class CFSecRamSecUserEMConfTable
 		CFLibUuid6 EMConfirmationUuid6 )
 	{
 		final String S_ProcName = "CFSecRamSecUserEMConf.readDerivedByUUuid6Idx";
-		CFSecBuffSecUserEMConfByUUuid6IdxKey key = (CFSecBuffSecUserEMConfByUUuid6IdxKey)schema.getFactorySecUserEMConf().newByUUuid6IdxKey();
+		CFSecBuffSecUserEMConfByUUuid6IdxKey key = (CFSecBuffSecUserEMConfByUUuid6IdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByUUuid6IdxKey();
 
 		key.setRequiredEMConfirmationUuid6( EMConfirmationUuid6 );
 		ICFSecSecUserEMConf buff;
@@ -274,7 +274,7 @@ public class CFSecRamSecUserEMConfTable
 		String ConfirmEMailAddr )
 	{
 		final String S_ProcName = "CFSecRamSecUserEMConf.readDerivedByConfEMAddrIdx";
-		CFSecBuffSecUserEMConfByConfEMAddrIdxKey key = (CFSecBuffSecUserEMConfByConfEMAddrIdxKey)schema.getFactorySecUserEMConf().newByConfEMAddrIdxKey();
+		CFSecBuffSecUserEMConfByConfEMAddrIdxKey key = (CFSecBuffSecUserEMConfByConfEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByConfEMAddrIdxKey();
 
 		key.setRequiredConfirmEMailAddr( ConfirmEMailAddr );
 		ICFSecSecUserEMConf[] recArray;
@@ -302,7 +302,7 @@ public class CFSecRamSecUserEMConfTable
 		LocalDateTime EMailSentStamp )
 	{
 		final String S_ProcName = "CFSecRamSecUserEMConf.readDerivedBySentStampIdx";
-		CFSecBuffSecUserEMConfBySentStampIdxKey key = (CFSecBuffSecUserEMConfBySentStampIdxKey)schema.getFactorySecUserEMConf().newBySentStampIdxKey();
+		CFSecBuffSecUserEMConfBySentStampIdxKey key = (CFSecBuffSecUserEMConfBySentStampIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newBySentStampIdxKey();
 
 		key.setRequiredEMailSentStamp( EMailSentStamp );
 		ICFSecSecUserEMConf[] recArray;
@@ -330,7 +330,7 @@ public class CFSecRamSecUserEMConfTable
 		boolean NewAccount )
 	{
 		final String S_ProcName = "CFSecRamSecUserEMConf.readDerivedByNewAcctIdx";
-		CFSecBuffSecUserEMConfByNewAcctIdxKey key = (CFSecBuffSecUserEMConfByNewAcctIdxKey)schema.getFactorySecUserEMConf().newByNewAcctIdxKey();
+		CFSecBuffSecUserEMConfByNewAcctIdxKey key = (CFSecBuffSecUserEMConfByNewAcctIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByNewAcctIdxKey();
 
 		key.setRequiredNewAccount( NewAccount );
 		ICFSecSecUserEMConf[] recArray;
@@ -588,28 +588,28 @@ public class CFSecRamSecUserEMConfTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffSecUserEMConfByUUuid6IdxKey existingKeyUUuid6Idx = (CFSecBuffSecUserEMConfByUUuid6IdxKey)schema.getFactorySecUserEMConf().newByUUuid6IdxKey();
+		CFSecBuffSecUserEMConfByUUuid6IdxKey existingKeyUUuid6Idx = (CFSecBuffSecUserEMConfByUUuid6IdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByUUuid6IdxKey();
 		existingKeyUUuid6Idx.setRequiredEMConfirmationUuid6( existing.getRequiredEMConfirmationUuid6() );
 
-		CFSecBuffSecUserEMConfByUUuid6IdxKey newKeyUUuid6Idx = (CFSecBuffSecUserEMConfByUUuid6IdxKey)schema.getFactorySecUserEMConf().newByUUuid6IdxKey();
+		CFSecBuffSecUserEMConfByUUuid6IdxKey newKeyUUuid6Idx = (CFSecBuffSecUserEMConfByUUuid6IdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByUUuid6IdxKey();
 		newKeyUUuid6Idx.setRequiredEMConfirmationUuid6( Buff.getRequiredEMConfirmationUuid6() );
 
-		CFSecBuffSecUserEMConfByConfEMAddrIdxKey existingKeyConfEMAddrIdx = (CFSecBuffSecUserEMConfByConfEMAddrIdxKey)schema.getFactorySecUserEMConf().newByConfEMAddrIdxKey();
+		CFSecBuffSecUserEMConfByConfEMAddrIdxKey existingKeyConfEMAddrIdx = (CFSecBuffSecUserEMConfByConfEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByConfEMAddrIdxKey();
 		existingKeyConfEMAddrIdx.setRequiredConfirmEMailAddr( existing.getRequiredConfirmEMailAddr() );
 
-		CFSecBuffSecUserEMConfByConfEMAddrIdxKey newKeyConfEMAddrIdx = (CFSecBuffSecUserEMConfByConfEMAddrIdxKey)schema.getFactorySecUserEMConf().newByConfEMAddrIdxKey();
+		CFSecBuffSecUserEMConfByConfEMAddrIdxKey newKeyConfEMAddrIdx = (CFSecBuffSecUserEMConfByConfEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByConfEMAddrIdxKey();
 		newKeyConfEMAddrIdx.setRequiredConfirmEMailAddr( Buff.getRequiredConfirmEMailAddr() );
 
-		CFSecBuffSecUserEMConfBySentStampIdxKey existingKeySentStampIdx = (CFSecBuffSecUserEMConfBySentStampIdxKey)schema.getFactorySecUserEMConf().newBySentStampIdxKey();
+		CFSecBuffSecUserEMConfBySentStampIdxKey existingKeySentStampIdx = (CFSecBuffSecUserEMConfBySentStampIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newBySentStampIdxKey();
 		existingKeySentStampIdx.setRequiredEMailSentStamp( existing.getRequiredEMailSentStamp() );
 
-		CFSecBuffSecUserEMConfBySentStampIdxKey newKeySentStampIdx = (CFSecBuffSecUserEMConfBySentStampIdxKey)schema.getFactorySecUserEMConf().newBySentStampIdxKey();
+		CFSecBuffSecUserEMConfBySentStampIdxKey newKeySentStampIdx = (CFSecBuffSecUserEMConfBySentStampIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newBySentStampIdxKey();
 		newKeySentStampIdx.setRequiredEMailSentStamp( Buff.getRequiredEMailSentStamp() );
 
-		CFSecBuffSecUserEMConfByNewAcctIdxKey existingKeyNewAcctIdx = (CFSecBuffSecUserEMConfByNewAcctIdxKey)schema.getFactorySecUserEMConf().newByNewAcctIdxKey();
+		CFSecBuffSecUserEMConfByNewAcctIdxKey existingKeyNewAcctIdx = (CFSecBuffSecUserEMConfByNewAcctIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByNewAcctIdxKey();
 		existingKeyNewAcctIdx.setRequiredNewAccount( existing.getRequiredNewAccount() );
 
-		CFSecBuffSecUserEMConfByNewAcctIdxKey newKeyNewAcctIdx = (CFSecBuffSecUserEMConfByNewAcctIdxKey)schema.getFactorySecUserEMConf().newByNewAcctIdxKey();
+		CFSecBuffSecUserEMConfByNewAcctIdxKey newKeyNewAcctIdx = (CFSecBuffSecUserEMConfByNewAcctIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByNewAcctIdxKey();
 		newKeyNewAcctIdx.setRequiredNewAccount( Buff.getRequiredNewAccount() );
 
 		// Check unique indexes
@@ -716,16 +716,16 @@ public class CFSecRamSecUserEMConfTable
 				"deleteSecUserEMConf",
 				pkey );
 		}
-		CFSecBuffSecUserEMConfByUUuid6IdxKey keyUUuid6Idx = (CFSecBuffSecUserEMConfByUUuid6IdxKey)schema.getFactorySecUserEMConf().newByUUuid6IdxKey();
+		CFSecBuffSecUserEMConfByUUuid6IdxKey keyUUuid6Idx = (CFSecBuffSecUserEMConfByUUuid6IdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByUUuid6IdxKey();
 		keyUUuid6Idx.setRequiredEMConfirmationUuid6( existing.getRequiredEMConfirmationUuid6() );
 
-		CFSecBuffSecUserEMConfByConfEMAddrIdxKey keyConfEMAddrIdx = (CFSecBuffSecUserEMConfByConfEMAddrIdxKey)schema.getFactorySecUserEMConf().newByConfEMAddrIdxKey();
+		CFSecBuffSecUserEMConfByConfEMAddrIdxKey keyConfEMAddrIdx = (CFSecBuffSecUserEMConfByConfEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByConfEMAddrIdxKey();
 		keyConfEMAddrIdx.setRequiredConfirmEMailAddr( existing.getRequiredConfirmEMailAddr() );
 
-		CFSecBuffSecUserEMConfBySentStampIdxKey keySentStampIdx = (CFSecBuffSecUserEMConfBySentStampIdxKey)schema.getFactorySecUserEMConf().newBySentStampIdxKey();
+		CFSecBuffSecUserEMConfBySentStampIdxKey keySentStampIdx = (CFSecBuffSecUserEMConfBySentStampIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newBySentStampIdxKey();
 		keySentStampIdx.setRequiredEMailSentStamp( existing.getRequiredEMailSentStamp() );
 
-		CFSecBuffSecUserEMConfByNewAcctIdxKey keyNewAcctIdx = (CFSecBuffSecUserEMConfByNewAcctIdxKey)schema.getFactorySecUserEMConf().newByNewAcctIdxKey();
+		CFSecBuffSecUserEMConfByNewAcctIdxKey keyNewAcctIdx = (CFSecBuffSecUserEMConfByNewAcctIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByNewAcctIdxKey();
 		keyNewAcctIdx.setRequiredNewAccount( existing.getRequiredNewAccount() );
 
 		// Validate reverse foreign keys
@@ -778,7 +778,7 @@ public class CFSecRamSecUserEMConfTable
 	public void deleteSecUserEMConfByUUuid6Idx( ICFSecAuthorization Authorization,
 		CFLibUuid6 argEMConfirmationUuid6 )
 	{
-		CFSecBuffSecUserEMConfByUUuid6IdxKey key = (CFSecBuffSecUserEMConfByUUuid6IdxKey)schema.getFactorySecUserEMConf().newByUUuid6IdxKey();
+		CFSecBuffSecUserEMConfByUUuid6IdxKey key = (CFSecBuffSecUserEMConfByUUuid6IdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByUUuid6IdxKey();
 		key.setRequiredEMConfirmationUuid6( argEMConfirmationUuid6 );
 		deleteSecUserEMConfByUUuid6Idx( Authorization, key );
 	}
@@ -814,7 +814,7 @@ public class CFSecRamSecUserEMConfTable
 	public void deleteSecUserEMConfByConfEMAddrIdx( ICFSecAuthorization Authorization,
 		String argConfirmEMailAddr )
 	{
-		CFSecBuffSecUserEMConfByConfEMAddrIdxKey key = (CFSecBuffSecUserEMConfByConfEMAddrIdxKey)schema.getFactorySecUserEMConf().newByConfEMAddrIdxKey();
+		CFSecBuffSecUserEMConfByConfEMAddrIdxKey key = (CFSecBuffSecUserEMConfByConfEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByConfEMAddrIdxKey();
 		key.setRequiredConfirmEMailAddr( argConfirmEMailAddr );
 		deleteSecUserEMConfByConfEMAddrIdx( Authorization, key );
 	}
@@ -850,7 +850,7 @@ public class CFSecRamSecUserEMConfTable
 	public void deleteSecUserEMConfBySentStampIdx( ICFSecAuthorization Authorization,
 		LocalDateTime argEMailSentStamp )
 	{
-		CFSecBuffSecUserEMConfBySentStampIdxKey key = (CFSecBuffSecUserEMConfBySentStampIdxKey)schema.getFactorySecUserEMConf().newBySentStampIdxKey();
+		CFSecBuffSecUserEMConfBySentStampIdxKey key = (CFSecBuffSecUserEMConfBySentStampIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newBySentStampIdxKey();
 		key.setRequiredEMailSentStamp( argEMailSentStamp );
 		deleteSecUserEMConfBySentStampIdx( Authorization, key );
 	}
@@ -886,7 +886,7 @@ public class CFSecRamSecUserEMConfTable
 	public void deleteSecUserEMConfByNewAcctIdx( ICFSecAuthorization Authorization,
 		boolean argNewAccount )
 	{
-		CFSecBuffSecUserEMConfByNewAcctIdxKey key = (CFSecBuffSecUserEMConfByNewAcctIdxKey)schema.getFactorySecUserEMConf().newByNewAcctIdxKey();
+		CFSecBuffSecUserEMConfByNewAcctIdxKey key = (CFSecBuffSecUserEMConfByNewAcctIdxKey)schema.getCFSecFactory().getFactorySecUserEMConf().newByNewAcctIdxKey();
 		key.setRequiredNewAccount( argNewAccount );
 		deleteSecUserEMConfByNewAcctIdx( Authorization, key );
 	}

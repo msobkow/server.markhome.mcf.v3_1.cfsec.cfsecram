@@ -74,11 +74,11 @@ public class CFSecRamSecUserTable
 		}
 		else {
 			int classCode = rec.getClassCode();
-			if (classCode == ICFSecSecUser.CLASS_CODE) {
-				return( ((CFSecBuffSecUserDefaultFactory)(schema.getFactorySecUser())).ensureRec((ICFSecSecUser)rec) );
-			}
-			else {
-				throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
+			switch (classCode) {
+				case ICFSecSecUser.CLASS_CODE:
+					return(((CFSecBuffSecUserFactoryService)(schema.getCFSecFactory().getFactorySecUser())).ensureRec((ICFSecSecUser)rec) );
+				default:
+					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
 			}
 		}
 	}
@@ -93,10 +93,10 @@ public class CFSecRamSecUserTable
 		CFLibDbKeyHash256 pkey;
 		pkey = schema.nextSecUserIdGen();
 		Buff.setRequiredSecUserId( pkey );
-		CFSecBuffSecUserByULoginIdxKey keyULoginIdx = (CFSecBuffSecUserByULoginIdxKey)schema.getFactorySecUser().newByULoginIdxKey();
+		CFSecBuffSecUserByULoginIdxKey keyULoginIdx = (CFSecBuffSecUserByULoginIdxKey)schema.getCFSecFactory().getFactorySecUser().newByULoginIdxKey();
 		keyULoginIdx.setRequiredLoginId( Buff.getRequiredLoginId() );
 
-		CFSecBuffSecUserByEMAddrIdxKey keyEMAddrIdx = (CFSecBuffSecUserByEMAddrIdxKey)schema.getFactorySecUser().newByEMAddrIdxKey();
+		CFSecBuffSecUserByEMAddrIdxKey keyEMAddrIdx = (CFSecBuffSecUserByEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUser().newByEMAddrIdxKey();
 		keyEMAddrIdx.setRequiredEMailAddress( Buff.getRequiredEMailAddress() );
 
 		// Validate unique indexes
@@ -137,7 +137,7 @@ public class CFSecRamSecUserTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecSecUser.CLASS_CODE) {
-				CFSecBuffSecUser retbuff = ((CFSecBuffSecUser)(schema.getFactorySecUser().newRec()));
+				CFSecBuffSecUser retbuff = ((CFSecBuffSecUser)(schema.getCFSecFactory().getFactorySecUser().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -197,7 +197,7 @@ public class CFSecRamSecUserTable
 		String LoginId )
 	{
 		final String S_ProcName = "CFSecRamSecUser.readDerivedByULoginIdx";
-		CFSecBuffSecUserByULoginIdxKey key = (CFSecBuffSecUserByULoginIdxKey)schema.getFactorySecUser().newByULoginIdxKey();
+		CFSecBuffSecUserByULoginIdxKey key = (CFSecBuffSecUserByULoginIdxKey)schema.getCFSecFactory().getFactorySecUser().newByULoginIdxKey();
 
 		key.setRequiredLoginId( LoginId );
 		ICFSecSecUser buff;
@@ -215,7 +215,7 @@ public class CFSecRamSecUserTable
 		String EMailAddress )
 	{
 		final String S_ProcName = "CFSecRamSecUser.readDerivedByEMAddrIdx";
-		CFSecBuffSecUserByEMAddrIdxKey key = (CFSecBuffSecUserByEMAddrIdxKey)schema.getFactorySecUser().newByEMAddrIdxKey();
+		CFSecBuffSecUserByEMAddrIdxKey key = (CFSecBuffSecUserByEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUser().newByEMAddrIdxKey();
 
 		key.setRequiredEMailAddress( EMailAddress );
 		ICFSecSecUser[] recArray;
@@ -397,16 +397,16 @@ public class CFSecRamSecUserTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffSecUserByULoginIdxKey existingKeyULoginIdx = (CFSecBuffSecUserByULoginIdxKey)schema.getFactorySecUser().newByULoginIdxKey();
+		CFSecBuffSecUserByULoginIdxKey existingKeyULoginIdx = (CFSecBuffSecUserByULoginIdxKey)schema.getCFSecFactory().getFactorySecUser().newByULoginIdxKey();
 		existingKeyULoginIdx.setRequiredLoginId( existing.getRequiredLoginId() );
 
-		CFSecBuffSecUserByULoginIdxKey newKeyULoginIdx = (CFSecBuffSecUserByULoginIdxKey)schema.getFactorySecUser().newByULoginIdxKey();
+		CFSecBuffSecUserByULoginIdxKey newKeyULoginIdx = (CFSecBuffSecUserByULoginIdxKey)schema.getCFSecFactory().getFactorySecUser().newByULoginIdxKey();
 		newKeyULoginIdx.setRequiredLoginId( Buff.getRequiredLoginId() );
 
-		CFSecBuffSecUserByEMAddrIdxKey existingKeyEMAddrIdx = (CFSecBuffSecUserByEMAddrIdxKey)schema.getFactorySecUser().newByEMAddrIdxKey();
+		CFSecBuffSecUserByEMAddrIdxKey existingKeyEMAddrIdx = (CFSecBuffSecUserByEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUser().newByEMAddrIdxKey();
 		existingKeyEMAddrIdx.setRequiredEMailAddress( existing.getRequiredEMailAddress() );
 
-		CFSecBuffSecUserByEMAddrIdxKey newKeyEMAddrIdx = (CFSecBuffSecUserByEMAddrIdxKey)schema.getFactorySecUser().newByEMAddrIdxKey();
+		CFSecBuffSecUserByEMAddrIdxKey newKeyEMAddrIdx = (CFSecBuffSecUserByEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUser().newByEMAddrIdxKey();
 		newKeyEMAddrIdx.setRequiredEMailAddress( Buff.getRequiredEMailAddress() );
 
 		// Check unique indexes
@@ -481,10 +481,10 @@ public class CFSecRamSecUserTable
 						existing.getRequiredSecUserId() );
 					schema.getTableSecUserEMConf().deleteSecUserEMConfByIdIdx( Authorization,
 						existing.getRequiredSecUserId() );
-		CFSecBuffSecUserByULoginIdxKey keyULoginIdx = (CFSecBuffSecUserByULoginIdxKey)schema.getFactorySecUser().newByULoginIdxKey();
+		CFSecBuffSecUserByULoginIdxKey keyULoginIdx = (CFSecBuffSecUserByULoginIdxKey)schema.getCFSecFactory().getFactorySecUser().newByULoginIdxKey();
 		keyULoginIdx.setRequiredLoginId( existing.getRequiredLoginId() );
 
-		CFSecBuffSecUserByEMAddrIdxKey keyEMAddrIdx = (CFSecBuffSecUserByEMAddrIdxKey)schema.getFactorySecUser().newByEMAddrIdxKey();
+		CFSecBuffSecUserByEMAddrIdxKey keyEMAddrIdx = (CFSecBuffSecUserByEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUser().newByEMAddrIdxKey();
 		keyEMAddrIdx.setRequiredEMailAddress( existing.getRequiredEMailAddress() );
 
 		// Validate reverse foreign keys
@@ -531,7 +531,7 @@ public class CFSecRamSecUserTable
 	public void deleteSecUserByULoginIdx( ICFSecAuthorization Authorization,
 		String argLoginId )
 	{
-		CFSecBuffSecUserByULoginIdxKey key = (CFSecBuffSecUserByULoginIdxKey)schema.getFactorySecUser().newByULoginIdxKey();
+		CFSecBuffSecUserByULoginIdxKey key = (CFSecBuffSecUserByULoginIdxKey)schema.getCFSecFactory().getFactorySecUser().newByULoginIdxKey();
 		key.setRequiredLoginId( argLoginId );
 		deleteSecUserByULoginIdx( Authorization, key );
 	}
@@ -567,7 +567,7 @@ public class CFSecRamSecUserTable
 	public void deleteSecUserByEMAddrIdx( ICFSecAuthorization Authorization,
 		String argEMailAddress )
 	{
-		CFSecBuffSecUserByEMAddrIdxKey key = (CFSecBuffSecUserByEMAddrIdxKey)schema.getFactorySecUser().newByEMAddrIdxKey();
+		CFSecBuffSecUserByEMAddrIdxKey key = (CFSecBuffSecUserByEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUser().newByEMAddrIdxKey();
 		key.setRequiredEMailAddress( argEMailAddress );
 		deleteSecUserByEMAddrIdx( Authorization, key );
 	}

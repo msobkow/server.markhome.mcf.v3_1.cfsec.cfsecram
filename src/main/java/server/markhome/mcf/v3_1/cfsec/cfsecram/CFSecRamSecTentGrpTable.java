@@ -80,11 +80,11 @@ public class CFSecRamSecTentGrpTable
 		}
 		else {
 			int classCode = rec.getClassCode();
-			if (classCode == ICFSecSecTentGrp.CLASS_CODE) {
-				return( ((CFSecBuffSecTentGrpDefaultFactory)(schema.getFactorySecTentGrp())).ensureRec((ICFSecSecTentGrp)rec) );
-			}
-			else {
-				throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
+			switch (classCode) {
+				case ICFSecSecTentGrp.CLASS_CODE:
+					return(((CFSecBuffSecTentGrpFactoryService)(schema.getCFSecFactory().getFactorySecTentGrp())).ensureRec((ICFSecSecTentGrp)rec) );
+				default:
+					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
 			}
 		}
 	}
@@ -99,13 +99,13 @@ public class CFSecRamSecTentGrpTable
 		CFLibDbKeyHash256 pkey;
 		pkey = schema.nextSecTentGrpIdGen();
 		Buff.setRequiredSecTentGrpId( pkey );
-		CFSecBuffSecTentGrpByTenantIdxKey keyTenantIdx = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getFactorySecTentGrp().newByTenantIdxKey();
+		CFSecBuffSecTentGrpByTenantIdxKey keyTenantIdx = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByTenantIdxKey();
 		keyTenantIdx.setRequiredTenantId( Buff.getRequiredTenantId() );
 
-		CFSecBuffSecTentGrpByNameIdxKey keyNameIdx = (CFSecBuffSecTentGrpByNameIdxKey)schema.getFactorySecTentGrp().newByNameIdxKey();
+		CFSecBuffSecTentGrpByNameIdxKey keyNameIdx = (CFSecBuffSecTentGrpByNameIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByNameIdxKey();
 		keyNameIdx.setRequiredName( Buff.getRequiredName() );
 
-		CFSecBuffSecTentGrpByUNameIdxKey keyUNameIdx = (CFSecBuffSecTentGrpByUNameIdxKey)schema.getFactorySecTentGrp().newByUNameIdxKey();
+		CFSecBuffSecTentGrpByUNameIdxKey keyUNameIdx = (CFSecBuffSecTentGrpByUNameIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByUNameIdxKey();
 		keyUNameIdx.setRequiredTenantId( Buff.getRequiredTenantId() );
 		keyUNameIdx.setRequiredName( Buff.getRequiredName() );
 
@@ -197,7 +197,7 @@ public class CFSecRamSecTentGrpTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecSecTentGrp.CLASS_CODE) {
-				CFSecBuffSecTentGrp retbuff = ((CFSecBuffSecTentGrp)(schema.getFactorySecTentGrp().newRec()));
+				CFSecBuffSecTentGrp retbuff = ((CFSecBuffSecTentGrp)(schema.getCFSecFactory().getFactorySecTentGrp().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -257,7 +257,7 @@ public class CFSecRamSecTentGrpTable
 		CFLibDbKeyHash256 TenantId )
 	{
 		final String S_ProcName = "CFSecRamSecTentGrp.readDerivedByTenantIdx";
-		CFSecBuffSecTentGrpByTenantIdxKey key = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getFactorySecTentGrp().newByTenantIdxKey();
+		CFSecBuffSecTentGrpByTenantIdxKey key = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByTenantIdxKey();
 
 		key.setRequiredTenantId( TenantId );
 		ICFSecSecTentGrp[] recArray;
@@ -285,7 +285,7 @@ public class CFSecRamSecTentGrpTable
 		String Name )
 	{
 		final String S_ProcName = "CFSecRamSecTentGrp.readDerivedByNameIdx";
-		CFSecBuffSecTentGrpByNameIdxKey key = (CFSecBuffSecTentGrpByNameIdxKey)schema.getFactorySecTentGrp().newByNameIdxKey();
+		CFSecBuffSecTentGrpByNameIdxKey key = (CFSecBuffSecTentGrpByNameIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByNameIdxKey();
 
 		key.setRequiredName( Name );
 		ICFSecSecTentGrp[] recArray;
@@ -314,7 +314,7 @@ public class CFSecRamSecTentGrpTable
 		String Name )
 	{
 		final String S_ProcName = "CFSecRamSecTentGrp.readDerivedByUNameIdx";
-		CFSecBuffSecTentGrpByUNameIdxKey key = (CFSecBuffSecTentGrpByUNameIdxKey)schema.getFactorySecTentGrp().newByUNameIdxKey();
+		CFSecBuffSecTentGrpByUNameIdxKey key = (CFSecBuffSecTentGrpByUNameIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByUNameIdxKey();
 
 		key.setRequiredTenantId( TenantId );
 		key.setRequiredName( Name );
@@ -472,23 +472,23 @@ public class CFSecRamSecTentGrpTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffSecTentGrpByTenantIdxKey existingKeyTenantIdx = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getFactorySecTentGrp().newByTenantIdxKey();
+		CFSecBuffSecTentGrpByTenantIdxKey existingKeyTenantIdx = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByTenantIdxKey();
 		existingKeyTenantIdx.setRequiredTenantId( existing.getRequiredTenantId() );
 
-		CFSecBuffSecTentGrpByTenantIdxKey newKeyTenantIdx = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getFactorySecTentGrp().newByTenantIdxKey();
+		CFSecBuffSecTentGrpByTenantIdxKey newKeyTenantIdx = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByTenantIdxKey();
 		newKeyTenantIdx.setRequiredTenantId( Buff.getRequiredTenantId() );
 
-		CFSecBuffSecTentGrpByNameIdxKey existingKeyNameIdx = (CFSecBuffSecTentGrpByNameIdxKey)schema.getFactorySecTentGrp().newByNameIdxKey();
+		CFSecBuffSecTentGrpByNameIdxKey existingKeyNameIdx = (CFSecBuffSecTentGrpByNameIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByNameIdxKey();
 		existingKeyNameIdx.setRequiredName( existing.getRequiredName() );
 
-		CFSecBuffSecTentGrpByNameIdxKey newKeyNameIdx = (CFSecBuffSecTentGrpByNameIdxKey)schema.getFactorySecTentGrp().newByNameIdxKey();
+		CFSecBuffSecTentGrpByNameIdxKey newKeyNameIdx = (CFSecBuffSecTentGrpByNameIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByNameIdxKey();
 		newKeyNameIdx.setRequiredName( Buff.getRequiredName() );
 
-		CFSecBuffSecTentGrpByUNameIdxKey existingKeyUNameIdx = (CFSecBuffSecTentGrpByUNameIdxKey)schema.getFactorySecTentGrp().newByUNameIdxKey();
+		CFSecBuffSecTentGrpByUNameIdxKey existingKeyUNameIdx = (CFSecBuffSecTentGrpByUNameIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByUNameIdxKey();
 		existingKeyUNameIdx.setRequiredTenantId( existing.getRequiredTenantId() );
 		existingKeyUNameIdx.setRequiredName( existing.getRequiredName() );
 
-		CFSecBuffSecTentGrpByUNameIdxKey newKeyUNameIdx = (CFSecBuffSecTentGrpByUNameIdxKey)schema.getFactorySecTentGrp().newByUNameIdxKey();
+		CFSecBuffSecTentGrpByUNameIdxKey newKeyUNameIdx = (CFSecBuffSecTentGrpByUNameIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByUNameIdxKey();
 		newKeyUNameIdx.setRequiredTenantId( Buff.getRequiredTenantId() );
 		newKeyUNameIdx.setRequiredName( Buff.getRequiredName() );
 
@@ -605,13 +605,13 @@ public class CFSecRamSecTentGrpTable
 		}
 					schema.getTableSecTentGrpMemb().deleteSecTentGrpMembByTentGrpIdx( Authorization,
 						existing.getRequiredSecTentGrpId() );
-		CFSecBuffSecTentGrpByTenantIdxKey keyTenantIdx = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getFactorySecTentGrp().newByTenantIdxKey();
+		CFSecBuffSecTentGrpByTenantIdxKey keyTenantIdx = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByTenantIdxKey();
 		keyTenantIdx.setRequiredTenantId( existing.getRequiredTenantId() );
 
-		CFSecBuffSecTentGrpByNameIdxKey keyNameIdx = (CFSecBuffSecTentGrpByNameIdxKey)schema.getFactorySecTentGrp().newByNameIdxKey();
+		CFSecBuffSecTentGrpByNameIdxKey keyNameIdx = (CFSecBuffSecTentGrpByNameIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByNameIdxKey();
 		keyNameIdx.setRequiredName( existing.getRequiredName() );
 
-		CFSecBuffSecTentGrpByUNameIdxKey keyUNameIdx = (CFSecBuffSecTentGrpByUNameIdxKey)schema.getFactorySecTentGrp().newByUNameIdxKey();
+		CFSecBuffSecTentGrpByUNameIdxKey keyUNameIdx = (CFSecBuffSecTentGrpByUNameIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByUNameIdxKey();
 		keyUNameIdx.setRequiredTenantId( existing.getRequiredTenantId() );
 		keyUNameIdx.setRequiredName( existing.getRequiredName() );
 
@@ -662,7 +662,7 @@ public class CFSecRamSecTentGrpTable
 	public void deleteSecTentGrpByTenantIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 argTenantId )
 	{
-		CFSecBuffSecTentGrpByTenantIdxKey key = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getFactorySecTentGrp().newByTenantIdxKey();
+		CFSecBuffSecTentGrpByTenantIdxKey key = (CFSecBuffSecTentGrpByTenantIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByTenantIdxKey();
 		key.setRequiredTenantId( argTenantId );
 		deleteSecTentGrpByTenantIdx( Authorization, key );
 	}
@@ -698,7 +698,7 @@ public class CFSecRamSecTentGrpTable
 	public void deleteSecTentGrpByNameIdx( ICFSecAuthorization Authorization,
 		String argName )
 	{
-		CFSecBuffSecTentGrpByNameIdxKey key = (CFSecBuffSecTentGrpByNameIdxKey)schema.getFactorySecTentGrp().newByNameIdxKey();
+		CFSecBuffSecTentGrpByNameIdxKey key = (CFSecBuffSecTentGrpByNameIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByNameIdxKey();
 		key.setRequiredName( argName );
 		deleteSecTentGrpByNameIdx( Authorization, key );
 	}
@@ -735,7 +735,7 @@ public class CFSecRamSecTentGrpTable
 		CFLibDbKeyHash256 argTenantId,
 		String argName )
 	{
-		CFSecBuffSecTentGrpByUNameIdxKey key = (CFSecBuffSecTentGrpByUNameIdxKey)schema.getFactorySecTentGrp().newByUNameIdxKey();
+		CFSecBuffSecTentGrpByUNameIdxKey key = (CFSecBuffSecTentGrpByUNameIdxKey)schema.getCFSecFactory().getFactorySecTentGrp().newByUNameIdxKey();
 		key.setRequiredTenantId( argTenantId );
 		key.setRequiredName( argName );
 		deleteSecTentGrpByUNameIdx( Authorization, key );

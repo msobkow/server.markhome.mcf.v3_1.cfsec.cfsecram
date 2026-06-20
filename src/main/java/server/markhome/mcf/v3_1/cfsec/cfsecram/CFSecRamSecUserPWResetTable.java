@@ -80,11 +80,11 @@ public class CFSecRamSecUserPWResetTable
 		}
 		else {
 			int classCode = rec.getClassCode();
-			if (classCode == ICFSecSecUserPWReset.CLASS_CODE) {
-				return( ((CFSecBuffSecUserPWResetDefaultFactory)(schema.getFactorySecUserPWReset())).ensureRec((ICFSecSecUserPWReset)rec) );
-			}
-			else {
-				throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
+			switch (classCode) {
+				case ICFSecSecUserPWReset.CLASS_CODE:
+					return(((CFSecBuffSecUserPWResetFactoryService)(schema.getCFSecFactory().getFactorySecUserPWReset())).ensureRec((ICFSecSecUserPWReset)rec) );
+				default:
+					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
 			}
 		}
 	}
@@ -100,13 +100,13 @@ public class CFSecRamSecUserPWResetTable
 		pkey = Buff.getRequiredSecUserId();
 		pkey = Buff.getRequiredSecUserId();
 		Buff.setRequiredContainerUser( pkey );
-		CFSecBuffSecUserPWResetByUUuid6IdxKey keyUUuid6Idx = (CFSecBuffSecUserPWResetByUUuid6IdxKey)schema.getFactorySecUserPWReset().newByUUuid6IdxKey();
+		CFSecBuffSecUserPWResetByUUuid6IdxKey keyUUuid6Idx = (CFSecBuffSecUserPWResetByUUuid6IdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newByUUuid6IdxKey();
 		keyUUuid6Idx.setRequiredPasswordResetUuid6( Buff.getRequiredPasswordResetUuid6() );
 
-		CFSecBuffSecUserPWResetBySentEMAddrIdxKey keySentEMAddrIdx = (CFSecBuffSecUserPWResetBySentEMAddrIdxKey)schema.getFactorySecUserPWReset().newBySentEMAddrIdxKey();
+		CFSecBuffSecUserPWResetBySentEMAddrIdxKey keySentEMAddrIdx = (CFSecBuffSecUserPWResetBySentEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newBySentEMAddrIdxKey();
 		keySentEMAddrIdx.setRequiredSentToEMailAddr( Buff.getRequiredSentToEMailAddr() );
 
-		CFSecBuffSecUserPWResetByNewAcctIdxKey keyNewAcctIdx = (CFSecBuffSecUserPWResetByNewAcctIdxKey)schema.getFactorySecUserPWReset().newByNewAcctIdxKey();
+		CFSecBuffSecUserPWResetByNewAcctIdxKey keyNewAcctIdx = (CFSecBuffSecUserPWResetByNewAcctIdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newByNewAcctIdxKey();
 		keyNewAcctIdx.setRequiredNewAccount( Buff.getRequiredNewAccount() );
 
 		// Validate unique indexes
@@ -177,7 +177,7 @@ public class CFSecRamSecUserPWResetTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecSecUserPWReset.CLASS_CODE) {
-				CFSecBuffSecUserPWReset retbuff = ((CFSecBuffSecUserPWReset)(schema.getFactorySecUserPWReset().newRec()));
+				CFSecBuffSecUserPWReset retbuff = ((CFSecBuffSecUserPWReset)(schema.getCFSecFactory().getFactorySecUserPWReset().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -237,7 +237,7 @@ public class CFSecRamSecUserPWResetTable
 		CFLibUuid6 PasswordResetUuid6 )
 	{
 		final String S_ProcName = "CFSecRamSecUserPWReset.readDerivedByUUuid6Idx";
-		CFSecBuffSecUserPWResetByUUuid6IdxKey key = (CFSecBuffSecUserPWResetByUUuid6IdxKey)schema.getFactorySecUserPWReset().newByUUuid6IdxKey();
+		CFSecBuffSecUserPWResetByUUuid6IdxKey key = (CFSecBuffSecUserPWResetByUUuid6IdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newByUUuid6IdxKey();
 
 		key.setRequiredPasswordResetUuid6( PasswordResetUuid6 );
 		ICFSecSecUserPWReset buff;
@@ -255,7 +255,7 @@ public class CFSecRamSecUserPWResetTable
 		String SentToEMailAddr )
 	{
 		final String S_ProcName = "CFSecRamSecUserPWReset.readDerivedBySentEMAddrIdx";
-		CFSecBuffSecUserPWResetBySentEMAddrIdxKey key = (CFSecBuffSecUserPWResetBySentEMAddrIdxKey)schema.getFactorySecUserPWReset().newBySentEMAddrIdxKey();
+		CFSecBuffSecUserPWResetBySentEMAddrIdxKey key = (CFSecBuffSecUserPWResetBySentEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newBySentEMAddrIdxKey();
 
 		key.setRequiredSentToEMailAddr( SentToEMailAddr );
 		ICFSecSecUserPWReset[] recArray;
@@ -283,7 +283,7 @@ public class CFSecRamSecUserPWResetTable
 		boolean NewAccount )
 	{
 		final String S_ProcName = "CFSecRamSecUserPWReset.readDerivedByNewAcctIdx";
-		CFSecBuffSecUserPWResetByNewAcctIdxKey key = (CFSecBuffSecUserPWResetByNewAcctIdxKey)schema.getFactorySecUserPWReset().newByNewAcctIdxKey();
+		CFSecBuffSecUserPWResetByNewAcctIdxKey key = (CFSecBuffSecUserPWResetByNewAcctIdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newByNewAcctIdxKey();
 
 		key.setRequiredNewAccount( NewAccount );
 		ICFSecSecUserPWReset[] recArray;
@@ -503,22 +503,22 @@ public class CFSecRamSecUserPWResetTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffSecUserPWResetByUUuid6IdxKey existingKeyUUuid6Idx = (CFSecBuffSecUserPWResetByUUuid6IdxKey)schema.getFactorySecUserPWReset().newByUUuid6IdxKey();
+		CFSecBuffSecUserPWResetByUUuid6IdxKey existingKeyUUuid6Idx = (CFSecBuffSecUserPWResetByUUuid6IdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newByUUuid6IdxKey();
 		existingKeyUUuid6Idx.setRequiredPasswordResetUuid6( existing.getRequiredPasswordResetUuid6() );
 
-		CFSecBuffSecUserPWResetByUUuid6IdxKey newKeyUUuid6Idx = (CFSecBuffSecUserPWResetByUUuid6IdxKey)schema.getFactorySecUserPWReset().newByUUuid6IdxKey();
+		CFSecBuffSecUserPWResetByUUuid6IdxKey newKeyUUuid6Idx = (CFSecBuffSecUserPWResetByUUuid6IdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newByUUuid6IdxKey();
 		newKeyUUuid6Idx.setRequiredPasswordResetUuid6( Buff.getRequiredPasswordResetUuid6() );
 
-		CFSecBuffSecUserPWResetBySentEMAddrIdxKey existingKeySentEMAddrIdx = (CFSecBuffSecUserPWResetBySentEMAddrIdxKey)schema.getFactorySecUserPWReset().newBySentEMAddrIdxKey();
+		CFSecBuffSecUserPWResetBySentEMAddrIdxKey existingKeySentEMAddrIdx = (CFSecBuffSecUserPWResetBySentEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newBySentEMAddrIdxKey();
 		existingKeySentEMAddrIdx.setRequiredSentToEMailAddr( existing.getRequiredSentToEMailAddr() );
 
-		CFSecBuffSecUserPWResetBySentEMAddrIdxKey newKeySentEMAddrIdx = (CFSecBuffSecUserPWResetBySentEMAddrIdxKey)schema.getFactorySecUserPWReset().newBySentEMAddrIdxKey();
+		CFSecBuffSecUserPWResetBySentEMAddrIdxKey newKeySentEMAddrIdx = (CFSecBuffSecUserPWResetBySentEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newBySentEMAddrIdxKey();
 		newKeySentEMAddrIdx.setRequiredSentToEMailAddr( Buff.getRequiredSentToEMailAddr() );
 
-		CFSecBuffSecUserPWResetByNewAcctIdxKey existingKeyNewAcctIdx = (CFSecBuffSecUserPWResetByNewAcctIdxKey)schema.getFactorySecUserPWReset().newByNewAcctIdxKey();
+		CFSecBuffSecUserPWResetByNewAcctIdxKey existingKeyNewAcctIdx = (CFSecBuffSecUserPWResetByNewAcctIdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newByNewAcctIdxKey();
 		existingKeyNewAcctIdx.setRequiredNewAccount( existing.getRequiredNewAccount() );
 
-		CFSecBuffSecUserPWResetByNewAcctIdxKey newKeyNewAcctIdx = (CFSecBuffSecUserPWResetByNewAcctIdxKey)schema.getFactorySecUserPWReset().newByNewAcctIdxKey();
+		CFSecBuffSecUserPWResetByNewAcctIdxKey newKeyNewAcctIdx = (CFSecBuffSecUserPWResetByNewAcctIdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newByNewAcctIdxKey();
 		newKeyNewAcctIdx.setRequiredNewAccount( Buff.getRequiredNewAccount() );
 
 		// Check unique indexes
@@ -612,13 +612,13 @@ public class CFSecRamSecUserPWResetTable
 				"deleteSecUserPWReset",
 				pkey );
 		}
-		CFSecBuffSecUserPWResetByUUuid6IdxKey keyUUuid6Idx = (CFSecBuffSecUserPWResetByUUuid6IdxKey)schema.getFactorySecUserPWReset().newByUUuid6IdxKey();
+		CFSecBuffSecUserPWResetByUUuid6IdxKey keyUUuid6Idx = (CFSecBuffSecUserPWResetByUUuid6IdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newByUUuid6IdxKey();
 		keyUUuid6Idx.setRequiredPasswordResetUuid6( existing.getRequiredPasswordResetUuid6() );
 
-		CFSecBuffSecUserPWResetBySentEMAddrIdxKey keySentEMAddrIdx = (CFSecBuffSecUserPWResetBySentEMAddrIdxKey)schema.getFactorySecUserPWReset().newBySentEMAddrIdxKey();
+		CFSecBuffSecUserPWResetBySentEMAddrIdxKey keySentEMAddrIdx = (CFSecBuffSecUserPWResetBySentEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newBySentEMAddrIdxKey();
 		keySentEMAddrIdx.setRequiredSentToEMailAddr( existing.getRequiredSentToEMailAddr() );
 
-		CFSecBuffSecUserPWResetByNewAcctIdxKey keyNewAcctIdx = (CFSecBuffSecUserPWResetByNewAcctIdxKey)schema.getFactorySecUserPWReset().newByNewAcctIdxKey();
+		CFSecBuffSecUserPWResetByNewAcctIdxKey keyNewAcctIdx = (CFSecBuffSecUserPWResetByNewAcctIdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newByNewAcctIdxKey();
 		keyNewAcctIdx.setRequiredNewAccount( existing.getRequiredNewAccount() );
 
 		// Validate reverse foreign keys
@@ -668,7 +668,7 @@ public class CFSecRamSecUserPWResetTable
 	public void deleteSecUserPWResetByUUuid6Idx( ICFSecAuthorization Authorization,
 		CFLibUuid6 argPasswordResetUuid6 )
 	{
-		CFSecBuffSecUserPWResetByUUuid6IdxKey key = (CFSecBuffSecUserPWResetByUUuid6IdxKey)schema.getFactorySecUserPWReset().newByUUuid6IdxKey();
+		CFSecBuffSecUserPWResetByUUuid6IdxKey key = (CFSecBuffSecUserPWResetByUUuid6IdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newByUUuid6IdxKey();
 		key.setRequiredPasswordResetUuid6( argPasswordResetUuid6 );
 		deleteSecUserPWResetByUUuid6Idx( Authorization, key );
 	}
@@ -704,7 +704,7 @@ public class CFSecRamSecUserPWResetTable
 	public void deleteSecUserPWResetBySentEMAddrIdx( ICFSecAuthorization Authorization,
 		String argSentToEMailAddr )
 	{
-		CFSecBuffSecUserPWResetBySentEMAddrIdxKey key = (CFSecBuffSecUserPWResetBySentEMAddrIdxKey)schema.getFactorySecUserPWReset().newBySentEMAddrIdxKey();
+		CFSecBuffSecUserPWResetBySentEMAddrIdxKey key = (CFSecBuffSecUserPWResetBySentEMAddrIdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newBySentEMAddrIdxKey();
 		key.setRequiredSentToEMailAddr( argSentToEMailAddr );
 		deleteSecUserPWResetBySentEMAddrIdx( Authorization, key );
 	}
@@ -740,7 +740,7 @@ public class CFSecRamSecUserPWResetTable
 	public void deleteSecUserPWResetByNewAcctIdx( ICFSecAuthorization Authorization,
 		boolean argNewAccount )
 	{
-		CFSecBuffSecUserPWResetByNewAcctIdxKey key = (CFSecBuffSecUserPWResetByNewAcctIdxKey)schema.getFactorySecUserPWReset().newByNewAcctIdxKey();
+		CFSecBuffSecUserPWResetByNewAcctIdxKey key = (CFSecBuffSecUserPWResetByNewAcctIdxKey)schema.getCFSecFactory().getFactorySecUserPWReset().newByNewAcctIdxKey();
 		key.setRequiredNewAccount( argNewAccount );
 		deleteSecUserPWResetByNewAcctIdx( Authorization, key );
 	}

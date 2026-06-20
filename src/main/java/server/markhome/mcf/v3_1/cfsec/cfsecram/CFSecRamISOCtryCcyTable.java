@@ -76,11 +76,11 @@ public class CFSecRamISOCtryCcyTable
 		}
 		else {
 			int classCode = rec.getClassCode();
-			if (classCode == ICFSecISOCtryCcy.CLASS_CODE) {
-				return( ((CFSecBuffISOCtryCcyDefaultFactory)(schema.getFactoryISOCtryCcy())).ensureRec((ICFSecISOCtryCcy)rec) );
-			}
-			else {
-				throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
+			switch (classCode) {
+				case ICFSecISOCtryCcy.CLASS_CODE:
+					return(((CFSecBuffISOCtryCcyFactoryService)(schema.getCFSecFactory().getFactoryISOCtryCcy())).ensureRec((ICFSecISOCtryCcy)rec) );
+				default:
+					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
 			}
 		}
 	}
@@ -92,15 +92,15 @@ public class CFSecRamISOCtryCcyTable
 		final String S_ProcName = "createISOCtryCcy";
 		
 		CFSecBuffISOCtryCcy Buff = (CFSecBuffISOCtryCcy)ensureRec(iBuff);
-		CFSecBuffISOCtryCcyPKey pkey = (CFSecBuffISOCtryCcyPKey)(schema.getFactoryISOCtryCcy().newPKey());
+		CFSecBuffISOCtryCcyPKey pkey = (CFSecBuffISOCtryCcyPKey)(schema.getCFSecFactory().getFactoryISOCtryCcy().newPKey());
 		pkey.setRequiredISOCtryId(Buff.getRequiredISOCtryId());
 		pkey.setRequiredISOCcyId(Buff.getRequiredISOCcyId());
 		Buff.setRequiredContainerCtry( pkey.getRequiredISOCtryId() );
 		Buff.setRequiredParentCcy( pkey.getRequiredISOCcyId() );
-		CFSecBuffISOCtryCcyByCtryIdxKey keyCtryIdx = (CFSecBuffISOCtryCcyByCtryIdxKey)schema.getFactoryISOCtryCcy().newByCtryIdxKey();
+		CFSecBuffISOCtryCcyByCtryIdxKey keyCtryIdx = (CFSecBuffISOCtryCcyByCtryIdxKey)schema.getCFSecFactory().getFactoryISOCtryCcy().newByCtryIdxKey();
 		keyCtryIdx.setRequiredISOCtryId( Buff.getRequiredISOCtryId() );
 
-		CFSecBuffISOCtryCcyByCcyIdxKey keyCcyIdx = (CFSecBuffISOCtryCcyByCcyIdxKey)schema.getFactoryISOCtryCcy().newByCcyIdxKey();
+		CFSecBuffISOCtryCcyByCcyIdxKey keyCcyIdx = (CFSecBuffISOCtryCcyByCcyIdxKey)schema.getCFSecFactory().getFactoryISOCtryCcy().newByCcyIdxKey();
 		keyCcyIdx.setRequiredISOCcyId( Buff.getRequiredISOCcyId() );
 
 		// Validate unique indexes
@@ -161,7 +161,7 @@ public class CFSecRamISOCtryCcyTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecISOCtryCcy.CLASS_CODE) {
-				CFSecBuffISOCtryCcy retbuff = ((CFSecBuffISOCtryCcy)(schema.getFactoryISOCtryCcy().newRec()));
+				CFSecBuffISOCtryCcy retbuff = ((CFSecBuffISOCtryCcy)(schema.getCFSecFactory().getFactoryISOCtryCcy().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -186,7 +186,7 @@ public class CFSecRamISOCtryCcyTable
 				return( null );
 			}
 		}
-		CFSecBuffISOCtryCcyPKey key = (CFSecBuffISOCtryCcyPKey)(schema.getFactoryISOCtryCcy().newPKey());
+		CFSecBuffISOCtryCcyPKey key = (CFSecBuffISOCtryCcyPKey)(schema.getCFSecFactory().getFactoryISOCtryCcy().newPKey());
 		key.setRequiredISOCtryId( ISOCtryId );
 		key.setRequiredISOCcyId( ISOCcyId );
 		return( readDerived( Authorization, key ) );
@@ -196,7 +196,7 @@ public class CFSecRamISOCtryCcyTable
 		ICFSecISOCtryCcyPKey PKey )
 	{
 		final String S_ProcName = "CFSecRamISOCtryCcy.readDerived";
-		CFSecBuffISOCtryCcyPKey key = (CFSecBuffISOCtryCcyPKey)(schema.getFactoryISOCtryCcy().newPKey());
+		CFSecBuffISOCtryCcyPKey key = (CFSecBuffISOCtryCcyPKey)(schema.getCFSecFactory().getFactoryISOCtryCcy().newPKey());
 		key.setRequiredISOCtryId( PKey.getRequiredISOCtryId() );
 		key.setRequiredISOCcyId( PKey.getRequiredISOCcyId() );
 		ICFSecISOCtryCcy buff;
@@ -214,7 +214,7 @@ public class CFSecRamISOCtryCcyTable
 		ICFSecISOCtryCcyPKey PKey )
 	{
 		final String S_ProcName = "CFSecRamISOCtryCcy.lockDerived";
-		CFSecBuffISOCtryCcyPKey key = (CFSecBuffISOCtryCcyPKey)(schema.getFactoryISOCtryCcy().newPKey());
+		CFSecBuffISOCtryCcyPKey key = (CFSecBuffISOCtryCcyPKey)(schema.getCFSecFactory().getFactoryISOCtryCcy().newPKey());
 		key.setRequiredISOCtryId( PKey.getRequiredISOCtryId() );
 		key.setRequiredISOCcyId( PKey.getRequiredISOCcyId() );
 		ICFSecISOCtryCcy buff;
@@ -244,7 +244,7 @@ public class CFSecRamISOCtryCcyTable
 		short ISOCtryId )
 	{
 		final String S_ProcName = "CFSecRamISOCtryCcy.readDerivedByCtryIdx";
-		CFSecBuffISOCtryCcyByCtryIdxKey key = (CFSecBuffISOCtryCcyByCtryIdxKey)schema.getFactoryISOCtryCcy().newByCtryIdxKey();
+		CFSecBuffISOCtryCcyByCtryIdxKey key = (CFSecBuffISOCtryCcyByCtryIdxKey)schema.getCFSecFactory().getFactoryISOCtryCcy().newByCtryIdxKey();
 
 		key.setRequiredISOCtryId( ISOCtryId );
 		ICFSecISOCtryCcy[] recArray;
@@ -272,7 +272,7 @@ public class CFSecRamISOCtryCcyTable
 		short ISOCcyId )
 	{
 		final String S_ProcName = "CFSecRamISOCtryCcy.readDerivedByCcyIdx";
-		CFSecBuffISOCtryCcyByCcyIdxKey key = (CFSecBuffISOCtryCcyByCcyIdxKey)schema.getFactoryISOCtryCcy().newByCcyIdxKey();
+		CFSecBuffISOCtryCcyByCcyIdxKey key = (CFSecBuffISOCtryCcyByCcyIdxKey)schema.getCFSecFactory().getFactoryISOCtryCcy().newByCcyIdxKey();
 
 		key.setRequiredISOCcyId( ISOCcyId );
 		ICFSecISOCtryCcy[] recArray;
@@ -301,7 +301,7 @@ public class CFSecRamISOCtryCcyTable
 		short ISOCcyId )
 	{
 		final String S_ProcName = "CFSecRamISOCtryCcy.readDerivedByIdIdx() ";
-		CFSecBuffISOCtryCcyPKey key = (CFSecBuffISOCtryCcyPKey)(schema.getFactoryISOCtryCcy().newPKey());
+		CFSecBuffISOCtryCcyPKey key = (CFSecBuffISOCtryCcyPKey)(schema.getCFSecFactory().getFactoryISOCtryCcy().newPKey());
 		key.setRequiredISOCtryId( ISOCtryId );
 		key.setRequiredISOCcyId( ISOCcyId );
 		ICFSecISOCtryCcy buff;
@@ -319,7 +319,7 @@ public class CFSecRamISOCtryCcyTable
 		short ISOCtryId,
 		short ISOCcyId )
 	{
-		CFSecBuffISOCtryCcyPKey key = (CFSecBuffISOCtryCcyPKey)(schema.getFactoryISOCtryCcy().newPKey());
+		CFSecBuffISOCtryCcyPKey key = (CFSecBuffISOCtryCcyPKey)(schema.getCFSecFactory().getFactoryISOCtryCcy().newPKey());
 		key.setRequiredISOCtryId( ISOCtryId );
 		key.setRequiredISOCcyId( ISOCcyId );
 		return( readRec( Authorization, key ) );
@@ -423,7 +423,7 @@ public class CFSecRamISOCtryCcyTable
 		ICFSecISOCtryCcy iBuff )
 	{
 		CFSecBuffISOCtryCcy Buff = (CFSecBuffISOCtryCcy)ensureRec(iBuff);
-		CFSecBuffISOCtryCcyPKey pkey = (CFSecBuffISOCtryCcyPKey)(schema.getFactoryISOCtryCcy().newPKey());
+		CFSecBuffISOCtryCcyPKey pkey = (CFSecBuffISOCtryCcyPKey)(schema.getCFSecFactory().getFactoryISOCtryCcy().newPKey());
 		pkey = (CFSecBuffISOCtryCcyPKey)Buff.getPKey();
 		CFSecBuffISOCtryCcy existing = dictByPKey.get( pkey );
 		if( existing == null ) {
@@ -441,16 +441,16 @@ public class CFSecRamISOCtryCcyTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffISOCtryCcyByCtryIdxKey existingKeyCtryIdx = (CFSecBuffISOCtryCcyByCtryIdxKey)schema.getFactoryISOCtryCcy().newByCtryIdxKey();
+		CFSecBuffISOCtryCcyByCtryIdxKey existingKeyCtryIdx = (CFSecBuffISOCtryCcyByCtryIdxKey)schema.getCFSecFactory().getFactoryISOCtryCcy().newByCtryIdxKey();
 		existingKeyCtryIdx.setRequiredISOCtryId( existing.getRequiredISOCtryId() );
 
-		CFSecBuffISOCtryCcyByCtryIdxKey newKeyCtryIdx = (CFSecBuffISOCtryCcyByCtryIdxKey)schema.getFactoryISOCtryCcy().newByCtryIdxKey();
+		CFSecBuffISOCtryCcyByCtryIdxKey newKeyCtryIdx = (CFSecBuffISOCtryCcyByCtryIdxKey)schema.getCFSecFactory().getFactoryISOCtryCcy().newByCtryIdxKey();
 		newKeyCtryIdx.setRequiredISOCtryId( Buff.getRequiredISOCtryId() );
 
-		CFSecBuffISOCtryCcyByCcyIdxKey existingKeyCcyIdx = (CFSecBuffISOCtryCcyByCcyIdxKey)schema.getFactoryISOCtryCcy().newByCcyIdxKey();
+		CFSecBuffISOCtryCcyByCcyIdxKey existingKeyCcyIdx = (CFSecBuffISOCtryCcyByCcyIdxKey)schema.getCFSecFactory().getFactoryISOCtryCcy().newByCcyIdxKey();
 		existingKeyCcyIdx.setRequiredISOCcyId( existing.getRequiredISOCcyId() );
 
-		CFSecBuffISOCtryCcyByCcyIdxKey newKeyCcyIdx = (CFSecBuffISOCtryCcyByCcyIdxKey)schema.getFactoryISOCtryCcy().newByCcyIdxKey();
+		CFSecBuffISOCtryCcyByCcyIdxKey newKeyCcyIdx = (CFSecBuffISOCtryCcyByCcyIdxKey)schema.getCFSecFactory().getFactoryISOCtryCcy().newByCcyIdxKey();
 		newKeyCcyIdx.setRequiredISOCcyId( Buff.getRequiredISOCcyId() );
 
 		// Check unique indexes
@@ -531,10 +531,10 @@ public class CFSecRamISOCtryCcyTable
 				"deleteISOCtryCcy",
 				pkey );
 		}
-		CFSecBuffISOCtryCcyByCtryIdxKey keyCtryIdx = (CFSecBuffISOCtryCcyByCtryIdxKey)schema.getFactoryISOCtryCcy().newByCtryIdxKey();
+		CFSecBuffISOCtryCcyByCtryIdxKey keyCtryIdx = (CFSecBuffISOCtryCcyByCtryIdxKey)schema.getCFSecFactory().getFactoryISOCtryCcy().newByCtryIdxKey();
 		keyCtryIdx.setRequiredISOCtryId( existing.getRequiredISOCtryId() );
 
-		CFSecBuffISOCtryCcyByCcyIdxKey keyCcyIdx = (CFSecBuffISOCtryCcyByCcyIdxKey)schema.getFactoryISOCtryCcy().newByCcyIdxKey();
+		CFSecBuffISOCtryCcyByCcyIdxKey keyCcyIdx = (CFSecBuffISOCtryCcyByCcyIdxKey)schema.getCFSecFactory().getFactoryISOCtryCcy().newByCcyIdxKey();
 		keyCcyIdx.setRequiredISOCcyId( existing.getRequiredISOCcyId() );
 
 		// Validate reverse foreign keys
@@ -556,7 +556,7 @@ public class CFSecRamISOCtryCcyTable
 		short ISOCtryId,
 		short ISOCcyId )
 	{
-		CFSecBuffISOCtryCcyPKey key = (CFSecBuffISOCtryCcyPKey)(schema.getFactoryISOCtryCcy().newPKey());
+		CFSecBuffISOCtryCcyPKey key = (CFSecBuffISOCtryCcyPKey)(schema.getCFSecFactory().getFactoryISOCtryCcy().newPKey());
 		key.setRequiredISOCtryId( ISOCtryId );
 		key.setRequiredISOCcyId( ISOCcyId );
 		deleteISOCtryCcyByIdIdx( Authorization, key );
@@ -566,7 +566,7 @@ public class CFSecRamISOCtryCcyTable
 	public void deleteISOCtryCcyByIdIdx( ICFSecAuthorization Authorization,
 		ICFSecISOCtryCcyPKey PKey )
 	{
-		CFSecBuffISOCtryCcyPKey key = (CFSecBuffISOCtryCcyPKey)(schema.getFactoryISOCtryCcy().newPKey());
+		CFSecBuffISOCtryCcyPKey key = (CFSecBuffISOCtryCcyPKey)(schema.getCFSecFactory().getFactoryISOCtryCcy().newPKey());
 		key.setRequiredISOCtryId( PKey.getRequiredISOCtryId() );
 		key.setRequiredISOCcyId( PKey.getRequiredISOCcyId() );
 		CFSecBuffISOCtryCcyPKey argKey = key;
@@ -599,7 +599,7 @@ public class CFSecRamISOCtryCcyTable
 	public void deleteISOCtryCcyByCtryIdx( ICFSecAuthorization Authorization,
 		short argISOCtryId )
 	{
-		CFSecBuffISOCtryCcyByCtryIdxKey key = (CFSecBuffISOCtryCcyByCtryIdxKey)schema.getFactoryISOCtryCcy().newByCtryIdxKey();
+		CFSecBuffISOCtryCcyByCtryIdxKey key = (CFSecBuffISOCtryCcyByCtryIdxKey)schema.getCFSecFactory().getFactoryISOCtryCcy().newByCtryIdxKey();
 		key.setRequiredISOCtryId( argISOCtryId );
 		deleteISOCtryCcyByCtryIdx( Authorization, key );
 	}
@@ -636,7 +636,7 @@ public class CFSecRamISOCtryCcyTable
 	public void deleteISOCtryCcyByCcyIdx( ICFSecAuthorization Authorization,
 		short argISOCcyId )
 	{
-		CFSecBuffISOCtryCcyByCcyIdxKey key = (CFSecBuffISOCtryCcyByCcyIdxKey)schema.getFactoryISOCtryCcy().newByCcyIdxKey();
+		CFSecBuffISOCtryCcyByCcyIdxKey key = (CFSecBuffISOCtryCcyByCcyIdxKey)schema.getCFSecFactory().getFactoryISOCtryCcy().newByCcyIdxKey();
 		key.setRequiredISOCcyId( argISOCcyId );
 		deleteISOCtryCcyByCcyIdx( Authorization, key );
 	}

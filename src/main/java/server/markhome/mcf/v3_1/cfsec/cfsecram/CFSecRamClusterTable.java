@@ -72,11 +72,11 @@ public class CFSecRamClusterTable
 		}
 		else {
 			int classCode = rec.getClassCode();
-			if (classCode == ICFSecCluster.CLASS_CODE) {
-				return( ((CFSecBuffClusterDefaultFactory)(schema.getFactoryCluster())).ensureRec((ICFSecCluster)rec) );
-			}
-			else {
-				throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
+			switch (classCode) {
+				case ICFSecCluster.CLASS_CODE:
+					return(((CFSecBuffClusterFactoryService)(schema.getCFSecFactory().getFactoryCluster())).ensureRec((ICFSecCluster)rec) );
+				default:
+					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
 			}
 		}
 	}
@@ -91,10 +91,10 @@ public class CFSecRamClusterTable
 		CFLibDbKeyHash256 pkey;
 		pkey = schema.nextClusterIdGen();
 		Buff.setRequiredId( pkey );
-		CFSecBuffClusterByUDomNameIdxKey keyUDomNameIdx = (CFSecBuffClusterByUDomNameIdxKey)schema.getFactoryCluster().newByUDomNameIdxKey();
+		CFSecBuffClusterByUDomNameIdxKey keyUDomNameIdx = (CFSecBuffClusterByUDomNameIdxKey)schema.getCFSecFactory().getFactoryCluster().newByUDomNameIdxKey();
 		keyUDomNameIdx.setRequiredFullDomName( Buff.getRequiredFullDomName() );
 
-		CFSecBuffClusterByUDescrIdxKey keyUDescrIdx = (CFSecBuffClusterByUDescrIdxKey)schema.getFactoryCluster().newByUDescrIdxKey();
+		CFSecBuffClusterByUDescrIdxKey keyUDescrIdx = (CFSecBuffClusterByUDescrIdxKey)schema.getCFSecFactory().getFactoryCluster().newByUDescrIdxKey();
 		keyUDescrIdx.setRequiredDescription( Buff.getRequiredDescription() );
 
 		// Validate unique indexes
@@ -135,7 +135,7 @@ public class CFSecRamClusterTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecCluster.CLASS_CODE) {
-				CFSecBuffCluster retbuff = ((CFSecBuffCluster)(schema.getFactoryCluster().newRec()));
+				CFSecBuffCluster retbuff = ((CFSecBuffCluster)(schema.getCFSecFactory().getFactoryCluster().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -195,7 +195,7 @@ public class CFSecRamClusterTable
 		String FullDomName )
 	{
 		final String S_ProcName = "CFSecRamCluster.readDerivedByUDomNameIdx";
-		CFSecBuffClusterByUDomNameIdxKey key = (CFSecBuffClusterByUDomNameIdxKey)schema.getFactoryCluster().newByUDomNameIdxKey();
+		CFSecBuffClusterByUDomNameIdxKey key = (CFSecBuffClusterByUDomNameIdxKey)schema.getCFSecFactory().getFactoryCluster().newByUDomNameIdxKey();
 
 		key.setRequiredFullDomName( FullDomName );
 		ICFSecCluster buff;
@@ -213,7 +213,7 @@ public class CFSecRamClusterTable
 		String Description )
 	{
 		final String S_ProcName = "CFSecRamCluster.readDerivedByUDescrIdx";
-		CFSecBuffClusterByUDescrIdxKey key = (CFSecBuffClusterByUDescrIdxKey)schema.getFactoryCluster().newByUDescrIdxKey();
+		CFSecBuffClusterByUDescrIdxKey key = (CFSecBuffClusterByUDescrIdxKey)schema.getCFSecFactory().getFactoryCluster().newByUDescrIdxKey();
 
 		key.setRequiredDescription( Description );
 		ICFSecCluster buff;
@@ -362,16 +362,16 @@ public class CFSecRamClusterTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffClusterByUDomNameIdxKey existingKeyUDomNameIdx = (CFSecBuffClusterByUDomNameIdxKey)schema.getFactoryCluster().newByUDomNameIdxKey();
+		CFSecBuffClusterByUDomNameIdxKey existingKeyUDomNameIdx = (CFSecBuffClusterByUDomNameIdxKey)schema.getCFSecFactory().getFactoryCluster().newByUDomNameIdxKey();
 		existingKeyUDomNameIdx.setRequiredFullDomName( existing.getRequiredFullDomName() );
 
-		CFSecBuffClusterByUDomNameIdxKey newKeyUDomNameIdx = (CFSecBuffClusterByUDomNameIdxKey)schema.getFactoryCluster().newByUDomNameIdxKey();
+		CFSecBuffClusterByUDomNameIdxKey newKeyUDomNameIdx = (CFSecBuffClusterByUDomNameIdxKey)schema.getCFSecFactory().getFactoryCluster().newByUDomNameIdxKey();
 		newKeyUDomNameIdx.setRequiredFullDomName( Buff.getRequiredFullDomName() );
 
-		CFSecBuffClusterByUDescrIdxKey existingKeyUDescrIdx = (CFSecBuffClusterByUDescrIdxKey)schema.getFactoryCluster().newByUDescrIdxKey();
+		CFSecBuffClusterByUDescrIdxKey existingKeyUDescrIdx = (CFSecBuffClusterByUDescrIdxKey)schema.getCFSecFactory().getFactoryCluster().newByUDescrIdxKey();
 		existingKeyUDescrIdx.setRequiredDescription( existing.getRequiredDescription() );
 
-		CFSecBuffClusterByUDescrIdxKey newKeyUDescrIdx = (CFSecBuffClusterByUDescrIdxKey)schema.getFactoryCluster().newByUDescrIdxKey();
+		CFSecBuffClusterByUDescrIdxKey newKeyUDescrIdx = (CFSecBuffClusterByUDescrIdxKey)schema.getCFSecFactory().getFactoryCluster().newByUDescrIdxKey();
 		newKeyUDescrIdx.setRequiredDescription( Buff.getRequiredDescription() );
 
 		// Check unique indexes
@@ -438,10 +438,10 @@ public class CFSecRamClusterTable
 						existing.getRequiredId() );
 					schema.getTableTenant().deleteTenantByClusterIdx( Authorization,
 						existing.getRequiredId() );
-		CFSecBuffClusterByUDomNameIdxKey keyUDomNameIdx = (CFSecBuffClusterByUDomNameIdxKey)schema.getFactoryCluster().newByUDomNameIdxKey();
+		CFSecBuffClusterByUDomNameIdxKey keyUDomNameIdx = (CFSecBuffClusterByUDomNameIdxKey)schema.getCFSecFactory().getFactoryCluster().newByUDomNameIdxKey();
 		keyUDomNameIdx.setRequiredFullDomName( existing.getRequiredFullDomName() );
 
-		CFSecBuffClusterByUDescrIdxKey keyUDescrIdx = (CFSecBuffClusterByUDescrIdxKey)schema.getFactoryCluster().newByUDescrIdxKey();
+		CFSecBuffClusterByUDescrIdxKey keyUDescrIdx = (CFSecBuffClusterByUDescrIdxKey)schema.getCFSecFactory().getFactoryCluster().newByUDescrIdxKey();
 		keyUDescrIdx.setRequiredDescription( existing.getRequiredDescription() );
 
 		// Validate reverse foreign keys
@@ -487,7 +487,7 @@ public class CFSecRamClusterTable
 	public void deleteClusterByUDomNameIdx( ICFSecAuthorization Authorization,
 		String argFullDomName )
 	{
-		CFSecBuffClusterByUDomNameIdxKey key = (CFSecBuffClusterByUDomNameIdxKey)schema.getFactoryCluster().newByUDomNameIdxKey();
+		CFSecBuffClusterByUDomNameIdxKey key = (CFSecBuffClusterByUDomNameIdxKey)schema.getCFSecFactory().getFactoryCluster().newByUDomNameIdxKey();
 		key.setRequiredFullDomName( argFullDomName );
 		deleteClusterByUDomNameIdx( Authorization, key );
 	}
@@ -523,7 +523,7 @@ public class CFSecRamClusterTable
 	public void deleteClusterByUDescrIdx( ICFSecAuthorization Authorization,
 		String argDescription )
 	{
-		CFSecBuffClusterByUDescrIdxKey key = (CFSecBuffClusterByUDescrIdxKey)schema.getFactoryCluster().newByUDescrIdxKey();
+		CFSecBuffClusterByUDescrIdxKey key = (CFSecBuffClusterByUDescrIdxKey)schema.getCFSecFactory().getFactoryCluster().newByUDescrIdxKey();
 		key.setRequiredDescription( argDescription );
 		deleteClusterByUDescrIdx( Authorization, key );
 	}

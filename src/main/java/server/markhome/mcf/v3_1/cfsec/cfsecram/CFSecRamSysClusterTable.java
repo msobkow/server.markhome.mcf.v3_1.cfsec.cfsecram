@@ -70,11 +70,11 @@ public class CFSecRamSysClusterTable
 		}
 		else {
 			int classCode = rec.getClassCode();
-			if (classCode == ICFSecSysCluster.CLASS_CODE) {
-				return( ((CFSecBuffSysClusterDefaultFactory)(schema.getFactorySysCluster())).ensureRec((ICFSecSysCluster)rec) );
-			}
-			else {
-				throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
+			switch (classCode) {
+				case ICFSecSysCluster.CLASS_CODE:
+					return(((CFSecBuffSysClusterFactoryService)(schema.getCFSecFactory().getFactorySysCluster())).ensureRec((ICFSecSysCluster)rec) );
+				default:
+					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
 			}
 		}
 	}
@@ -89,7 +89,7 @@ public class CFSecRamSysClusterTable
 		Integer pkey;
 		pkey = Buff.getRequiredSingletonId();
 		Buff.setRequiredSingletonId( pkey );
-		CFSecBuffSysClusterByClusterIdxKey keyClusterIdx = (CFSecBuffSysClusterByClusterIdxKey)schema.getFactorySysCluster().newByClusterIdxKey();
+		CFSecBuffSysClusterByClusterIdxKey keyClusterIdx = (CFSecBuffSysClusterByClusterIdxKey)schema.getCFSecFactory().getFactorySysCluster().newByClusterIdxKey();
 		keyClusterIdx.setRequiredClusterId( Buff.getRequiredClusterId() );
 
 		// Validate unique indexes
@@ -140,7 +140,7 @@ public class CFSecRamSysClusterTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecSysCluster.CLASS_CODE) {
-				CFSecBuffSysCluster retbuff = ((CFSecBuffSysCluster)(schema.getFactorySysCluster().newRec()));
+				CFSecBuffSysCluster retbuff = ((CFSecBuffSysCluster)(schema.getCFSecFactory().getFactorySysCluster().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -200,7 +200,7 @@ public class CFSecRamSysClusterTable
 		CFLibDbKeyHash256 ClusterId )
 	{
 		final String S_ProcName = "CFSecRamSysCluster.readDerivedByClusterIdx";
-		CFSecBuffSysClusterByClusterIdxKey key = (CFSecBuffSysClusterByClusterIdxKey)schema.getFactorySysCluster().newByClusterIdxKey();
+		CFSecBuffSysClusterByClusterIdxKey key = (CFSecBuffSysClusterByClusterIdxKey)schema.getCFSecFactory().getFactorySysCluster().newByClusterIdxKey();
 
 		key.setRequiredClusterId( ClusterId );
 		ICFSecSysCluster[] recArray;
@@ -332,10 +332,10 @@ public class CFSecRamSysClusterTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffSysClusterByClusterIdxKey existingKeyClusterIdx = (CFSecBuffSysClusterByClusterIdxKey)schema.getFactorySysCluster().newByClusterIdxKey();
+		CFSecBuffSysClusterByClusterIdxKey existingKeyClusterIdx = (CFSecBuffSysClusterByClusterIdxKey)schema.getCFSecFactory().getFactorySysCluster().newByClusterIdxKey();
 		existingKeyClusterIdx.setRequiredClusterId( existing.getRequiredClusterId() );
 
-		CFSecBuffSysClusterByClusterIdxKey newKeyClusterIdx = (CFSecBuffSysClusterByClusterIdxKey)schema.getFactorySysCluster().newByClusterIdxKey();
+		CFSecBuffSysClusterByClusterIdxKey newKeyClusterIdx = (CFSecBuffSysClusterByClusterIdxKey)schema.getCFSecFactory().getFactorySysCluster().newByClusterIdxKey();
 		newKeyClusterIdx.setRequiredClusterId( Buff.getRequiredClusterId() );
 
 		// Check unique indexes
@@ -403,7 +403,7 @@ public class CFSecRamSysClusterTable
 				"deleteSysCluster",
 				pkey );
 		}
-		CFSecBuffSysClusterByClusterIdxKey keyClusterIdx = (CFSecBuffSysClusterByClusterIdxKey)schema.getFactorySysCluster().newByClusterIdxKey();
+		CFSecBuffSysClusterByClusterIdxKey keyClusterIdx = (CFSecBuffSysClusterByClusterIdxKey)schema.getCFSecFactory().getFactorySysCluster().newByClusterIdxKey();
 		keyClusterIdx.setRequiredClusterId( existing.getRequiredClusterId() );
 
 		// Validate reverse foreign keys
@@ -448,7 +448,7 @@ public class CFSecRamSysClusterTable
 	public void deleteSysClusterByClusterIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 argClusterId )
 	{
-		CFSecBuffSysClusterByClusterIdxKey key = (CFSecBuffSysClusterByClusterIdxKey)schema.getFactorySysCluster().newByClusterIdxKey();
+		CFSecBuffSysClusterByClusterIdxKey key = (CFSecBuffSysClusterByClusterIdxKey)schema.getCFSecFactory().getFactorySysCluster().newByClusterIdxKey();
 		key.setRequiredClusterId( argClusterId );
 		deleteSysClusterByClusterIdx( Authorization, key );
 	}

@@ -88,11 +88,11 @@ public class CFSecRamTableInfoTable
 		}
 		else {
 			int classCode = rec.getClassCode();
-			if (classCode == ICFSecTableInfo.CLASS_CODE) {
-				return( ((CFSecBuffTableInfoDefaultFactory)(schema.getFactoryTableInfo())).ensureRec((ICFSecTableInfo)rec) );
-			}
-			else {
-				throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
+			switch (classCode) {
+				case ICFSecTableInfo.CLASS_CODE:
+					return(((CFSecBuffTableInfoFactoryService)(schema.getCFSecFactory().getFactoryTableInfo())).ensureRec((ICFSecTableInfo)rec) );
+				default:
+					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
 			}
 		}
 	}
@@ -107,20 +107,20 @@ public class CFSecRamTableInfoTable
 		Integer pkey;
 		pkey = schema.nextTableInfoIdGen();
 		Buff.setRequiredTableInfoId( pkey );
-		CFSecBuffTableInfoByTableNameIdxKey keyTableNameIdx = (CFSecBuffTableInfoByTableNameIdxKey)schema.getFactoryTableInfo().newByTableNameIdxKey();
+		CFSecBuffTableInfoByTableNameIdxKey keyTableNameIdx = (CFSecBuffTableInfoByTableNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newByTableNameIdxKey();
 		keyTableNameIdx.setRequiredTableName( Buff.getRequiredTableName() );
 
-		CFSecBuffTableInfoBySuperNameIdxKey keySuperNameIdx = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getFactoryTableInfo().newBySuperNameIdxKey();
+		CFSecBuffTableInfoBySuperNameIdxKey keySuperNameIdx = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySuperNameIdxKey();
 		keySuperNameIdx.setOptionalSuperName( Buff.getOptionalSuperName() );
 
-		CFSecBuffTableInfoBySchemaNameIdxKey keySchemaNameIdx = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getFactoryTableInfo().newBySchemaNameIdxKey();
+		CFSecBuffTableInfoBySchemaNameIdxKey keySchemaNameIdx = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaNameIdxKey();
 		keySchemaNameIdx.setRequiredSchemaName( Buff.getRequiredSchemaName() );
 
-		CFSecBuffTableInfoBySchemaBkCodeIdxKey keySchemaBkCodeIdx = (CFSecBuffTableInfoBySchemaBkCodeIdxKey)schema.getFactoryTableInfo().newBySchemaBkCodeIdxKey();
+		CFSecBuffTableInfoBySchemaBkCodeIdxKey keySchemaBkCodeIdx = (CFSecBuffTableInfoBySchemaBkCodeIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaBkCodeIdxKey();
 		keySchemaBkCodeIdx.setRequiredSchemaName( Buff.getRequiredSchemaName() );
 		keySchemaBkCodeIdx.setRequiredBackingClassCode( Buff.getRequiredBackingClassCode() );
 
-		CFSecBuffTableInfoBySchemaRTCodeIdxKey keySchemaRTCodeIdx = (CFSecBuffTableInfoBySchemaRTCodeIdxKey)schema.getFactoryTableInfo().newBySchemaRTCodeIdxKey();
+		CFSecBuffTableInfoBySchemaRTCodeIdxKey keySchemaRTCodeIdx = (CFSecBuffTableInfoBySchemaRTCodeIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaRTCodeIdxKey();
 		keySchemaRTCodeIdx.setRequiredRuntimeClassCode( Buff.getRequiredRuntimeClassCode() );
 
 		// Validate unique indexes
@@ -191,7 +191,7 @@ public class CFSecRamTableInfoTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecTableInfo.CLASS_CODE) {
-				CFSecBuffTableInfo retbuff = ((CFSecBuffTableInfo)(schema.getFactoryTableInfo().newRec()));
+				CFSecBuffTableInfo retbuff = ((CFSecBuffTableInfo)(schema.getCFSecFactory().getFactoryTableInfo().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -251,7 +251,7 @@ public class CFSecRamTableInfoTable
 		String TableName )
 	{
 		final String S_ProcName = "CFSecRamTableInfo.readDerivedByTableNameIdx";
-		CFSecBuffTableInfoByTableNameIdxKey key = (CFSecBuffTableInfoByTableNameIdxKey)schema.getFactoryTableInfo().newByTableNameIdxKey();
+		CFSecBuffTableInfoByTableNameIdxKey key = (CFSecBuffTableInfoByTableNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newByTableNameIdxKey();
 
 		key.setRequiredTableName( TableName );
 		ICFSecTableInfo buff;
@@ -269,7 +269,7 @@ public class CFSecRamTableInfoTable
 		String SuperName )
 	{
 		final String S_ProcName = "CFSecRamTableInfo.readDerivedBySuperNameIdx";
-		CFSecBuffTableInfoBySuperNameIdxKey key = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getFactoryTableInfo().newBySuperNameIdxKey();
+		CFSecBuffTableInfoBySuperNameIdxKey key = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySuperNameIdxKey();
 
 		key.setOptionalSuperName( SuperName );
 		ICFSecTableInfo[] recArray;
@@ -297,7 +297,7 @@ public class CFSecRamTableInfoTable
 		String SchemaName )
 	{
 		final String S_ProcName = "CFSecRamTableInfo.readDerivedBySchemaNameIdx";
-		CFSecBuffTableInfoBySchemaNameIdxKey key = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getFactoryTableInfo().newBySchemaNameIdxKey();
+		CFSecBuffTableInfoBySchemaNameIdxKey key = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaNameIdxKey();
 
 		key.setRequiredSchemaName( SchemaName );
 		ICFSecTableInfo[] recArray;
@@ -326,7 +326,7 @@ public class CFSecRamTableInfoTable
 		int BackingClassCode )
 	{
 		final String S_ProcName = "CFSecRamTableInfo.readDerivedBySchemaBkCodeIdx";
-		CFSecBuffTableInfoBySchemaBkCodeIdxKey key = (CFSecBuffTableInfoBySchemaBkCodeIdxKey)schema.getFactoryTableInfo().newBySchemaBkCodeIdxKey();
+		CFSecBuffTableInfoBySchemaBkCodeIdxKey key = (CFSecBuffTableInfoBySchemaBkCodeIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaBkCodeIdxKey();
 
 		key.setRequiredSchemaName( SchemaName );
 		key.setRequiredBackingClassCode( BackingClassCode );
@@ -345,7 +345,7 @@ public class CFSecRamTableInfoTable
 		int RuntimeClassCode )
 	{
 		final String S_ProcName = "CFSecRamTableInfo.readDerivedBySchemaRTCodeIdx";
-		CFSecBuffTableInfoBySchemaRTCodeIdxKey key = (CFSecBuffTableInfoBySchemaRTCodeIdxKey)schema.getFactoryTableInfo().newBySchemaRTCodeIdxKey();
+		CFSecBuffTableInfoBySchemaRTCodeIdxKey key = (CFSecBuffTableInfoBySchemaRTCodeIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaRTCodeIdxKey();
 
 		key.setRequiredRuntimeClassCode( RuntimeClassCode );
 		ICFSecTableInfo buff;
@@ -532,36 +532,36 @@ public class CFSecRamTableInfoTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffTableInfoByTableNameIdxKey existingKeyTableNameIdx = (CFSecBuffTableInfoByTableNameIdxKey)schema.getFactoryTableInfo().newByTableNameIdxKey();
+		CFSecBuffTableInfoByTableNameIdxKey existingKeyTableNameIdx = (CFSecBuffTableInfoByTableNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newByTableNameIdxKey();
 		existingKeyTableNameIdx.setRequiredTableName( existing.getRequiredTableName() );
 
-		CFSecBuffTableInfoByTableNameIdxKey newKeyTableNameIdx = (CFSecBuffTableInfoByTableNameIdxKey)schema.getFactoryTableInfo().newByTableNameIdxKey();
+		CFSecBuffTableInfoByTableNameIdxKey newKeyTableNameIdx = (CFSecBuffTableInfoByTableNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newByTableNameIdxKey();
 		newKeyTableNameIdx.setRequiredTableName( Buff.getRequiredTableName() );
 
-		CFSecBuffTableInfoBySuperNameIdxKey existingKeySuperNameIdx = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getFactoryTableInfo().newBySuperNameIdxKey();
+		CFSecBuffTableInfoBySuperNameIdxKey existingKeySuperNameIdx = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySuperNameIdxKey();
 		existingKeySuperNameIdx.setOptionalSuperName( existing.getOptionalSuperName() );
 
-		CFSecBuffTableInfoBySuperNameIdxKey newKeySuperNameIdx = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getFactoryTableInfo().newBySuperNameIdxKey();
+		CFSecBuffTableInfoBySuperNameIdxKey newKeySuperNameIdx = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySuperNameIdxKey();
 		newKeySuperNameIdx.setOptionalSuperName( Buff.getOptionalSuperName() );
 
-		CFSecBuffTableInfoBySchemaNameIdxKey existingKeySchemaNameIdx = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getFactoryTableInfo().newBySchemaNameIdxKey();
+		CFSecBuffTableInfoBySchemaNameIdxKey existingKeySchemaNameIdx = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaNameIdxKey();
 		existingKeySchemaNameIdx.setRequiredSchemaName( existing.getRequiredSchemaName() );
 
-		CFSecBuffTableInfoBySchemaNameIdxKey newKeySchemaNameIdx = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getFactoryTableInfo().newBySchemaNameIdxKey();
+		CFSecBuffTableInfoBySchemaNameIdxKey newKeySchemaNameIdx = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaNameIdxKey();
 		newKeySchemaNameIdx.setRequiredSchemaName( Buff.getRequiredSchemaName() );
 
-		CFSecBuffTableInfoBySchemaBkCodeIdxKey existingKeySchemaBkCodeIdx = (CFSecBuffTableInfoBySchemaBkCodeIdxKey)schema.getFactoryTableInfo().newBySchemaBkCodeIdxKey();
+		CFSecBuffTableInfoBySchemaBkCodeIdxKey existingKeySchemaBkCodeIdx = (CFSecBuffTableInfoBySchemaBkCodeIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaBkCodeIdxKey();
 		existingKeySchemaBkCodeIdx.setRequiredSchemaName( existing.getRequiredSchemaName() );
 		existingKeySchemaBkCodeIdx.setRequiredBackingClassCode( existing.getRequiredBackingClassCode() );
 
-		CFSecBuffTableInfoBySchemaBkCodeIdxKey newKeySchemaBkCodeIdx = (CFSecBuffTableInfoBySchemaBkCodeIdxKey)schema.getFactoryTableInfo().newBySchemaBkCodeIdxKey();
+		CFSecBuffTableInfoBySchemaBkCodeIdxKey newKeySchemaBkCodeIdx = (CFSecBuffTableInfoBySchemaBkCodeIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaBkCodeIdxKey();
 		newKeySchemaBkCodeIdx.setRequiredSchemaName( Buff.getRequiredSchemaName() );
 		newKeySchemaBkCodeIdx.setRequiredBackingClassCode( Buff.getRequiredBackingClassCode() );
 
-		CFSecBuffTableInfoBySchemaRTCodeIdxKey existingKeySchemaRTCodeIdx = (CFSecBuffTableInfoBySchemaRTCodeIdxKey)schema.getFactoryTableInfo().newBySchemaRTCodeIdxKey();
+		CFSecBuffTableInfoBySchemaRTCodeIdxKey existingKeySchemaRTCodeIdx = (CFSecBuffTableInfoBySchemaRTCodeIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaRTCodeIdxKey();
 		existingKeySchemaRTCodeIdx.setRequiredRuntimeClassCode( existing.getRequiredRuntimeClassCode() );
 
-		CFSecBuffTableInfoBySchemaRTCodeIdxKey newKeySchemaRTCodeIdx = (CFSecBuffTableInfoBySchemaRTCodeIdxKey)schema.getFactoryTableInfo().newBySchemaRTCodeIdxKey();
+		CFSecBuffTableInfoBySchemaRTCodeIdxKey newKeySchemaRTCodeIdx = (CFSecBuffTableInfoBySchemaRTCodeIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaRTCodeIdxKey();
 		newKeySchemaRTCodeIdx.setRequiredRuntimeClassCode( Buff.getRequiredRuntimeClassCode() );
 
 		// Check unique indexes
@@ -668,20 +668,20 @@ public class CFSecRamTableInfoTable
 			schema.getTableTableInfo().deleteTableInfoBySuperNameIdx( Authorization,
 						existing.getRequiredTableName() );
 		}
-		CFSecBuffTableInfoByTableNameIdxKey keyTableNameIdx = (CFSecBuffTableInfoByTableNameIdxKey)schema.getFactoryTableInfo().newByTableNameIdxKey();
+		CFSecBuffTableInfoByTableNameIdxKey keyTableNameIdx = (CFSecBuffTableInfoByTableNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newByTableNameIdxKey();
 		keyTableNameIdx.setRequiredTableName( existing.getRequiredTableName() );
 
-		CFSecBuffTableInfoBySuperNameIdxKey keySuperNameIdx = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getFactoryTableInfo().newBySuperNameIdxKey();
+		CFSecBuffTableInfoBySuperNameIdxKey keySuperNameIdx = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySuperNameIdxKey();
 		keySuperNameIdx.setOptionalSuperName( existing.getOptionalSuperName() );
 
-		CFSecBuffTableInfoBySchemaNameIdxKey keySchemaNameIdx = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getFactoryTableInfo().newBySchemaNameIdxKey();
+		CFSecBuffTableInfoBySchemaNameIdxKey keySchemaNameIdx = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaNameIdxKey();
 		keySchemaNameIdx.setRequiredSchemaName( existing.getRequiredSchemaName() );
 
-		CFSecBuffTableInfoBySchemaBkCodeIdxKey keySchemaBkCodeIdx = (CFSecBuffTableInfoBySchemaBkCodeIdxKey)schema.getFactoryTableInfo().newBySchemaBkCodeIdxKey();
+		CFSecBuffTableInfoBySchemaBkCodeIdxKey keySchemaBkCodeIdx = (CFSecBuffTableInfoBySchemaBkCodeIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaBkCodeIdxKey();
 		keySchemaBkCodeIdx.setRequiredSchemaName( existing.getRequiredSchemaName() );
 		keySchemaBkCodeIdx.setRequiredBackingClassCode( existing.getRequiredBackingClassCode() );
 
-		CFSecBuffTableInfoBySchemaRTCodeIdxKey keySchemaRTCodeIdx = (CFSecBuffTableInfoBySchemaRTCodeIdxKey)schema.getFactoryTableInfo().newBySchemaRTCodeIdxKey();
+		CFSecBuffTableInfoBySchemaRTCodeIdxKey keySchemaRTCodeIdx = (CFSecBuffTableInfoBySchemaRTCodeIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaRTCodeIdxKey();
 		keySchemaRTCodeIdx.setRequiredRuntimeClassCode( existing.getRequiredRuntimeClassCode() );
 
 		// Validate reverse foreign keys
@@ -735,7 +735,7 @@ public class CFSecRamTableInfoTable
 	public void deleteTableInfoByTableNameIdx( ICFSecAuthorization Authorization,
 		String argTableName )
 	{
-		CFSecBuffTableInfoByTableNameIdxKey key = (CFSecBuffTableInfoByTableNameIdxKey)schema.getFactoryTableInfo().newByTableNameIdxKey();
+		CFSecBuffTableInfoByTableNameIdxKey key = (CFSecBuffTableInfoByTableNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newByTableNameIdxKey();
 		key.setRequiredTableName( argTableName );
 		deleteTableInfoByTableNameIdx( Authorization, key );
 	}
@@ -771,7 +771,7 @@ public class CFSecRamTableInfoTable
 	public void deleteTableInfoBySuperNameIdx( ICFSecAuthorization Authorization,
 		String argSuperName )
 	{
-		CFSecBuffTableInfoBySuperNameIdxKey key = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getFactoryTableInfo().newBySuperNameIdxKey();
+		CFSecBuffTableInfoBySuperNameIdxKey key = (CFSecBuffTableInfoBySuperNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySuperNameIdxKey();
 		key.setOptionalSuperName( argSuperName );
 		deleteTableInfoBySuperNameIdx( Authorization, key );
 	}
@@ -809,7 +809,7 @@ public class CFSecRamTableInfoTable
 	public void deleteTableInfoBySchemaNameIdx( ICFSecAuthorization Authorization,
 		String argSchemaName )
 	{
-		CFSecBuffTableInfoBySchemaNameIdxKey key = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getFactoryTableInfo().newBySchemaNameIdxKey();
+		CFSecBuffTableInfoBySchemaNameIdxKey key = (CFSecBuffTableInfoBySchemaNameIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaNameIdxKey();
 		key.setRequiredSchemaName( argSchemaName );
 		deleteTableInfoBySchemaNameIdx( Authorization, key );
 	}
@@ -846,7 +846,7 @@ public class CFSecRamTableInfoTable
 		String argSchemaName,
 		int argBackingClassCode )
 	{
-		CFSecBuffTableInfoBySchemaBkCodeIdxKey key = (CFSecBuffTableInfoBySchemaBkCodeIdxKey)schema.getFactoryTableInfo().newBySchemaBkCodeIdxKey();
+		CFSecBuffTableInfoBySchemaBkCodeIdxKey key = (CFSecBuffTableInfoBySchemaBkCodeIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaBkCodeIdxKey();
 		key.setRequiredSchemaName( argSchemaName );
 		key.setRequiredBackingClassCode( argBackingClassCode );
 		deleteTableInfoBySchemaBkCodeIdx( Authorization, key );
@@ -884,7 +884,7 @@ public class CFSecRamTableInfoTable
 	public void deleteTableInfoBySchemaRTCodeIdx( ICFSecAuthorization Authorization,
 		int argRuntimeClassCode )
 	{
-		CFSecBuffTableInfoBySchemaRTCodeIdxKey key = (CFSecBuffTableInfoBySchemaRTCodeIdxKey)schema.getFactoryTableInfo().newBySchemaRTCodeIdxKey();
+		CFSecBuffTableInfoBySchemaRTCodeIdxKey key = (CFSecBuffTableInfoBySchemaRTCodeIdxKey)schema.getCFSecFactory().getFactoryTableInfo().newBySchemaRTCodeIdxKey();
 		key.setRequiredRuntimeClassCode( argRuntimeClassCode );
 		deleteTableInfoBySchemaRTCodeIdx( Authorization, key );
 	}
