@@ -65,18 +65,7 @@ public class CFSecRamSecUserPasswordTable
 	}
 
 	public CFSecBuffSecUserPassword ensureRec(ICFSecSecUserPassword rec) {
-		if (rec == null) {
-			return( null );
-		}
-		else {
-			int classCode = rec.getClassCode();
-			switch (classCode) {
-				case ICFSecSecUserPassword.CLASS_CODE:
-					return(((CFSecBuffSecUserPasswordFactoryService)(schema.getCFSecFactory().getFactorySecUserPassword())).ensureRec((ICFSecSecUserPassword)rec) );
-				default:
-					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
-			}
-		}
+		return (((CFSecBuffSecUserPasswordFactoryService)(schema.getCFSecBuffFactory().getFactorySecUserPassword())).ensureRec(rec));
 	}
 
 	@Override
@@ -90,7 +79,7 @@ public class CFSecRamSecUserPasswordTable
 		pkey = Buff.getRequiredSecUserId();
 		pkey = Buff.getRequiredSecUserId();
 		Buff.setRequiredContainerUser( pkey );
-		CFSecBuffSecUserPasswordBySetStampIdxKey keySetStampIdx = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getCFSecFactory().getFactorySecUserPassword().newBySetStampIdxKey();
+		CFSecBuffSecUserPasswordBySetStampIdxKey keySetStampIdx = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPassword().newBySetStampIdxKey();
 		keySetStampIdx.setRequiredPWSetStamp( Buff.getRequiredPWSetStamp() );
 
 		// Validate unique indexes
@@ -141,7 +130,7 @@ public class CFSecRamSecUserPasswordTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecSecUserPassword.CLASS_CODE) {
-				CFSecBuffSecUserPassword retbuff = ((CFSecBuffSecUserPassword)(schema.getCFSecFactory().getFactorySecUserPassword().newRec()));
+				CFSecBuffSecUserPassword retbuff = ((CFSecBuffSecUserPassword)(schema.getCFSecBuffFactory().getFactorySecUserPassword().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -201,7 +190,7 @@ public class CFSecRamSecUserPasswordTable
 		LocalDateTime PWSetStamp )
 	{
 		final String S_ProcName = "CFSecRamSecUserPassword.readDerivedBySetStampIdx";
-		CFSecBuffSecUserPasswordBySetStampIdxKey key = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getCFSecFactory().getFactorySecUserPassword().newBySetStampIdxKey();
+		CFSecBuffSecUserPasswordBySetStampIdxKey key = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPassword().newBySetStampIdxKey();
 
 		key.setRequiredPWSetStamp( PWSetStamp );
 		ICFSecSecUserPassword[] recArray;
@@ -333,10 +322,10 @@ public class CFSecRamSecUserPasswordTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffSecUserPasswordBySetStampIdxKey existingKeySetStampIdx = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getCFSecFactory().getFactorySecUserPassword().newBySetStampIdxKey();
+		CFSecBuffSecUserPasswordBySetStampIdxKey existingKeySetStampIdx = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPassword().newBySetStampIdxKey();
 		existingKeySetStampIdx.setRequiredPWSetStamp( existing.getRequiredPWSetStamp() );
 
-		CFSecBuffSecUserPasswordBySetStampIdxKey newKeySetStampIdx = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getCFSecFactory().getFactorySecUserPassword().newBySetStampIdxKey();
+		CFSecBuffSecUserPasswordBySetStampIdxKey newKeySetStampIdx = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPassword().newBySetStampIdxKey();
 		newKeySetStampIdx.setRequiredPWSetStamp( Buff.getRequiredPWSetStamp() );
 
 		// Check unique indexes
@@ -404,7 +393,7 @@ public class CFSecRamSecUserPasswordTable
 				"deleteSecUserPassword",
 				pkey );
 		}
-		CFSecBuffSecUserPasswordBySetStampIdxKey keySetStampIdx = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getCFSecFactory().getFactorySecUserPassword().newBySetStampIdxKey();
+		CFSecBuffSecUserPasswordBySetStampIdxKey keySetStampIdx = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPassword().newBySetStampIdxKey();
 		keySetStampIdx.setRequiredPWSetStamp( existing.getRequiredPWSetStamp() );
 
 		// Validate reverse foreign keys
@@ -449,7 +438,7 @@ public class CFSecRamSecUserPasswordTable
 	public void deleteSecUserPasswordBySetStampIdx( ICFSecAuthorization Authorization,
 		LocalDateTime argPWSetStamp )
 	{
-		CFSecBuffSecUserPasswordBySetStampIdxKey key = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getCFSecFactory().getFactorySecUserPassword().newBySetStampIdxKey();
+		CFSecBuffSecUserPasswordBySetStampIdxKey key = (CFSecBuffSecUserPasswordBySetStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPassword().newBySetStampIdxKey();
 		key.setRequiredPWSetStamp( argPWSetStamp );
 		deleteSecUserPasswordBySetStampIdx( Authorization, key );
 	}

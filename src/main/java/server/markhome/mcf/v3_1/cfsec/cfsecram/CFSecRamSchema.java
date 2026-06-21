@@ -40,6 +40,9 @@ import server.markhome.mcf.v3_1.cfsec.cfsecobj.*;
 import server.markhome.mcf.v3_1.cfsec.cfsec.buff.*;
 import server.markhome.mcf.v3_1.cfsec.cfsecsaxloader.*;
 
+import server.markhome.mcf.v3_1.cfsec.cfsec.buff.CFSecBuffSchema;
+import server.markhome.mcf.v3_1.cfsec.cfsec.buff.CFSecBuffFactoryService;
+
 public class CFSecRamSchema
 	extends CFSecBuffSchema
 	implements ICFSecSchema

@@ -69,18 +69,7 @@ public class CFSecRamISOLangTable
 	}
 
 	public CFSecBuffISOLang ensureRec(ICFSecISOLang rec) {
-		if (rec == null) {
-			return( null );
-		}
-		else {
-			int classCode = rec.getClassCode();
-			switch (classCode) {
-				case ICFSecISOLang.CLASS_CODE:
-					return(((CFSecBuffISOLangFactoryService)(schema.getCFSecFactory().getFactoryISOLang())).ensureRec((ICFSecISOLang)rec) );
-				default:
-					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
-			}
-		}
+		return (((CFSecBuffISOLangFactoryService)(schema.getCFSecBuffFactory().getFactoryISOLang())).ensureRec(rec));
 	}
 
 	@Override
@@ -93,10 +82,10 @@ public class CFSecRamISOLangTable
 		Short pkey;
 		pkey = schema.nextISOLangIdGen();
 		Buff.setRequiredISOLangId( pkey );
-		CFSecBuffISOLangByCode3IdxKey keyCode3Idx = (CFSecBuffISOLangByCode3IdxKey)schema.getCFSecFactory().getFactoryISOLang().newByCode3IdxKey();
+		CFSecBuffISOLangByCode3IdxKey keyCode3Idx = (CFSecBuffISOLangByCode3IdxKey)schema.getCFSecBuffFactory().getFactoryISOLang().newByCode3IdxKey();
 		keyCode3Idx.setRequiredISO6392Code( Buff.getRequiredISO6392Code() );
 
-		CFSecBuffISOLangByCode2IdxKey keyCode2Idx = (CFSecBuffISOLangByCode2IdxKey)schema.getCFSecFactory().getFactoryISOLang().newByCode2IdxKey();
+		CFSecBuffISOLangByCode2IdxKey keyCode2Idx = (CFSecBuffISOLangByCode2IdxKey)schema.getCFSecBuffFactory().getFactoryISOLang().newByCode2IdxKey();
 		keyCode2Idx.setOptionalISO6391Code( Buff.getOptionalISO6391Code() );
 
 		// Validate unique indexes
@@ -137,7 +126,7 @@ public class CFSecRamISOLangTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecISOLang.CLASS_CODE) {
-				CFSecBuffISOLang retbuff = ((CFSecBuffISOLang)(schema.getCFSecFactory().getFactoryISOLang().newRec()));
+				CFSecBuffISOLang retbuff = ((CFSecBuffISOLang)(schema.getCFSecBuffFactory().getFactoryISOLang().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -197,7 +186,7 @@ public class CFSecRamISOLangTable
 		String ISO6392Code )
 	{
 		final String S_ProcName = "CFSecRamISOLang.readDerivedByCode3Idx";
-		CFSecBuffISOLangByCode3IdxKey key = (CFSecBuffISOLangByCode3IdxKey)schema.getCFSecFactory().getFactoryISOLang().newByCode3IdxKey();
+		CFSecBuffISOLangByCode3IdxKey key = (CFSecBuffISOLangByCode3IdxKey)schema.getCFSecBuffFactory().getFactoryISOLang().newByCode3IdxKey();
 
 		key.setRequiredISO6392Code( ISO6392Code );
 		ICFSecISOLang buff;
@@ -215,7 +204,7 @@ public class CFSecRamISOLangTable
 		String ISO6391Code )
 	{
 		final String S_ProcName = "CFSecRamISOLang.readDerivedByCode2Idx";
-		CFSecBuffISOLangByCode2IdxKey key = (CFSecBuffISOLangByCode2IdxKey)schema.getCFSecFactory().getFactoryISOLang().newByCode2IdxKey();
+		CFSecBuffISOLangByCode2IdxKey key = (CFSecBuffISOLangByCode2IdxKey)schema.getCFSecBuffFactory().getFactoryISOLang().newByCode2IdxKey();
 
 		key.setOptionalISO6391Code( ISO6391Code );
 		ICFSecISOLang[] recArray;
@@ -362,16 +351,16 @@ public class CFSecRamISOLangTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffISOLangByCode3IdxKey existingKeyCode3Idx = (CFSecBuffISOLangByCode3IdxKey)schema.getCFSecFactory().getFactoryISOLang().newByCode3IdxKey();
+		CFSecBuffISOLangByCode3IdxKey existingKeyCode3Idx = (CFSecBuffISOLangByCode3IdxKey)schema.getCFSecBuffFactory().getFactoryISOLang().newByCode3IdxKey();
 		existingKeyCode3Idx.setRequiredISO6392Code( existing.getRequiredISO6392Code() );
 
-		CFSecBuffISOLangByCode3IdxKey newKeyCode3Idx = (CFSecBuffISOLangByCode3IdxKey)schema.getCFSecFactory().getFactoryISOLang().newByCode3IdxKey();
+		CFSecBuffISOLangByCode3IdxKey newKeyCode3Idx = (CFSecBuffISOLangByCode3IdxKey)schema.getCFSecBuffFactory().getFactoryISOLang().newByCode3IdxKey();
 		newKeyCode3Idx.setRequiredISO6392Code( Buff.getRequiredISO6392Code() );
 
-		CFSecBuffISOLangByCode2IdxKey existingKeyCode2Idx = (CFSecBuffISOLangByCode2IdxKey)schema.getCFSecFactory().getFactoryISOLang().newByCode2IdxKey();
+		CFSecBuffISOLangByCode2IdxKey existingKeyCode2Idx = (CFSecBuffISOLangByCode2IdxKey)schema.getCFSecBuffFactory().getFactoryISOLang().newByCode2IdxKey();
 		existingKeyCode2Idx.setOptionalISO6391Code( existing.getOptionalISO6391Code() );
 
-		CFSecBuffISOLangByCode2IdxKey newKeyCode2Idx = (CFSecBuffISOLangByCode2IdxKey)schema.getCFSecFactory().getFactoryISOLang().newByCode2IdxKey();
+		CFSecBuffISOLangByCode2IdxKey newKeyCode2Idx = (CFSecBuffISOLangByCode2IdxKey)schema.getCFSecBuffFactory().getFactoryISOLang().newByCode2IdxKey();
 		newKeyCode2Idx.setOptionalISO6391Code( Buff.getOptionalISO6391Code() );
 
 		// Check unique indexes
@@ -439,10 +428,10 @@ public class CFSecRamISOLangTable
 			schema.getTableISOCtryLang().deleteISOCtryLangByLangIdx( Authorization,
 						existing.getRequiredISOLangId() );
 		}
-		CFSecBuffISOLangByCode3IdxKey keyCode3Idx = (CFSecBuffISOLangByCode3IdxKey)schema.getCFSecFactory().getFactoryISOLang().newByCode3IdxKey();
+		CFSecBuffISOLangByCode3IdxKey keyCode3Idx = (CFSecBuffISOLangByCode3IdxKey)schema.getCFSecBuffFactory().getFactoryISOLang().newByCode3IdxKey();
 		keyCode3Idx.setRequiredISO6392Code( existing.getRequiredISO6392Code() );
 
-		CFSecBuffISOLangByCode2IdxKey keyCode2Idx = (CFSecBuffISOLangByCode2IdxKey)schema.getCFSecFactory().getFactoryISOLang().newByCode2IdxKey();
+		CFSecBuffISOLangByCode2IdxKey keyCode2Idx = (CFSecBuffISOLangByCode2IdxKey)schema.getCFSecBuffFactory().getFactoryISOLang().newByCode2IdxKey();
 		keyCode2Idx.setOptionalISO6391Code( existing.getOptionalISO6391Code() );
 
 		// Validate reverse foreign keys
@@ -489,7 +478,7 @@ public class CFSecRamISOLangTable
 	public void deleteISOLangByCode3Idx( ICFSecAuthorization Authorization,
 		String argISO6392Code )
 	{
-		CFSecBuffISOLangByCode3IdxKey key = (CFSecBuffISOLangByCode3IdxKey)schema.getCFSecFactory().getFactoryISOLang().newByCode3IdxKey();
+		CFSecBuffISOLangByCode3IdxKey key = (CFSecBuffISOLangByCode3IdxKey)schema.getCFSecBuffFactory().getFactoryISOLang().newByCode3IdxKey();
 		key.setRequiredISO6392Code( argISO6392Code );
 		deleteISOLangByCode3Idx( Authorization, key );
 	}
@@ -525,7 +514,7 @@ public class CFSecRamISOLangTable
 	public void deleteISOLangByCode2Idx( ICFSecAuthorization Authorization,
 		String argISO6391Code )
 	{
-		CFSecBuffISOLangByCode2IdxKey key = (CFSecBuffISOLangByCode2IdxKey)schema.getCFSecFactory().getFactoryISOLang().newByCode2IdxKey();
+		CFSecBuffISOLangByCode2IdxKey key = (CFSecBuffISOLangByCode2IdxKey)schema.getCFSecBuffFactory().getFactoryISOLang().newByCode2IdxKey();
 		key.setOptionalISO6391Code( argISO6391Code );
 		deleteISOLangByCode2Idx( Authorization, key );
 	}

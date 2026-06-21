@@ -71,18 +71,7 @@ public class CFSecRamSecUserPWHistoryTable
 	}
 
 	public CFSecBuffSecUserPWHistory ensureRec(ICFSecSecUserPWHistory rec) {
-		if (rec == null) {
-			return( null );
-		}
-		else {
-			int classCode = rec.getClassCode();
-			switch (classCode) {
-				case ICFSecSecUserPWHistory.CLASS_CODE:
-					return(((CFSecBuffSecUserPWHistoryFactoryService)(schema.getCFSecFactory().getFactorySecUserPWHistory())).ensureRec((ICFSecSecUserPWHistory)rec) );
-				default:
-					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
-			}
-		}
+		return (((CFSecBuffSecUserPWHistoryFactoryService)(schema.getCFSecBuffFactory().getFactorySecUserPWHistory())).ensureRec(rec));
 	}
 
 	@Override
@@ -92,18 +81,18 @@ public class CFSecRamSecUserPWHistoryTable
 		final String S_ProcName = "createSecUserPWHistory";
 		
 		CFSecBuffSecUserPWHistory Buff = (CFSecBuffSecUserPWHistory)ensureRec(iBuff);
-		CFSecBuffSecUserPWHistoryPKey pkey = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecFactory().getFactorySecUserPWHistory().newPKey());
+		CFSecBuffSecUserPWHistoryPKey pkey = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newPKey());
 		pkey.setRequiredSecUserId( Buff.getRequiredSecUserId() );
 		pkey.setRequiredPWSetStamp( Buff.getRequiredPWSetStamp() );
 		Buff.setRequiredSecUserId( pkey.getRequiredSecUserId() );
 		Buff.setRequiredPWSetStamp( pkey.getRequiredPWSetStamp() );
-		CFSecBuffSecUserPWHistoryByUserIdxKey keyUserIdx = (CFSecBuffSecUserPWHistoryByUserIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newByUserIdxKey();
+		CFSecBuffSecUserPWHistoryByUserIdxKey keyUserIdx = (CFSecBuffSecUserPWHistoryByUserIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newByUserIdxKey();
 		keyUserIdx.setRequiredSecUserId( Buff.getRequiredSecUserId() );
 
-		CFSecBuffSecUserPWHistoryBySetStampIdxKey keySetStampIdx = (CFSecBuffSecUserPWHistoryBySetStampIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newBySetStampIdxKey();
+		CFSecBuffSecUserPWHistoryBySetStampIdxKey keySetStampIdx = (CFSecBuffSecUserPWHistoryBySetStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newBySetStampIdxKey();
 		keySetStampIdx.setRequiredPWSetStamp( Buff.getRequiredPWSetStamp() );
 
-		CFSecBuffSecUserPWHistoryByReplacedStampIdxKey keyReplacedStampIdx = (CFSecBuffSecUserPWHistoryByReplacedStampIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newByReplacedStampIdxKey();
+		CFSecBuffSecUserPWHistoryByReplacedStampIdxKey keyReplacedStampIdx = (CFSecBuffSecUserPWHistoryByReplacedStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newByReplacedStampIdxKey();
 		keyReplacedStampIdx.setRequiredPWReplacedStamp( Buff.getRequiredPWReplacedStamp() );
 
 		// Validate unique indexes
@@ -154,7 +143,7 @@ public class CFSecRamSecUserPWHistoryTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecSecUserPWHistory.CLASS_CODE) {
-				CFSecBuffSecUserPWHistory retbuff = ((CFSecBuffSecUserPWHistory)(schema.getCFSecFactory().getFactorySecUserPWHistory().newRec()));
+				CFSecBuffSecUserPWHistory retbuff = ((CFSecBuffSecUserPWHistory)(schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -179,7 +168,7 @@ public class CFSecRamSecUserPWHistoryTable
 				return( null );
 			}
 		}
-		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecFactory().getFactorySecUserPWHistory().newPKey());
+		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newPKey());
 		key.setRequiredSecUserId( SecUserId );
 		key.setRequiredPWSetStamp( PWSetStamp );
 		return( readDerived( Authorization, key ) );
@@ -189,7 +178,7 @@ public class CFSecRamSecUserPWHistoryTable
 		ICFSecSecUserPWHistoryPKey PKey )
 	{
 		final String S_ProcName = "CFSecRamSecUserPWHistory.readDerived";
-		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecFactory().getFactorySecUserPWHistory().newPKey());
+		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newPKey());
 		key.setRequiredSecUserId( PKey.getRequiredSecUserId() );
 		key.setRequiredPWSetStamp( PKey.getRequiredPWSetStamp() );
 		ICFSecSecUserPWHistory buff;
@@ -207,7 +196,7 @@ public class CFSecRamSecUserPWHistoryTable
 		ICFSecSecUserPWHistoryPKey PKey )
 	{
 		final String S_ProcName = "CFSecRamSecUserPWHistory.lockDerived";
-		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecFactory().getFactorySecUserPWHistory().newPKey());
+		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newPKey());
 		key.setRequiredSecUserId( PKey.getRequiredSecUserId() );
 		key.setRequiredPWSetStamp( PKey.getRequiredPWSetStamp() );
 		ICFSecSecUserPWHistory buff;
@@ -237,7 +226,7 @@ public class CFSecRamSecUserPWHistoryTable
 		CFLibDbKeyHash256 SecUserId )
 	{
 		final String S_ProcName = "CFSecRamSecUserPWHistory.readDerivedByUserIdx";
-		CFSecBuffSecUserPWHistoryByUserIdxKey key = (CFSecBuffSecUserPWHistoryByUserIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newByUserIdxKey();
+		CFSecBuffSecUserPWHistoryByUserIdxKey key = (CFSecBuffSecUserPWHistoryByUserIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newByUserIdxKey();
 
 		key.setRequiredSecUserId( SecUserId );
 		ICFSecSecUserPWHistory buff;
@@ -255,7 +244,7 @@ public class CFSecRamSecUserPWHistoryTable
 		LocalDateTime PWSetStamp )
 	{
 		final String S_ProcName = "CFSecRamSecUserPWHistory.readDerivedBySetStampIdx";
-		CFSecBuffSecUserPWHistoryBySetStampIdxKey key = (CFSecBuffSecUserPWHistoryBySetStampIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newBySetStampIdxKey();
+		CFSecBuffSecUserPWHistoryBySetStampIdxKey key = (CFSecBuffSecUserPWHistoryBySetStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newBySetStampIdxKey();
 
 		key.setRequiredPWSetStamp( PWSetStamp );
 		ICFSecSecUserPWHistory buff;
@@ -273,7 +262,7 @@ public class CFSecRamSecUserPWHistoryTable
 		LocalDateTime PWReplacedStamp )
 	{
 		final String S_ProcName = "CFSecRamSecUserPWHistory.readDerivedByReplacedStampIdx";
-		CFSecBuffSecUserPWHistoryByReplacedStampIdxKey key = (CFSecBuffSecUserPWHistoryByReplacedStampIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newByReplacedStampIdxKey();
+		CFSecBuffSecUserPWHistoryByReplacedStampIdxKey key = (CFSecBuffSecUserPWHistoryByReplacedStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newByReplacedStampIdxKey();
 
 		key.setRequiredPWReplacedStamp( PWReplacedStamp );
 		ICFSecSecUserPWHistory buff;
@@ -292,7 +281,7 @@ public class CFSecRamSecUserPWHistoryTable
 		LocalDateTime PWSetStamp )
 	{
 		final String S_ProcName = "CFSecRamSecUserPWHistory.readDerivedByIdIdx() ";
-		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecFactory().getFactorySecUserPWHistory().newPKey());
+		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newPKey());
 		key.setRequiredSecUserId( SecUserId );
 		key.setRequiredPWSetStamp( PWSetStamp );
 		ICFSecSecUserPWHistory buff;
@@ -310,7 +299,7 @@ public class CFSecRamSecUserPWHistoryTable
 		CFLibDbKeyHash256 SecUserId,
 		LocalDateTime PWSetStamp )
 	{
-		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecFactory().getFactorySecUserPWHistory().newPKey());
+		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newPKey());
 		key.setRequiredSecUserId( SecUserId );
 		key.setRequiredPWSetStamp( PWSetStamp );
 		return( readRec( Authorization, key ) );
@@ -439,7 +428,7 @@ public class CFSecRamSecUserPWHistoryTable
 		ICFSecSecUserPWHistory iBuff )
 	{
 		CFSecBuffSecUserPWHistory Buff = (CFSecBuffSecUserPWHistory)ensureRec(iBuff);
-		CFSecBuffSecUserPWHistoryPKey pkey = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecFactory().getFactorySecUserPWHistory().newPKey());
+		CFSecBuffSecUserPWHistoryPKey pkey = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newPKey());
 		pkey = (CFSecBuffSecUserPWHistoryPKey)Buff.getPKey();
 		CFSecBuffSecUserPWHistory existing = dictByPKey.get( pkey );
 		if( existing == null ) {
@@ -457,22 +446,22 @@ public class CFSecRamSecUserPWHistoryTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffSecUserPWHistoryByUserIdxKey existingKeyUserIdx = (CFSecBuffSecUserPWHistoryByUserIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newByUserIdxKey();
+		CFSecBuffSecUserPWHistoryByUserIdxKey existingKeyUserIdx = (CFSecBuffSecUserPWHistoryByUserIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newByUserIdxKey();
 		existingKeyUserIdx.setRequiredSecUserId( existing.getRequiredSecUserId() );
 
-		CFSecBuffSecUserPWHistoryByUserIdxKey newKeyUserIdx = (CFSecBuffSecUserPWHistoryByUserIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newByUserIdxKey();
+		CFSecBuffSecUserPWHistoryByUserIdxKey newKeyUserIdx = (CFSecBuffSecUserPWHistoryByUserIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newByUserIdxKey();
 		newKeyUserIdx.setRequiredSecUserId( Buff.getRequiredSecUserId() );
 
-		CFSecBuffSecUserPWHistoryBySetStampIdxKey existingKeySetStampIdx = (CFSecBuffSecUserPWHistoryBySetStampIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newBySetStampIdxKey();
+		CFSecBuffSecUserPWHistoryBySetStampIdxKey existingKeySetStampIdx = (CFSecBuffSecUserPWHistoryBySetStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newBySetStampIdxKey();
 		existingKeySetStampIdx.setRequiredPWSetStamp( existing.getRequiredPWSetStamp() );
 
-		CFSecBuffSecUserPWHistoryBySetStampIdxKey newKeySetStampIdx = (CFSecBuffSecUserPWHistoryBySetStampIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newBySetStampIdxKey();
+		CFSecBuffSecUserPWHistoryBySetStampIdxKey newKeySetStampIdx = (CFSecBuffSecUserPWHistoryBySetStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newBySetStampIdxKey();
 		newKeySetStampIdx.setRequiredPWSetStamp( Buff.getRequiredPWSetStamp() );
 
-		CFSecBuffSecUserPWHistoryByReplacedStampIdxKey existingKeyReplacedStampIdx = (CFSecBuffSecUserPWHistoryByReplacedStampIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newByReplacedStampIdxKey();
+		CFSecBuffSecUserPWHistoryByReplacedStampIdxKey existingKeyReplacedStampIdx = (CFSecBuffSecUserPWHistoryByReplacedStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newByReplacedStampIdxKey();
 		existingKeyReplacedStampIdx.setRequiredPWReplacedStamp( existing.getRequiredPWReplacedStamp() );
 
-		CFSecBuffSecUserPWHistoryByReplacedStampIdxKey newKeyReplacedStampIdx = (CFSecBuffSecUserPWHistoryByReplacedStampIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newByReplacedStampIdxKey();
+		CFSecBuffSecUserPWHistoryByReplacedStampIdxKey newKeyReplacedStampIdx = (CFSecBuffSecUserPWHistoryByReplacedStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newByReplacedStampIdxKey();
 		newKeyReplacedStampIdx.setRequiredPWReplacedStamp( Buff.getRequiredPWReplacedStamp() );
 
 		// Check unique indexes
@@ -546,13 +535,13 @@ public class CFSecRamSecUserPWHistoryTable
 				"deleteSecUserPWHistory",
 				pkey );
 		}
-		CFSecBuffSecUserPWHistoryByUserIdxKey keyUserIdx = (CFSecBuffSecUserPWHistoryByUserIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newByUserIdxKey();
+		CFSecBuffSecUserPWHistoryByUserIdxKey keyUserIdx = (CFSecBuffSecUserPWHistoryByUserIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newByUserIdxKey();
 		keyUserIdx.setRequiredSecUserId( existing.getRequiredSecUserId() );
 
-		CFSecBuffSecUserPWHistoryBySetStampIdxKey keySetStampIdx = (CFSecBuffSecUserPWHistoryBySetStampIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newBySetStampIdxKey();
+		CFSecBuffSecUserPWHistoryBySetStampIdxKey keySetStampIdx = (CFSecBuffSecUserPWHistoryBySetStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newBySetStampIdxKey();
 		keySetStampIdx.setRequiredPWSetStamp( existing.getRequiredPWSetStamp() );
 
-		CFSecBuffSecUserPWHistoryByReplacedStampIdxKey keyReplacedStampIdx = (CFSecBuffSecUserPWHistoryByReplacedStampIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newByReplacedStampIdxKey();
+		CFSecBuffSecUserPWHistoryByReplacedStampIdxKey keyReplacedStampIdx = (CFSecBuffSecUserPWHistoryByReplacedStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newByReplacedStampIdxKey();
 		keyReplacedStampIdx.setRequiredPWReplacedStamp( existing.getRequiredPWReplacedStamp() );
 
 		// Validate reverse foreign keys
@@ -574,7 +563,7 @@ public class CFSecRamSecUserPWHistoryTable
 		CFLibDbKeyHash256 SecUserId,
 		LocalDateTime PWSetStamp )
 	{
-		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecFactory().getFactorySecUserPWHistory().newPKey());
+		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newPKey());
 		key.setRequiredSecUserId( SecUserId );
 		key.setRequiredPWSetStamp( PWSetStamp );
 		deleteSecUserPWHistoryByIdIdx( Authorization, key );
@@ -584,7 +573,7 @@ public class CFSecRamSecUserPWHistoryTable
 	public void deleteSecUserPWHistoryByIdIdx( ICFSecAuthorization Authorization,
 		ICFSecSecUserPWHistoryPKey PKey )
 	{
-		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecFactory().getFactorySecUserPWHistory().newPKey());
+		CFSecBuffSecUserPWHistoryPKey key = (CFSecBuffSecUserPWHistoryPKey)(schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newPKey());
 		key.setRequiredSecUserId( PKey.getRequiredSecUserId() );
 		key.setRequiredPWSetStamp( PKey.getRequiredPWSetStamp() );
 		CFSecBuffSecUserPWHistoryPKey argKey = key;
@@ -617,7 +606,7 @@ public class CFSecRamSecUserPWHistoryTable
 	public void deleteSecUserPWHistoryByUserIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 argSecUserId )
 	{
-		CFSecBuffSecUserPWHistoryByUserIdxKey key = (CFSecBuffSecUserPWHistoryByUserIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newByUserIdxKey();
+		CFSecBuffSecUserPWHistoryByUserIdxKey key = (CFSecBuffSecUserPWHistoryByUserIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newByUserIdxKey();
 		key.setRequiredSecUserId( argSecUserId );
 		deleteSecUserPWHistoryByUserIdx( Authorization, key );
 	}
@@ -654,7 +643,7 @@ public class CFSecRamSecUserPWHistoryTable
 	public void deleteSecUserPWHistoryBySetStampIdx( ICFSecAuthorization Authorization,
 		LocalDateTime argPWSetStamp )
 	{
-		CFSecBuffSecUserPWHistoryBySetStampIdxKey key = (CFSecBuffSecUserPWHistoryBySetStampIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newBySetStampIdxKey();
+		CFSecBuffSecUserPWHistoryBySetStampIdxKey key = (CFSecBuffSecUserPWHistoryBySetStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newBySetStampIdxKey();
 		key.setRequiredPWSetStamp( argPWSetStamp );
 		deleteSecUserPWHistoryBySetStampIdx( Authorization, key );
 	}
@@ -691,7 +680,7 @@ public class CFSecRamSecUserPWHistoryTable
 	public void deleteSecUserPWHistoryByReplacedStampIdx( ICFSecAuthorization Authorization,
 		LocalDateTime argPWReplacedStamp )
 	{
-		CFSecBuffSecUserPWHistoryByReplacedStampIdxKey key = (CFSecBuffSecUserPWHistoryByReplacedStampIdxKey)schema.getCFSecFactory().getFactorySecUserPWHistory().newByReplacedStampIdxKey();
+		CFSecBuffSecUserPWHistoryByReplacedStampIdxKey key = (CFSecBuffSecUserPWHistoryByReplacedStampIdxKey)schema.getCFSecBuffFactory().getFactorySecUserPWHistory().newByReplacedStampIdxKey();
 		key.setRequiredPWReplacedStamp( argPWReplacedStamp );
 		deleteSecUserPWHistoryByReplacedStampIdx( Authorization, key );
 	}

@@ -71,18 +71,7 @@ public class CFSecRamSecSysRoleMembTable
 	}
 
 	public CFSecBuffSecSysRoleMemb ensureRec(ICFSecSecSysRoleMemb rec) {
-		if (rec == null) {
-			return( null );
-		}
-		else {
-			int classCode = rec.getClassCode();
-			switch (classCode) {
-				case ICFSecSecSysRoleMemb.CLASS_CODE:
-					return(((CFSecBuffSecSysRoleMembFactoryService)(schema.getCFSecFactory().getFactorySecSysRoleMemb())).ensureRec((ICFSecSecSysRoleMemb)rec) );
-				default:
-					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
-			}
-		}
+		return (((CFSecBuffSecSysRoleMembFactoryService)(schema.getCFSecBuffFactory().getFactorySecSysRoleMemb())).ensureRec(rec));
 	}
 
 	@Override
@@ -92,15 +81,15 @@ public class CFSecRamSecSysRoleMembTable
 		final String S_ProcName = "createSecSysRoleMemb";
 		
 		CFSecBuffSecSysRoleMemb Buff = (CFSecBuffSecSysRoleMemb)ensureRec(iBuff);
-		CFSecBuffSecSysRoleMembPKey pkey = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecFactory().getFactorySecSysRoleMemb().newPKey());
+		CFSecBuffSecSysRoleMembPKey pkey = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newPKey());
 		pkey.setRequiredSecSysRoleId(Buff.getRequiredSecSysRoleId());
 		pkey.setRequiredLoginId(Buff.getRequiredLoginId());
 		Buff.setRequiredContainerSysRole( pkey.getRequiredSecSysRoleId() );
 		Buff.setRequiredParentUser( pkey.getRequiredLoginId() );
-		CFSecBuffSecSysRoleMembBySysRoleIdxKey keySysRoleIdx = (CFSecBuffSecSysRoleMembBySysRoleIdxKey)schema.getCFSecFactory().getFactorySecSysRoleMemb().newBySysRoleIdxKey();
+		CFSecBuffSecSysRoleMembBySysRoleIdxKey keySysRoleIdx = (CFSecBuffSecSysRoleMembBySysRoleIdxKey)schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newBySysRoleIdxKey();
 		keySysRoleIdx.setRequiredSecSysRoleId( Buff.getRequiredSecSysRoleId() );
 
-		CFSecBuffSecSysRoleMembByLoginIdxKey keyLoginIdx = (CFSecBuffSecSysRoleMembByLoginIdxKey)schema.getCFSecFactory().getFactorySecSysRoleMemb().newByLoginIdxKey();
+		CFSecBuffSecSysRoleMembByLoginIdxKey keyLoginIdx = (CFSecBuffSecSysRoleMembByLoginIdxKey)schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newByLoginIdxKey();
 		keyLoginIdx.setRequiredLoginId( Buff.getRequiredLoginId() );
 
 		// Validate unique indexes
@@ -161,7 +150,7 @@ public class CFSecRamSecSysRoleMembTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecSecSysRoleMemb.CLASS_CODE) {
-				CFSecBuffSecSysRoleMemb retbuff = ((CFSecBuffSecSysRoleMemb)(schema.getCFSecFactory().getFactorySecSysRoleMemb().newRec()));
+				CFSecBuffSecSysRoleMemb retbuff = ((CFSecBuffSecSysRoleMemb)(schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -186,7 +175,7 @@ public class CFSecRamSecSysRoleMembTable
 				return( null );
 			}
 		}
-		CFSecBuffSecSysRoleMembPKey key = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecFactory().getFactorySecSysRoleMemb().newPKey());
+		CFSecBuffSecSysRoleMembPKey key = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newPKey());
 		key.setRequiredSecSysRoleId( SecSysRoleId );
 		key.setRequiredLoginId( LoginId );
 		return( readDerived( Authorization, key ) );
@@ -196,7 +185,7 @@ public class CFSecRamSecSysRoleMembTable
 		ICFSecSecSysRoleMembPKey PKey )
 	{
 		final String S_ProcName = "CFSecRamSecSysRoleMemb.readDerived";
-		CFSecBuffSecSysRoleMembPKey key = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecFactory().getFactorySecSysRoleMemb().newPKey());
+		CFSecBuffSecSysRoleMembPKey key = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newPKey());
 		key.setRequiredSecSysRoleId( PKey.getRequiredSecSysRoleId() );
 		key.setRequiredLoginId( PKey.getRequiredLoginId() );
 		ICFSecSecSysRoleMemb buff;
@@ -214,7 +203,7 @@ public class CFSecRamSecSysRoleMembTable
 		ICFSecSecSysRoleMembPKey PKey )
 	{
 		final String S_ProcName = "CFSecRamSecSysRoleMemb.lockDerived";
-		CFSecBuffSecSysRoleMembPKey key = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecFactory().getFactorySecSysRoleMemb().newPKey());
+		CFSecBuffSecSysRoleMembPKey key = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newPKey());
 		key.setRequiredSecSysRoleId( PKey.getRequiredSecSysRoleId() );
 		key.setRequiredLoginId( PKey.getRequiredLoginId() );
 		ICFSecSecSysRoleMemb buff;
@@ -244,7 +233,7 @@ public class CFSecRamSecSysRoleMembTable
 		CFLibDbKeyHash256 SecSysRoleId )
 	{
 		final String S_ProcName = "CFSecRamSecSysRoleMemb.readDerivedBySysRoleIdx";
-		CFSecBuffSecSysRoleMembBySysRoleIdxKey key = (CFSecBuffSecSysRoleMembBySysRoleIdxKey)schema.getCFSecFactory().getFactorySecSysRoleMemb().newBySysRoleIdxKey();
+		CFSecBuffSecSysRoleMembBySysRoleIdxKey key = (CFSecBuffSecSysRoleMembBySysRoleIdxKey)schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newBySysRoleIdxKey();
 
 		key.setRequiredSecSysRoleId( SecSysRoleId );
 		ICFSecSecSysRoleMemb[] recArray;
@@ -272,7 +261,7 @@ public class CFSecRamSecSysRoleMembTable
 		String LoginId )
 	{
 		final String S_ProcName = "CFSecRamSecSysRoleMemb.readDerivedByLoginIdx";
-		CFSecBuffSecSysRoleMembByLoginIdxKey key = (CFSecBuffSecSysRoleMembByLoginIdxKey)schema.getCFSecFactory().getFactorySecSysRoleMemb().newByLoginIdxKey();
+		CFSecBuffSecSysRoleMembByLoginIdxKey key = (CFSecBuffSecSysRoleMembByLoginIdxKey)schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newByLoginIdxKey();
 
 		key.setRequiredLoginId( LoginId );
 		ICFSecSecSysRoleMemb[] recArray;
@@ -301,7 +290,7 @@ public class CFSecRamSecSysRoleMembTable
 		String LoginId )
 	{
 		final String S_ProcName = "CFSecRamSecSysRoleMemb.readDerivedByIdIdx() ";
-		CFSecBuffSecSysRoleMembPKey key = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecFactory().getFactorySecSysRoleMemb().newPKey());
+		CFSecBuffSecSysRoleMembPKey key = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newPKey());
 		key.setRequiredSecSysRoleId( SecSysRoleId );
 		key.setRequiredLoginId( LoginId );
 		ICFSecSecSysRoleMemb buff;
@@ -319,7 +308,7 @@ public class CFSecRamSecSysRoleMembTable
 		CFLibDbKeyHash256 SecSysRoleId,
 		String LoginId )
 	{
-		CFSecBuffSecSysRoleMembPKey key = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecFactory().getFactorySecSysRoleMemb().newPKey());
+		CFSecBuffSecSysRoleMembPKey key = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newPKey());
 		key.setRequiredSecSysRoleId( SecSysRoleId );
 		key.setRequiredLoginId( LoginId );
 		return( readRec( Authorization, key ) );
@@ -481,7 +470,7 @@ public class CFSecRamSecSysRoleMembTable
 		ICFSecSecSysRoleMemb iBuff )
 	{
 		CFSecBuffSecSysRoleMemb Buff = (CFSecBuffSecSysRoleMemb)ensureRec(iBuff);
-		CFSecBuffSecSysRoleMembPKey pkey = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecFactory().getFactorySecSysRoleMemb().newPKey());
+		CFSecBuffSecSysRoleMembPKey pkey = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newPKey());
 		pkey = (CFSecBuffSecSysRoleMembPKey)Buff.getPKey();
 		CFSecBuffSecSysRoleMemb existing = dictByPKey.get( pkey );
 		if( existing == null ) {
@@ -499,16 +488,16 @@ public class CFSecRamSecSysRoleMembTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffSecSysRoleMembBySysRoleIdxKey existingKeySysRoleIdx = (CFSecBuffSecSysRoleMembBySysRoleIdxKey)schema.getCFSecFactory().getFactorySecSysRoleMemb().newBySysRoleIdxKey();
+		CFSecBuffSecSysRoleMembBySysRoleIdxKey existingKeySysRoleIdx = (CFSecBuffSecSysRoleMembBySysRoleIdxKey)schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newBySysRoleIdxKey();
 		existingKeySysRoleIdx.setRequiredSecSysRoleId( existing.getRequiredSecSysRoleId() );
 
-		CFSecBuffSecSysRoleMembBySysRoleIdxKey newKeySysRoleIdx = (CFSecBuffSecSysRoleMembBySysRoleIdxKey)schema.getCFSecFactory().getFactorySecSysRoleMemb().newBySysRoleIdxKey();
+		CFSecBuffSecSysRoleMembBySysRoleIdxKey newKeySysRoleIdx = (CFSecBuffSecSysRoleMembBySysRoleIdxKey)schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newBySysRoleIdxKey();
 		newKeySysRoleIdx.setRequiredSecSysRoleId( Buff.getRequiredSecSysRoleId() );
 
-		CFSecBuffSecSysRoleMembByLoginIdxKey existingKeyLoginIdx = (CFSecBuffSecSysRoleMembByLoginIdxKey)schema.getCFSecFactory().getFactorySecSysRoleMemb().newByLoginIdxKey();
+		CFSecBuffSecSysRoleMembByLoginIdxKey existingKeyLoginIdx = (CFSecBuffSecSysRoleMembByLoginIdxKey)schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newByLoginIdxKey();
 		existingKeyLoginIdx.setRequiredLoginId( existing.getRequiredLoginId() );
 
-		CFSecBuffSecSysRoleMembByLoginIdxKey newKeyLoginIdx = (CFSecBuffSecSysRoleMembByLoginIdxKey)schema.getCFSecFactory().getFactorySecSysRoleMemb().newByLoginIdxKey();
+		CFSecBuffSecSysRoleMembByLoginIdxKey newKeyLoginIdx = (CFSecBuffSecSysRoleMembByLoginIdxKey)schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newByLoginIdxKey();
 		newKeyLoginIdx.setRequiredLoginId( Buff.getRequiredLoginId() );
 
 		// Check unique indexes
@@ -589,10 +578,10 @@ public class CFSecRamSecSysRoleMembTable
 				"deleteSecSysRoleMemb",
 				pkey );
 		}
-		CFSecBuffSecSysRoleMembBySysRoleIdxKey keySysRoleIdx = (CFSecBuffSecSysRoleMembBySysRoleIdxKey)schema.getCFSecFactory().getFactorySecSysRoleMemb().newBySysRoleIdxKey();
+		CFSecBuffSecSysRoleMembBySysRoleIdxKey keySysRoleIdx = (CFSecBuffSecSysRoleMembBySysRoleIdxKey)schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newBySysRoleIdxKey();
 		keySysRoleIdx.setRequiredSecSysRoleId( existing.getRequiredSecSysRoleId() );
 
-		CFSecBuffSecSysRoleMembByLoginIdxKey keyLoginIdx = (CFSecBuffSecSysRoleMembByLoginIdxKey)schema.getCFSecFactory().getFactorySecSysRoleMemb().newByLoginIdxKey();
+		CFSecBuffSecSysRoleMembByLoginIdxKey keyLoginIdx = (CFSecBuffSecSysRoleMembByLoginIdxKey)schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newByLoginIdxKey();
 		keyLoginIdx.setRequiredLoginId( existing.getRequiredLoginId() );
 
 		// Validate reverse foreign keys
@@ -614,7 +603,7 @@ public class CFSecRamSecSysRoleMembTable
 		CFLibDbKeyHash256 SecSysRoleId,
 		String LoginId )
 	{
-		CFSecBuffSecSysRoleMembPKey key = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecFactory().getFactorySecSysRoleMemb().newPKey());
+		CFSecBuffSecSysRoleMembPKey key = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newPKey());
 		key.setRequiredSecSysRoleId( SecSysRoleId );
 		key.setRequiredLoginId( LoginId );
 		deleteSecSysRoleMembByIdIdx( Authorization, key );
@@ -624,7 +613,7 @@ public class CFSecRamSecSysRoleMembTable
 	public void deleteSecSysRoleMembByIdIdx( ICFSecAuthorization Authorization,
 		ICFSecSecSysRoleMembPKey PKey )
 	{
-		CFSecBuffSecSysRoleMembPKey key = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecFactory().getFactorySecSysRoleMemb().newPKey());
+		CFSecBuffSecSysRoleMembPKey key = (CFSecBuffSecSysRoleMembPKey)(schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newPKey());
 		key.setRequiredSecSysRoleId( PKey.getRequiredSecSysRoleId() );
 		key.setRequiredLoginId( PKey.getRequiredLoginId() );
 		CFSecBuffSecSysRoleMembPKey argKey = key;
@@ -657,7 +646,7 @@ public class CFSecRamSecSysRoleMembTable
 	public void deleteSecSysRoleMembBySysRoleIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 argSecSysRoleId )
 	{
-		CFSecBuffSecSysRoleMembBySysRoleIdxKey key = (CFSecBuffSecSysRoleMembBySysRoleIdxKey)schema.getCFSecFactory().getFactorySecSysRoleMemb().newBySysRoleIdxKey();
+		CFSecBuffSecSysRoleMembBySysRoleIdxKey key = (CFSecBuffSecSysRoleMembBySysRoleIdxKey)schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newBySysRoleIdxKey();
 		key.setRequiredSecSysRoleId( argSecSysRoleId );
 		deleteSecSysRoleMembBySysRoleIdx( Authorization, key );
 	}
@@ -694,7 +683,7 @@ public class CFSecRamSecSysRoleMembTable
 	public void deleteSecSysRoleMembByLoginIdx( ICFSecAuthorization Authorization,
 		String argLoginId )
 	{
-		CFSecBuffSecSysRoleMembByLoginIdxKey key = (CFSecBuffSecSysRoleMembByLoginIdxKey)schema.getCFSecFactory().getFactorySecSysRoleMemb().newByLoginIdxKey();
+		CFSecBuffSecSysRoleMembByLoginIdxKey key = (CFSecBuffSecSysRoleMembByLoginIdxKey)schema.getCFSecBuffFactory().getFactorySecSysRoleMemb().newByLoginIdxKey();
 		key.setRequiredLoginId( argLoginId );
 		deleteSecSysRoleMembByLoginIdx( Authorization, key );
 	}

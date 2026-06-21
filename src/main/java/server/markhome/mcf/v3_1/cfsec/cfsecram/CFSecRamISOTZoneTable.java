@@ -75,18 +75,7 @@ public class CFSecRamISOTZoneTable
 	}
 
 	public CFSecBuffISOTZone ensureRec(ICFSecISOTZone rec) {
-		if (rec == null) {
-			return( null );
-		}
-		else {
-			int classCode = rec.getClassCode();
-			switch (classCode) {
-				case ICFSecISOTZone.CLASS_CODE:
-					return(((CFSecBuffISOTZoneFactoryService)(schema.getCFSecFactory().getFactoryISOTZone())).ensureRec((ICFSecISOTZone)rec) );
-				default:
-					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
-			}
-		}
+		return (((CFSecBuffISOTZoneFactoryService)(schema.getCFSecBuffFactory().getFactoryISOTZone())).ensureRec(rec));
 	}
 
 	@Override
@@ -99,14 +88,14 @@ public class CFSecRamISOTZoneTable
 		Short pkey;
 		pkey = schema.nextISOTZoneIdGen();
 		Buff.setRequiredISOTZoneId( pkey );
-		CFSecBuffISOTZoneByOffsetIdxKey keyOffsetIdx = (CFSecBuffISOTZoneByOffsetIdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByOffsetIdxKey();
+		CFSecBuffISOTZoneByOffsetIdxKey keyOffsetIdx = (CFSecBuffISOTZoneByOffsetIdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByOffsetIdxKey();
 		keyOffsetIdx.setRequiredTZHourOffset( Buff.getRequiredTZHourOffset() );
 		keyOffsetIdx.setRequiredTZMinOffset( Buff.getRequiredTZMinOffset() );
 
-		CFSecBuffISOTZoneByUTZNameIdxKey keyUTZNameIdx = (CFSecBuffISOTZoneByUTZNameIdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByUTZNameIdxKey();
+		CFSecBuffISOTZoneByUTZNameIdxKey keyUTZNameIdx = (CFSecBuffISOTZoneByUTZNameIdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByUTZNameIdxKey();
 		keyUTZNameIdx.setRequiredTZName( Buff.getRequiredTZName() );
 
-		CFSecBuffISOTZoneByIso8601IdxKey keyIso8601Idx = (CFSecBuffISOTZoneByIso8601IdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByIso8601IdxKey();
+		CFSecBuffISOTZoneByIso8601IdxKey keyIso8601Idx = (CFSecBuffISOTZoneByIso8601IdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByIso8601IdxKey();
 		keyIso8601Idx.setRequiredIso8601( Buff.getRequiredIso8601() );
 
 		// Validate unique indexes
@@ -157,7 +146,7 @@ public class CFSecRamISOTZoneTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecISOTZone.CLASS_CODE) {
-				CFSecBuffISOTZone retbuff = ((CFSecBuffISOTZone)(schema.getCFSecFactory().getFactoryISOTZone().newRec()));
+				CFSecBuffISOTZone retbuff = ((CFSecBuffISOTZone)(schema.getCFSecBuffFactory().getFactoryISOTZone().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -218,7 +207,7 @@ public class CFSecRamISOTZoneTable
 		short TZMinOffset )
 	{
 		final String S_ProcName = "CFSecRamISOTZone.readDerivedByOffsetIdx";
-		CFSecBuffISOTZoneByOffsetIdxKey key = (CFSecBuffISOTZoneByOffsetIdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByOffsetIdxKey();
+		CFSecBuffISOTZoneByOffsetIdxKey key = (CFSecBuffISOTZoneByOffsetIdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByOffsetIdxKey();
 
 		key.setRequiredTZHourOffset( TZHourOffset );
 		key.setRequiredTZMinOffset( TZMinOffset );
@@ -247,7 +236,7 @@ public class CFSecRamISOTZoneTable
 		String TZName )
 	{
 		final String S_ProcName = "CFSecRamISOTZone.readDerivedByUTZNameIdx";
-		CFSecBuffISOTZoneByUTZNameIdxKey key = (CFSecBuffISOTZoneByUTZNameIdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByUTZNameIdxKey();
+		CFSecBuffISOTZoneByUTZNameIdxKey key = (CFSecBuffISOTZoneByUTZNameIdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByUTZNameIdxKey();
 
 		key.setRequiredTZName( TZName );
 		ICFSecISOTZone buff;
@@ -265,7 +254,7 @@ public class CFSecRamISOTZoneTable
 		String Iso8601 )
 	{
 		final String S_ProcName = "CFSecRamISOTZone.readDerivedByIso8601Idx";
-		CFSecBuffISOTZoneByIso8601IdxKey key = (CFSecBuffISOTZoneByIso8601IdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByIso8601IdxKey();
+		CFSecBuffISOTZoneByIso8601IdxKey key = (CFSecBuffISOTZoneByIso8601IdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByIso8601IdxKey();
 
 		key.setRequiredIso8601( Iso8601 );
 		ICFSecISOTZone[] recArray;
@@ -432,24 +421,24 @@ public class CFSecRamISOTZoneTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffISOTZoneByOffsetIdxKey existingKeyOffsetIdx = (CFSecBuffISOTZoneByOffsetIdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByOffsetIdxKey();
+		CFSecBuffISOTZoneByOffsetIdxKey existingKeyOffsetIdx = (CFSecBuffISOTZoneByOffsetIdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByOffsetIdxKey();
 		existingKeyOffsetIdx.setRequiredTZHourOffset( existing.getRequiredTZHourOffset() );
 		existingKeyOffsetIdx.setRequiredTZMinOffset( existing.getRequiredTZMinOffset() );
 
-		CFSecBuffISOTZoneByOffsetIdxKey newKeyOffsetIdx = (CFSecBuffISOTZoneByOffsetIdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByOffsetIdxKey();
+		CFSecBuffISOTZoneByOffsetIdxKey newKeyOffsetIdx = (CFSecBuffISOTZoneByOffsetIdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByOffsetIdxKey();
 		newKeyOffsetIdx.setRequiredTZHourOffset( Buff.getRequiredTZHourOffset() );
 		newKeyOffsetIdx.setRequiredTZMinOffset( Buff.getRequiredTZMinOffset() );
 
-		CFSecBuffISOTZoneByUTZNameIdxKey existingKeyUTZNameIdx = (CFSecBuffISOTZoneByUTZNameIdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByUTZNameIdxKey();
+		CFSecBuffISOTZoneByUTZNameIdxKey existingKeyUTZNameIdx = (CFSecBuffISOTZoneByUTZNameIdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByUTZNameIdxKey();
 		existingKeyUTZNameIdx.setRequiredTZName( existing.getRequiredTZName() );
 
-		CFSecBuffISOTZoneByUTZNameIdxKey newKeyUTZNameIdx = (CFSecBuffISOTZoneByUTZNameIdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByUTZNameIdxKey();
+		CFSecBuffISOTZoneByUTZNameIdxKey newKeyUTZNameIdx = (CFSecBuffISOTZoneByUTZNameIdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByUTZNameIdxKey();
 		newKeyUTZNameIdx.setRequiredTZName( Buff.getRequiredTZName() );
 
-		CFSecBuffISOTZoneByIso8601IdxKey existingKeyIso8601Idx = (CFSecBuffISOTZoneByIso8601IdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByIso8601IdxKey();
+		CFSecBuffISOTZoneByIso8601IdxKey existingKeyIso8601Idx = (CFSecBuffISOTZoneByIso8601IdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByIso8601IdxKey();
 		existingKeyIso8601Idx.setRequiredIso8601( existing.getRequiredIso8601() );
 
-		CFSecBuffISOTZoneByIso8601IdxKey newKeyIso8601Idx = (CFSecBuffISOTZoneByIso8601IdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByIso8601IdxKey();
+		CFSecBuffISOTZoneByIso8601IdxKey newKeyIso8601Idx = (CFSecBuffISOTZoneByIso8601IdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByIso8601IdxKey();
 		newKeyIso8601Idx.setRequiredIso8601( Buff.getRequiredIso8601() );
 
 		// Check unique indexes
@@ -523,14 +512,14 @@ public class CFSecRamISOTZoneTable
 				"deleteISOTZone",
 				pkey );
 		}
-		CFSecBuffISOTZoneByOffsetIdxKey keyOffsetIdx = (CFSecBuffISOTZoneByOffsetIdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByOffsetIdxKey();
+		CFSecBuffISOTZoneByOffsetIdxKey keyOffsetIdx = (CFSecBuffISOTZoneByOffsetIdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByOffsetIdxKey();
 		keyOffsetIdx.setRequiredTZHourOffset( existing.getRequiredTZHourOffset() );
 		keyOffsetIdx.setRequiredTZMinOffset( existing.getRequiredTZMinOffset() );
 
-		CFSecBuffISOTZoneByUTZNameIdxKey keyUTZNameIdx = (CFSecBuffISOTZoneByUTZNameIdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByUTZNameIdxKey();
+		CFSecBuffISOTZoneByUTZNameIdxKey keyUTZNameIdx = (CFSecBuffISOTZoneByUTZNameIdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByUTZNameIdxKey();
 		keyUTZNameIdx.setRequiredTZName( existing.getRequiredTZName() );
 
-		CFSecBuffISOTZoneByIso8601IdxKey keyIso8601Idx = (CFSecBuffISOTZoneByIso8601IdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByIso8601IdxKey();
+		CFSecBuffISOTZoneByIso8601IdxKey keyIso8601Idx = (CFSecBuffISOTZoneByIso8601IdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByIso8601IdxKey();
 		keyIso8601Idx.setRequiredIso8601( existing.getRequiredIso8601() );
 
 		// Validate reverse foreign keys
@@ -581,7 +570,7 @@ public class CFSecRamISOTZoneTable
 		short argTZHourOffset,
 		short argTZMinOffset )
 	{
-		CFSecBuffISOTZoneByOffsetIdxKey key = (CFSecBuffISOTZoneByOffsetIdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByOffsetIdxKey();
+		CFSecBuffISOTZoneByOffsetIdxKey key = (CFSecBuffISOTZoneByOffsetIdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByOffsetIdxKey();
 		key.setRequiredTZHourOffset( argTZHourOffset );
 		key.setRequiredTZMinOffset( argTZMinOffset );
 		deleteISOTZoneByOffsetIdx( Authorization, key );
@@ -619,7 +608,7 @@ public class CFSecRamISOTZoneTable
 	public void deleteISOTZoneByUTZNameIdx( ICFSecAuthorization Authorization,
 		String argTZName )
 	{
-		CFSecBuffISOTZoneByUTZNameIdxKey key = (CFSecBuffISOTZoneByUTZNameIdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByUTZNameIdxKey();
+		CFSecBuffISOTZoneByUTZNameIdxKey key = (CFSecBuffISOTZoneByUTZNameIdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByUTZNameIdxKey();
 		key.setRequiredTZName( argTZName );
 		deleteISOTZoneByUTZNameIdx( Authorization, key );
 	}
@@ -655,7 +644,7 @@ public class CFSecRamISOTZoneTable
 	public void deleteISOTZoneByIso8601Idx( ICFSecAuthorization Authorization,
 		String argIso8601 )
 	{
-		CFSecBuffISOTZoneByIso8601IdxKey key = (CFSecBuffISOTZoneByIso8601IdxKey)schema.getCFSecFactory().getFactoryISOTZone().newByIso8601IdxKey();
+		CFSecBuffISOTZoneByIso8601IdxKey key = (CFSecBuffISOTZoneByIso8601IdxKey)schema.getCFSecBuffFactory().getFactoryISOTZone().newByIso8601IdxKey();
 		key.setRequiredIso8601( argIso8601 );
 		deleteISOTZoneByIso8601Idx( Authorization, key );
 	}

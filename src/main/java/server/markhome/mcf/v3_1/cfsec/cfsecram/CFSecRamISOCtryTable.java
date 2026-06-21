@@ -67,18 +67,7 @@ public class CFSecRamISOCtryTable
 	}
 
 	public CFSecBuffISOCtry ensureRec(ICFSecISOCtry rec) {
-		if (rec == null) {
-			return( null );
-		}
-		else {
-			int classCode = rec.getClassCode();
-			switch (classCode) {
-				case ICFSecISOCtry.CLASS_CODE:
-					return(((CFSecBuffISOCtryFactoryService)(schema.getCFSecFactory().getFactoryISOCtry())).ensureRec((ICFSecISOCtry)rec) );
-				default:
-					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
-			}
-		}
+		return (((CFSecBuffISOCtryFactoryService)(schema.getCFSecBuffFactory().getFactoryISOCtry())).ensureRec(rec));
 	}
 
 	@Override
@@ -91,10 +80,10 @@ public class CFSecRamISOCtryTable
 		Short pkey;
 		pkey = schema.nextISOCtryIdGen();
 		Buff.setRequiredISOCtryId( pkey );
-		CFSecBuffISOCtryByISOCodeIdxKey keyISOCodeIdx = (CFSecBuffISOCtryByISOCodeIdxKey)schema.getCFSecFactory().getFactoryISOCtry().newByISOCodeIdxKey();
+		CFSecBuffISOCtryByISOCodeIdxKey keyISOCodeIdx = (CFSecBuffISOCtryByISOCodeIdxKey)schema.getCFSecBuffFactory().getFactoryISOCtry().newByISOCodeIdxKey();
 		keyISOCodeIdx.setRequiredISOCode( Buff.getRequiredISOCode() );
 
-		CFSecBuffISOCtryByNameIdxKey keyNameIdx = (CFSecBuffISOCtryByNameIdxKey)schema.getCFSecFactory().getFactoryISOCtry().newByNameIdxKey();
+		CFSecBuffISOCtryByNameIdxKey keyNameIdx = (CFSecBuffISOCtryByNameIdxKey)schema.getCFSecBuffFactory().getFactoryISOCtry().newByNameIdxKey();
 		keyNameIdx.setRequiredName( Buff.getRequiredName() );
 
 		// Validate unique indexes
@@ -135,7 +124,7 @@ public class CFSecRamISOCtryTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecISOCtry.CLASS_CODE) {
-				CFSecBuffISOCtry retbuff = ((CFSecBuffISOCtry)(schema.getCFSecFactory().getFactoryISOCtry().newRec()));
+				CFSecBuffISOCtry retbuff = ((CFSecBuffISOCtry)(schema.getCFSecBuffFactory().getFactoryISOCtry().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -195,7 +184,7 @@ public class CFSecRamISOCtryTable
 		String ISOCode )
 	{
 		final String S_ProcName = "CFSecRamISOCtry.readDerivedByISOCodeIdx";
-		CFSecBuffISOCtryByISOCodeIdxKey key = (CFSecBuffISOCtryByISOCodeIdxKey)schema.getCFSecFactory().getFactoryISOCtry().newByISOCodeIdxKey();
+		CFSecBuffISOCtryByISOCodeIdxKey key = (CFSecBuffISOCtryByISOCodeIdxKey)schema.getCFSecBuffFactory().getFactoryISOCtry().newByISOCodeIdxKey();
 
 		key.setRequiredISOCode( ISOCode );
 		ICFSecISOCtry buff;
@@ -213,7 +202,7 @@ public class CFSecRamISOCtryTable
 		String Name )
 	{
 		final String S_ProcName = "CFSecRamISOCtry.readDerivedByNameIdx";
-		CFSecBuffISOCtryByNameIdxKey key = (CFSecBuffISOCtryByNameIdxKey)schema.getCFSecFactory().getFactoryISOCtry().newByNameIdxKey();
+		CFSecBuffISOCtryByNameIdxKey key = (CFSecBuffISOCtryByNameIdxKey)schema.getCFSecBuffFactory().getFactoryISOCtry().newByNameIdxKey();
 
 		key.setRequiredName( Name );
 		ICFSecISOCtry buff;
@@ -347,16 +336,16 @@ public class CFSecRamISOCtryTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffISOCtryByISOCodeIdxKey existingKeyISOCodeIdx = (CFSecBuffISOCtryByISOCodeIdxKey)schema.getCFSecFactory().getFactoryISOCtry().newByISOCodeIdxKey();
+		CFSecBuffISOCtryByISOCodeIdxKey existingKeyISOCodeIdx = (CFSecBuffISOCtryByISOCodeIdxKey)schema.getCFSecBuffFactory().getFactoryISOCtry().newByISOCodeIdxKey();
 		existingKeyISOCodeIdx.setRequiredISOCode( existing.getRequiredISOCode() );
 
-		CFSecBuffISOCtryByISOCodeIdxKey newKeyISOCodeIdx = (CFSecBuffISOCtryByISOCodeIdxKey)schema.getCFSecFactory().getFactoryISOCtry().newByISOCodeIdxKey();
+		CFSecBuffISOCtryByISOCodeIdxKey newKeyISOCodeIdx = (CFSecBuffISOCtryByISOCodeIdxKey)schema.getCFSecBuffFactory().getFactoryISOCtry().newByISOCodeIdxKey();
 		newKeyISOCodeIdx.setRequiredISOCode( Buff.getRequiredISOCode() );
 
-		CFSecBuffISOCtryByNameIdxKey existingKeyNameIdx = (CFSecBuffISOCtryByNameIdxKey)schema.getCFSecFactory().getFactoryISOCtry().newByNameIdxKey();
+		CFSecBuffISOCtryByNameIdxKey existingKeyNameIdx = (CFSecBuffISOCtryByNameIdxKey)schema.getCFSecBuffFactory().getFactoryISOCtry().newByNameIdxKey();
 		existingKeyNameIdx.setRequiredName( existing.getRequiredName() );
 
-		CFSecBuffISOCtryByNameIdxKey newKeyNameIdx = (CFSecBuffISOCtryByNameIdxKey)schema.getCFSecFactory().getFactoryISOCtry().newByNameIdxKey();
+		CFSecBuffISOCtryByNameIdxKey newKeyNameIdx = (CFSecBuffISOCtryByNameIdxKey)schema.getCFSecBuffFactory().getFactoryISOCtry().newByNameIdxKey();
 		newKeyNameIdx.setRequiredName( Buff.getRequiredName() );
 
 		// Check unique indexes
@@ -421,10 +410,10 @@ public class CFSecRamISOCtryTable
 						existing.getRequiredISOCtryId() );
 					schema.getTableISOCtryCcy().deleteISOCtryCcyByCtryIdx( Authorization,
 						existing.getRequiredISOCtryId() );
-		CFSecBuffISOCtryByISOCodeIdxKey keyISOCodeIdx = (CFSecBuffISOCtryByISOCodeIdxKey)schema.getCFSecFactory().getFactoryISOCtry().newByISOCodeIdxKey();
+		CFSecBuffISOCtryByISOCodeIdxKey keyISOCodeIdx = (CFSecBuffISOCtryByISOCodeIdxKey)schema.getCFSecBuffFactory().getFactoryISOCtry().newByISOCodeIdxKey();
 		keyISOCodeIdx.setRequiredISOCode( existing.getRequiredISOCode() );
 
-		CFSecBuffISOCtryByNameIdxKey keyNameIdx = (CFSecBuffISOCtryByNameIdxKey)schema.getCFSecFactory().getFactoryISOCtry().newByNameIdxKey();
+		CFSecBuffISOCtryByNameIdxKey keyNameIdx = (CFSecBuffISOCtryByNameIdxKey)schema.getCFSecBuffFactory().getFactoryISOCtry().newByNameIdxKey();
 		keyNameIdx.setRequiredName( existing.getRequiredName() );
 
 		// Validate reverse foreign keys
@@ -470,7 +459,7 @@ public class CFSecRamISOCtryTable
 	public void deleteISOCtryByISOCodeIdx( ICFSecAuthorization Authorization,
 		String argISOCode )
 	{
-		CFSecBuffISOCtryByISOCodeIdxKey key = (CFSecBuffISOCtryByISOCodeIdxKey)schema.getCFSecFactory().getFactoryISOCtry().newByISOCodeIdxKey();
+		CFSecBuffISOCtryByISOCodeIdxKey key = (CFSecBuffISOCtryByISOCodeIdxKey)schema.getCFSecBuffFactory().getFactoryISOCtry().newByISOCodeIdxKey();
 		key.setRequiredISOCode( argISOCode );
 		deleteISOCtryByISOCodeIdx( Authorization, key );
 	}
@@ -506,7 +495,7 @@ public class CFSecRamISOCtryTable
 	public void deleteISOCtryByNameIdx( ICFSecAuthorization Authorization,
 		String argName )
 	{
-		CFSecBuffISOCtryByNameIdxKey key = (CFSecBuffISOCtryByNameIdxKey)schema.getCFSecFactory().getFactoryISOCtry().newByNameIdxKey();
+		CFSecBuffISOCtryByNameIdxKey key = (CFSecBuffISOCtryByNameIdxKey)schema.getCFSecBuffFactory().getFactoryISOCtry().newByNameIdxKey();
 		key.setRequiredName( argName );
 		deleteISOCtryByNameIdx( Authorization, key );
 	}

@@ -75,18 +75,7 @@ public class CFSecRamSecClusRoleTable
 	}
 
 	public CFSecBuffSecClusRole ensureRec(ICFSecSecClusRole rec) {
-		if (rec == null) {
-			return( null );
-		}
-		else {
-			int classCode = rec.getClassCode();
-			switch (classCode) {
-				case ICFSecSecClusRole.CLASS_CODE:
-					return(((CFSecBuffSecClusRoleFactoryService)(schema.getCFSecFactory().getFactorySecClusRole())).ensureRec((ICFSecSecClusRole)rec) );
-				default:
-					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
-			}
-		}
+		return (((CFSecBuffSecClusRoleFactoryService)(schema.getCFSecBuffFactory().getFactorySecClusRole())).ensureRec(rec));
 	}
 
 	@Override
@@ -99,13 +88,13 @@ public class CFSecRamSecClusRoleTable
 		CFLibDbKeyHash256 pkey;
 		pkey = schema.nextSecClusRoleIdGen();
 		Buff.setRequiredSecClusRoleId( pkey );
-		CFSecBuffSecClusRoleByClusterIdxKey keyClusterIdx = (CFSecBuffSecClusRoleByClusterIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByClusterIdxKey();
+		CFSecBuffSecClusRoleByClusterIdxKey keyClusterIdx = (CFSecBuffSecClusRoleByClusterIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByClusterIdxKey();
 		keyClusterIdx.setRequiredClusterId( Buff.getRequiredClusterId() );
 
-		CFSecBuffSecClusRoleByNameIdxKey keyNameIdx = (CFSecBuffSecClusRoleByNameIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByNameIdxKey();
+		CFSecBuffSecClusRoleByNameIdxKey keyNameIdx = (CFSecBuffSecClusRoleByNameIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByNameIdxKey();
 		keyNameIdx.setRequiredName( Buff.getRequiredName() );
 
-		CFSecBuffSecClusRoleByUNameIdxKey keyUNameIdx = (CFSecBuffSecClusRoleByUNameIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByUNameIdxKey();
+		CFSecBuffSecClusRoleByUNameIdxKey keyUNameIdx = (CFSecBuffSecClusRoleByUNameIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByUNameIdxKey();
 		keyUNameIdx.setRequiredClusterId( Buff.getRequiredClusterId() );
 		keyUNameIdx.setRequiredName( Buff.getRequiredName() );
 
@@ -197,7 +186,7 @@ public class CFSecRamSecClusRoleTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecSecClusRole.CLASS_CODE) {
-				CFSecBuffSecClusRole retbuff = ((CFSecBuffSecClusRole)(schema.getCFSecFactory().getFactorySecClusRole().newRec()));
+				CFSecBuffSecClusRole retbuff = ((CFSecBuffSecClusRole)(schema.getCFSecBuffFactory().getFactorySecClusRole().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -257,7 +246,7 @@ public class CFSecRamSecClusRoleTable
 		CFLibDbKeyHash256 ClusterId )
 	{
 		final String S_ProcName = "CFSecRamSecClusRole.readDerivedByClusterIdx";
-		CFSecBuffSecClusRoleByClusterIdxKey key = (CFSecBuffSecClusRoleByClusterIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByClusterIdxKey();
+		CFSecBuffSecClusRoleByClusterIdxKey key = (CFSecBuffSecClusRoleByClusterIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByClusterIdxKey();
 
 		key.setRequiredClusterId( ClusterId );
 		ICFSecSecClusRole[] recArray;
@@ -285,7 +274,7 @@ public class CFSecRamSecClusRoleTable
 		String Name )
 	{
 		final String S_ProcName = "CFSecRamSecClusRole.readDerivedByNameIdx";
-		CFSecBuffSecClusRoleByNameIdxKey key = (CFSecBuffSecClusRoleByNameIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByNameIdxKey();
+		CFSecBuffSecClusRoleByNameIdxKey key = (CFSecBuffSecClusRoleByNameIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByNameIdxKey();
 
 		key.setRequiredName( Name );
 		ICFSecSecClusRole[] recArray;
@@ -314,7 +303,7 @@ public class CFSecRamSecClusRoleTable
 		String Name )
 	{
 		final String S_ProcName = "CFSecRamSecClusRole.readDerivedByUNameIdx";
-		CFSecBuffSecClusRoleByUNameIdxKey key = (CFSecBuffSecClusRoleByUNameIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByUNameIdxKey();
+		CFSecBuffSecClusRoleByUNameIdxKey key = (CFSecBuffSecClusRoleByUNameIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByUNameIdxKey();
 
 		key.setRequiredClusterId( ClusterId );
 		key.setRequiredName( Name );
@@ -472,23 +461,23 @@ public class CFSecRamSecClusRoleTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffSecClusRoleByClusterIdxKey existingKeyClusterIdx = (CFSecBuffSecClusRoleByClusterIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByClusterIdxKey();
+		CFSecBuffSecClusRoleByClusterIdxKey existingKeyClusterIdx = (CFSecBuffSecClusRoleByClusterIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByClusterIdxKey();
 		existingKeyClusterIdx.setRequiredClusterId( existing.getRequiredClusterId() );
 
-		CFSecBuffSecClusRoleByClusterIdxKey newKeyClusterIdx = (CFSecBuffSecClusRoleByClusterIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByClusterIdxKey();
+		CFSecBuffSecClusRoleByClusterIdxKey newKeyClusterIdx = (CFSecBuffSecClusRoleByClusterIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByClusterIdxKey();
 		newKeyClusterIdx.setRequiredClusterId( Buff.getRequiredClusterId() );
 
-		CFSecBuffSecClusRoleByNameIdxKey existingKeyNameIdx = (CFSecBuffSecClusRoleByNameIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByNameIdxKey();
+		CFSecBuffSecClusRoleByNameIdxKey existingKeyNameIdx = (CFSecBuffSecClusRoleByNameIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByNameIdxKey();
 		existingKeyNameIdx.setRequiredName( existing.getRequiredName() );
 
-		CFSecBuffSecClusRoleByNameIdxKey newKeyNameIdx = (CFSecBuffSecClusRoleByNameIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByNameIdxKey();
+		CFSecBuffSecClusRoleByNameIdxKey newKeyNameIdx = (CFSecBuffSecClusRoleByNameIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByNameIdxKey();
 		newKeyNameIdx.setRequiredName( Buff.getRequiredName() );
 
-		CFSecBuffSecClusRoleByUNameIdxKey existingKeyUNameIdx = (CFSecBuffSecClusRoleByUNameIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByUNameIdxKey();
+		CFSecBuffSecClusRoleByUNameIdxKey existingKeyUNameIdx = (CFSecBuffSecClusRoleByUNameIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByUNameIdxKey();
 		existingKeyUNameIdx.setRequiredClusterId( existing.getRequiredClusterId() );
 		existingKeyUNameIdx.setRequiredName( existing.getRequiredName() );
 
-		CFSecBuffSecClusRoleByUNameIdxKey newKeyUNameIdx = (CFSecBuffSecClusRoleByUNameIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByUNameIdxKey();
+		CFSecBuffSecClusRoleByUNameIdxKey newKeyUNameIdx = (CFSecBuffSecClusRoleByUNameIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByUNameIdxKey();
 		newKeyUNameIdx.setRequiredClusterId( Buff.getRequiredClusterId() );
 		newKeyUNameIdx.setRequiredName( Buff.getRequiredName() );
 
@@ -610,13 +599,13 @@ public class CFSecRamSecClusRoleTable
 			schema.getTableSecClusRoleMemb().deleteSecClusRoleMembByClusRoleIdx( Authorization,
 						existing.getRequiredSecClusRoleId() );
 		}
-		CFSecBuffSecClusRoleByClusterIdxKey keyClusterIdx = (CFSecBuffSecClusRoleByClusterIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByClusterIdxKey();
+		CFSecBuffSecClusRoleByClusterIdxKey keyClusterIdx = (CFSecBuffSecClusRoleByClusterIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByClusterIdxKey();
 		keyClusterIdx.setRequiredClusterId( existing.getRequiredClusterId() );
 
-		CFSecBuffSecClusRoleByNameIdxKey keyNameIdx = (CFSecBuffSecClusRoleByNameIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByNameIdxKey();
+		CFSecBuffSecClusRoleByNameIdxKey keyNameIdx = (CFSecBuffSecClusRoleByNameIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByNameIdxKey();
 		keyNameIdx.setRequiredName( existing.getRequiredName() );
 
-		CFSecBuffSecClusRoleByUNameIdxKey keyUNameIdx = (CFSecBuffSecClusRoleByUNameIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByUNameIdxKey();
+		CFSecBuffSecClusRoleByUNameIdxKey keyUNameIdx = (CFSecBuffSecClusRoleByUNameIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByUNameIdxKey();
 		keyUNameIdx.setRequiredClusterId( existing.getRequiredClusterId() );
 		keyUNameIdx.setRequiredName( existing.getRequiredName() );
 
@@ -667,7 +656,7 @@ public class CFSecRamSecClusRoleTable
 	public void deleteSecClusRoleByClusterIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 argClusterId )
 	{
-		CFSecBuffSecClusRoleByClusterIdxKey key = (CFSecBuffSecClusRoleByClusterIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByClusterIdxKey();
+		CFSecBuffSecClusRoleByClusterIdxKey key = (CFSecBuffSecClusRoleByClusterIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByClusterIdxKey();
 		key.setRequiredClusterId( argClusterId );
 		deleteSecClusRoleByClusterIdx( Authorization, key );
 	}
@@ -703,7 +692,7 @@ public class CFSecRamSecClusRoleTable
 	public void deleteSecClusRoleByNameIdx( ICFSecAuthorization Authorization,
 		String argName )
 	{
-		CFSecBuffSecClusRoleByNameIdxKey key = (CFSecBuffSecClusRoleByNameIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByNameIdxKey();
+		CFSecBuffSecClusRoleByNameIdxKey key = (CFSecBuffSecClusRoleByNameIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByNameIdxKey();
 		key.setRequiredName( argName );
 		deleteSecClusRoleByNameIdx( Authorization, key );
 	}
@@ -740,7 +729,7 @@ public class CFSecRamSecClusRoleTable
 		CFLibDbKeyHash256 argClusterId,
 		String argName )
 	{
-		CFSecBuffSecClusRoleByUNameIdxKey key = (CFSecBuffSecClusRoleByUNameIdxKey)schema.getCFSecFactory().getFactorySecClusRole().newByUNameIdxKey();
+		CFSecBuffSecClusRoleByUNameIdxKey key = (CFSecBuffSecClusRoleByUNameIdxKey)schema.getCFSecBuffFactory().getFactorySecClusRole().newByUNameIdxKey();
 		key.setRequiredClusterId( argClusterId );
 		key.setRequiredName( argName );
 		deleteSecClusRoleByUNameIdx( Authorization, key );

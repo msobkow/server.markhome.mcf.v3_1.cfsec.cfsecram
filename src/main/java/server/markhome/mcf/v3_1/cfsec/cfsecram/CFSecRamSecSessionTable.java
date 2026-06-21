@@ -81,18 +81,7 @@ public class CFSecRamSecSessionTable
 	}
 
 	public CFSecBuffSecSession ensureRec(ICFSecSecSession rec) {
-		if (rec == null) {
-			return( null );
-		}
-		else {
-			int classCode = rec.getClassCode();
-			switch (classCode) {
-				case ICFSecSecSession.CLASS_CODE:
-					return(((CFSecBuffSecSessionFactoryService)(schema.getCFSecFactory().getFactorySecSession())).ensureRec((ICFSecSecSession)rec) );
-				default:
-					throw new CFLibUnsupportedClassException(getClass(), "ensureRec", "rec", (Integer)classCode, "Classcode not recognized: " + Integer.toString(classCode));
-			}
-		}
+		return (((CFSecBuffSecSessionFactoryService)(schema.getCFSecBuffFactory().getFactorySecSession())).ensureRec(rec));
 	}
 
 	@Override
@@ -105,18 +94,18 @@ public class CFSecRamSecSessionTable
 		CFLibDbKeyHash256 pkey;
 		pkey = schema.nextSecSessionIdGen();
 		Buff.setRequiredSecSessionId( pkey );
-		CFSecBuffSecSessionBySecUserIdxKey keySecUserIdx = (CFSecBuffSecSessionBySecUserIdxKey)schema.getCFSecFactory().getFactorySecSession().newBySecUserIdxKey();
+		CFSecBuffSecSessionBySecUserIdxKey keySecUserIdx = (CFSecBuffSecSessionBySecUserIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newBySecUserIdxKey();
 		keySecUserIdx.setRequiredSecUserId( Buff.getRequiredSecUserId() );
 
-		CFSecBuffSecSessionByStartIdxKey keyStartIdx = (CFSecBuffSecSessionByStartIdxKey)schema.getCFSecFactory().getFactorySecSession().newByStartIdxKey();
+		CFSecBuffSecSessionByStartIdxKey keyStartIdx = (CFSecBuffSecSessionByStartIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newByStartIdxKey();
 		keyStartIdx.setRequiredSecUserId( Buff.getRequiredSecUserId() );
 		keyStartIdx.setRequiredStart( Buff.getRequiredStart() );
 
-		CFSecBuffSecSessionByFinishIdxKey keyFinishIdx = (CFSecBuffSecSessionByFinishIdxKey)schema.getCFSecFactory().getFactorySecSession().newByFinishIdxKey();
+		CFSecBuffSecSessionByFinishIdxKey keyFinishIdx = (CFSecBuffSecSessionByFinishIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newByFinishIdxKey();
 		keyFinishIdx.setRequiredSecUserId( Buff.getRequiredSecUserId() );
 		keyFinishIdx.setOptionalFinish( Buff.getOptionalFinish() );
 
-		CFSecBuffSecSessionBySecProxyIdxKey keySecProxyIdx = (CFSecBuffSecSessionBySecProxyIdxKey)schema.getCFSecFactory().getFactorySecSession().newBySecProxyIdxKey();
+		CFSecBuffSecSessionBySecProxyIdxKey keySecProxyIdx = (CFSecBuffSecSessionBySecProxyIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newBySecProxyIdxKey();
 		keySecProxyIdx.setOptionalSecProxyId( Buff.getOptionalSecProxyId() );
 
 		// Validate unique indexes
@@ -177,7 +166,7 @@ public class CFSecRamSecSessionTable
 		else {
 			int classCode = Buff.getClassCode();
 			if (classCode == ICFSecSecSession.CLASS_CODE) {
-				CFSecBuffSecSession retbuff = ((CFSecBuffSecSession)(schema.getCFSecFactory().getFactorySecSession().newRec()));
+				CFSecBuffSecSession retbuff = ((CFSecBuffSecSession)(schema.getCFSecBuffFactory().getFactorySecSession().newRec()));
 				retbuff.set(Buff);
 				return( retbuff );
 			}
@@ -237,7 +226,7 @@ public class CFSecRamSecSessionTable
 		CFLibDbKeyHash256 SecUserId )
 	{
 		final String S_ProcName = "CFSecRamSecSession.readDerivedBySecUserIdx";
-		CFSecBuffSecSessionBySecUserIdxKey key = (CFSecBuffSecSessionBySecUserIdxKey)schema.getCFSecFactory().getFactorySecSession().newBySecUserIdxKey();
+		CFSecBuffSecSessionBySecUserIdxKey key = (CFSecBuffSecSessionBySecUserIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newBySecUserIdxKey();
 
 		key.setRequiredSecUserId( SecUserId );
 		ICFSecSecSession[] recArray;
@@ -266,7 +255,7 @@ public class CFSecRamSecSessionTable
 		LocalDateTime Start )
 	{
 		final String S_ProcName = "CFSecRamSecSession.readDerivedByStartIdx";
-		CFSecBuffSecSessionByStartIdxKey key = (CFSecBuffSecSessionByStartIdxKey)schema.getCFSecFactory().getFactorySecSession().newByStartIdxKey();
+		CFSecBuffSecSessionByStartIdxKey key = (CFSecBuffSecSessionByStartIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newByStartIdxKey();
 
 		key.setRequiredSecUserId( SecUserId );
 		key.setRequiredStart( Start );
@@ -286,7 +275,7 @@ public class CFSecRamSecSessionTable
 		LocalDateTime Finish )
 	{
 		final String S_ProcName = "CFSecRamSecSession.readDerivedByFinishIdx";
-		CFSecBuffSecSessionByFinishIdxKey key = (CFSecBuffSecSessionByFinishIdxKey)schema.getCFSecFactory().getFactorySecSession().newByFinishIdxKey();
+		CFSecBuffSecSessionByFinishIdxKey key = (CFSecBuffSecSessionByFinishIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newByFinishIdxKey();
 
 		key.setRequiredSecUserId( SecUserId );
 		key.setOptionalFinish( Finish );
@@ -315,7 +304,7 @@ public class CFSecRamSecSessionTable
 		CFLibDbKeyHash256 SecProxyId )
 	{
 		final String S_ProcName = "CFSecRamSecSession.readDerivedBySecProxyIdx";
-		CFSecBuffSecSessionBySecProxyIdxKey key = (CFSecBuffSecSessionBySecProxyIdxKey)schema.getCFSecFactory().getFactorySecSession().newBySecProxyIdxKey();
+		CFSecBuffSecSessionBySecProxyIdxKey key = (CFSecBuffSecSessionBySecProxyIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newBySecProxyIdxKey();
 
 		key.setOptionalSecProxyId( SecProxyId );
 		ICFSecSecSession[] recArray;
@@ -580,32 +569,32 @@ public class CFSecRamSecSessionTable
 				pkey );
 		}
 		Buff.setRequiredRevision( Buff.getRequiredRevision() + 1 );
-		CFSecBuffSecSessionBySecUserIdxKey existingKeySecUserIdx = (CFSecBuffSecSessionBySecUserIdxKey)schema.getCFSecFactory().getFactorySecSession().newBySecUserIdxKey();
+		CFSecBuffSecSessionBySecUserIdxKey existingKeySecUserIdx = (CFSecBuffSecSessionBySecUserIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newBySecUserIdxKey();
 		existingKeySecUserIdx.setRequiredSecUserId( existing.getRequiredSecUserId() );
 
-		CFSecBuffSecSessionBySecUserIdxKey newKeySecUserIdx = (CFSecBuffSecSessionBySecUserIdxKey)schema.getCFSecFactory().getFactorySecSession().newBySecUserIdxKey();
+		CFSecBuffSecSessionBySecUserIdxKey newKeySecUserIdx = (CFSecBuffSecSessionBySecUserIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newBySecUserIdxKey();
 		newKeySecUserIdx.setRequiredSecUserId( Buff.getRequiredSecUserId() );
 
-		CFSecBuffSecSessionByStartIdxKey existingKeyStartIdx = (CFSecBuffSecSessionByStartIdxKey)schema.getCFSecFactory().getFactorySecSession().newByStartIdxKey();
+		CFSecBuffSecSessionByStartIdxKey existingKeyStartIdx = (CFSecBuffSecSessionByStartIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newByStartIdxKey();
 		existingKeyStartIdx.setRequiredSecUserId( existing.getRequiredSecUserId() );
 		existingKeyStartIdx.setRequiredStart( existing.getRequiredStart() );
 
-		CFSecBuffSecSessionByStartIdxKey newKeyStartIdx = (CFSecBuffSecSessionByStartIdxKey)schema.getCFSecFactory().getFactorySecSession().newByStartIdxKey();
+		CFSecBuffSecSessionByStartIdxKey newKeyStartIdx = (CFSecBuffSecSessionByStartIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newByStartIdxKey();
 		newKeyStartIdx.setRequiredSecUserId( Buff.getRequiredSecUserId() );
 		newKeyStartIdx.setRequiredStart( Buff.getRequiredStart() );
 
-		CFSecBuffSecSessionByFinishIdxKey existingKeyFinishIdx = (CFSecBuffSecSessionByFinishIdxKey)schema.getCFSecFactory().getFactorySecSession().newByFinishIdxKey();
+		CFSecBuffSecSessionByFinishIdxKey existingKeyFinishIdx = (CFSecBuffSecSessionByFinishIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newByFinishIdxKey();
 		existingKeyFinishIdx.setRequiredSecUserId( existing.getRequiredSecUserId() );
 		existingKeyFinishIdx.setOptionalFinish( existing.getOptionalFinish() );
 
-		CFSecBuffSecSessionByFinishIdxKey newKeyFinishIdx = (CFSecBuffSecSessionByFinishIdxKey)schema.getCFSecFactory().getFactorySecSession().newByFinishIdxKey();
+		CFSecBuffSecSessionByFinishIdxKey newKeyFinishIdx = (CFSecBuffSecSessionByFinishIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newByFinishIdxKey();
 		newKeyFinishIdx.setRequiredSecUserId( Buff.getRequiredSecUserId() );
 		newKeyFinishIdx.setOptionalFinish( Buff.getOptionalFinish() );
 
-		CFSecBuffSecSessionBySecProxyIdxKey existingKeySecProxyIdx = (CFSecBuffSecSessionBySecProxyIdxKey)schema.getCFSecFactory().getFactorySecSession().newBySecProxyIdxKey();
+		CFSecBuffSecSessionBySecProxyIdxKey existingKeySecProxyIdx = (CFSecBuffSecSessionBySecProxyIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newBySecProxyIdxKey();
 		existingKeySecProxyIdx.setOptionalSecProxyId( existing.getOptionalSecProxyId() );
 
-		CFSecBuffSecSessionBySecProxyIdxKey newKeySecProxyIdx = (CFSecBuffSecSessionBySecProxyIdxKey)schema.getCFSecFactory().getFactorySecSession().newBySecProxyIdxKey();
+		CFSecBuffSecSessionBySecProxyIdxKey newKeySecProxyIdx = (CFSecBuffSecSessionBySecProxyIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newBySecProxyIdxKey();
 		newKeySecProxyIdx.setOptionalSecProxyId( Buff.getOptionalSecProxyId() );
 
 		// Check unique indexes
@@ -692,18 +681,18 @@ public class CFSecRamSecSessionTable
 				"deleteSecSession",
 				pkey );
 		}
-		CFSecBuffSecSessionBySecUserIdxKey keySecUserIdx = (CFSecBuffSecSessionBySecUserIdxKey)schema.getCFSecFactory().getFactorySecSession().newBySecUserIdxKey();
+		CFSecBuffSecSessionBySecUserIdxKey keySecUserIdx = (CFSecBuffSecSessionBySecUserIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newBySecUserIdxKey();
 		keySecUserIdx.setRequiredSecUserId( existing.getRequiredSecUserId() );
 
-		CFSecBuffSecSessionByStartIdxKey keyStartIdx = (CFSecBuffSecSessionByStartIdxKey)schema.getCFSecFactory().getFactorySecSession().newByStartIdxKey();
+		CFSecBuffSecSessionByStartIdxKey keyStartIdx = (CFSecBuffSecSessionByStartIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newByStartIdxKey();
 		keyStartIdx.setRequiredSecUserId( existing.getRequiredSecUserId() );
 		keyStartIdx.setRequiredStart( existing.getRequiredStart() );
 
-		CFSecBuffSecSessionByFinishIdxKey keyFinishIdx = (CFSecBuffSecSessionByFinishIdxKey)schema.getCFSecFactory().getFactorySecSession().newByFinishIdxKey();
+		CFSecBuffSecSessionByFinishIdxKey keyFinishIdx = (CFSecBuffSecSessionByFinishIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newByFinishIdxKey();
 		keyFinishIdx.setRequiredSecUserId( existing.getRequiredSecUserId() );
 		keyFinishIdx.setOptionalFinish( existing.getOptionalFinish() );
 
-		CFSecBuffSecSessionBySecProxyIdxKey keySecProxyIdx = (CFSecBuffSecSessionBySecProxyIdxKey)schema.getCFSecFactory().getFactorySecSession().newBySecProxyIdxKey();
+		CFSecBuffSecSessionBySecProxyIdxKey keySecProxyIdx = (CFSecBuffSecSessionBySecProxyIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newBySecProxyIdxKey();
 		keySecProxyIdx.setOptionalSecProxyId( existing.getOptionalSecProxyId() );
 
 		// Validate reverse foreign keys
@@ -756,7 +745,7 @@ public class CFSecRamSecSessionTable
 	public void deleteSecSessionBySecUserIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 argSecUserId )
 	{
-		CFSecBuffSecSessionBySecUserIdxKey key = (CFSecBuffSecSessionBySecUserIdxKey)schema.getCFSecFactory().getFactorySecSession().newBySecUserIdxKey();
+		CFSecBuffSecSessionBySecUserIdxKey key = (CFSecBuffSecSessionBySecUserIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newBySecUserIdxKey();
 		key.setRequiredSecUserId( argSecUserId );
 		deleteSecSessionBySecUserIdx( Authorization, key );
 	}
@@ -793,7 +782,7 @@ public class CFSecRamSecSessionTable
 		CFLibDbKeyHash256 argSecUserId,
 		LocalDateTime argStart )
 	{
-		CFSecBuffSecSessionByStartIdxKey key = (CFSecBuffSecSessionByStartIdxKey)schema.getCFSecFactory().getFactorySecSession().newByStartIdxKey();
+		CFSecBuffSecSessionByStartIdxKey key = (CFSecBuffSecSessionByStartIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newByStartIdxKey();
 		key.setRequiredSecUserId( argSecUserId );
 		key.setRequiredStart( argStart );
 		deleteSecSessionByStartIdx( Authorization, key );
@@ -832,7 +821,7 @@ public class CFSecRamSecSessionTable
 		CFLibDbKeyHash256 argSecUserId,
 		LocalDateTime argFinish )
 	{
-		CFSecBuffSecSessionByFinishIdxKey key = (CFSecBuffSecSessionByFinishIdxKey)schema.getCFSecFactory().getFactorySecSession().newByFinishIdxKey();
+		CFSecBuffSecSessionByFinishIdxKey key = (CFSecBuffSecSessionByFinishIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newByFinishIdxKey();
 		key.setRequiredSecUserId( argSecUserId );
 		key.setOptionalFinish( argFinish );
 		deleteSecSessionByFinishIdx( Authorization, key );
@@ -872,7 +861,7 @@ public class CFSecRamSecSessionTable
 	public void deleteSecSessionBySecProxyIdx( ICFSecAuthorization Authorization,
 		CFLibDbKeyHash256 argSecProxyId )
 	{
-		CFSecBuffSecSessionBySecProxyIdxKey key = (CFSecBuffSecSessionBySecProxyIdxKey)schema.getCFSecFactory().getFactorySecSession().newBySecProxyIdxKey();
+		CFSecBuffSecSessionBySecProxyIdxKey key = (CFSecBuffSecSessionBySecProxyIdxKey)schema.getCFSecBuffFactory().getFactorySecSession().newBySecProxyIdxKey();
 		key.setOptionalSecProxyId( argSecProxyId );
 		deleteSecSessionBySecProxyIdx( Authorization, key );
 	}
